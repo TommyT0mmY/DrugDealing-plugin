@@ -1,0 +1,11 @@
+messages:
+  ingame_prefix: "[Drugs]" #The prefix that will be shown behind other messages
+  unexpected_error: "§cUnexpected error occurred!" #If something goes wrong
+  invalid_permission: "§cYou don't have the permission to do this" #If the player hasn't the permission
+  invalid_surface: "§cPlants need to be placed on farmland" #If a plant is planted on an invalid terrain
+  coke_name: "§aCoke Plant" #The name that the coke item will get ingame
+  weed_name: "§aWeed Plant" #The name that the weed item will get ingame
+  planted_coke: "§aYou planted a coke plant!" #The message shown when a coke plant is planted
+  planted_weed: "§aYou planted a weed plant!" #The message shown when a weed plant is planted
+  received_coke: "§aYou received a coke plant!" #The message shown when a coke plant is received
+  received_weed: "§aYou received a weed plant!" #The message shown when a weed plant is received

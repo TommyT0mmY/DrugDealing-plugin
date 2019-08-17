@@ -1,0 +1,15 @@
+  name: DrugDealing
+  version:  indev 1.0
+  description: A roleplay plugin that allows players to plant drugs and sell them. 
+  author: Tommy_T0mmY
+  prefix: DrugDealing
+  main: drugdealing.Main
+  api-version: 1.13
+  commands:
+    drugdealing:
+      usage: /<command> [page]
+      description: Shows help menu
+      aliases: dd
+    getplant:
+      usage: /<command> [coke|weed]
+      description: Gives a drug plant
