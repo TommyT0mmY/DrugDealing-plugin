@@ -35,7 +35,8 @@ public class PlantedDrug implements Listener {
 
 			if (mainClass.drugs.isCokeItemStack(placedIS)) {
 				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
-					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_coke"));							
+					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_coke"));	
+					mainClass.plantsreg.addPlant(placed, "coke");
 				}else {
 					p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_surface"));		
 					return;
