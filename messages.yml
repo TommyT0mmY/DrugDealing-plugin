@@ -9,3 +9,4 @@ messages:
   planted_weed: "§aYou planted a weed plant!" #The message shown when a weed plant is planted
   received_coke: "§aYou received a coke plant!" #The message shown when a coke plant is received
   received_weed: "§aYou received a weed plant!" #The message shown when a weed plant is received
+  cannot_grow_weed: "§cYou cannot make a weed plant grow with bone meal!" #If a player tries to make a weed plant grow with bone meal

@@ -12,7 +12,6 @@ import drugdealing.Main;
 public class Messages {
 	
 	private Main mainClass;
-	
 	public Messages(Main mainClass) {
 		this.mainClass = mainClass;
 		loadMessagesFile();
@@ -34,6 +33,7 @@ public class Messages {
         	put("planted_weed", "§aYou planted a weed plant!");
         	put("received_coke", "§aYou received a coke plant!");
         	put("received_weed", "§aYou received a weed plant!");
+        	put("cannot_grow_weed", "§cYou cannot make a weed plant grow with bone meal!");
         }
 	};
 	
@@ -48,6 +48,8 @@ public class Messages {
         if (!messagesConfigFile.exists()) {
         	messagesConfigFile.getParentFile().mkdirs();
             mainClass.saveResource("messages.yml", false);
+            mainClass.console.info("Created file messages.yml");
+            mainClass.console.info("To modify ingame messages edit messages.yml and reload the server");
          }
 
         messagesConfig = new YamlConfiguration();
@@ -70,9 +72,13 @@ public class Messages {
     	messagesMap.put("planted_weed", (String) messagesConfig.get("messages.planted_weed"));
     	messagesMap.put("received_coke", (String) messagesConfig.get("messages.received_coke"));
     	messagesMap.put("received_weed", (String) messagesConfig.get("messages.received_weed"));
+    	messagesMap.put("cannot_grow_weed", (String) messagesConfig.get("messages.cannot_grow_weed"));
     }
     
     public String formattedMessage(String color, String messageName) {
-    	return String.format("%s %s %s", color, getMessage("ingame_prefix"), getMessage(messageName));
+    	if (getMessage(messageName).equals("")) {
+    		return String.format("%s%s %s", color, getMessage("ingame_prefix"), messageName);
+       	}
+    	return String.format("%s%s %s", color, getMessage("ingame_prefix"), getMessage(messageName));
     }
 }
