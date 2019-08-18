@@ -12,10 +12,6 @@ public class PlantsUpdater extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-		mainClass.console.info("Plants Updater Tick");
-		
-		
-		
 		
 	}
 }

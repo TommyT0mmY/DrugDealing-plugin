@@ -23,32 +23,37 @@ public class GetPlant implements CommandExecutor {
 		Player p = (Player) sender;
 		String usage = mainClass.getCommand("getplant").getUsage().replaceAll("<command>", "getplant");
 		
+		if (!p.hasPermission(Permissions.getPermission("getplant_weed")) || !p.hasPermission(Permissions.getPermission("getplant_coke"))) {
+			p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
+			return true;
+		}
+		
 		if (args.length != 1) {
-			p.sendMessage(String.format("§c%s %s", mainClass.messages.getMessage("ingame_prefix"), usage));
+			p.sendMessage(mainClass.messages.formattedMessage("§c", usage));
 			return true;
 		}
 		
 		switch (args[0].toLowerCase()) {
 		case "coke":
 			if (!p.hasPermission(Permissions.getPermission("getplant_coke"))) {
-				p.sendMessage(mainClass.messages.getMessage("invalid_permission"));
+				p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
 				break;
 			}
 			
 			p.getInventory().addItem(mainClass.drugs.getCokeItemStack());
-			p.sendMessage(String.format("§a%s %s", mainClass.messages.getMessage("ingame_prefix"), mainClass.messages.getMessage("received_coke")));
+			p.sendMessage(mainClass.messages.formattedMessage("§a", "received_coke"));
 			break;
 		case "weed":	
 			if (!p.hasPermission(Permissions.getPermission("getplant_weed"))) {
-				p.sendMessage(mainClass.messages.getMessage("invalid_permission"));
+				p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
 				break;
 			}
 			
 			p.getInventory().addItem(mainClass.drugs.getWeedItemStack());	
-			p.sendMessage(String.format("§a%s %s", mainClass.messages.getMessage("ingame_prefix"), mainClass.messages.getMessage("received_weed")));
+			p.sendMessage(mainClass.messages.formattedMessage("§a", "received_weed"));
 			break;
 		default:
-			p.sendMessage(String.format("§c%s %s", mainClass.messages.getMessage("ingame_prefix"), usage));
+			p.sendMessage(mainClass.messages.formattedMessage("§c", usage));
 			break;
 		}
 		

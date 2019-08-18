@@ -11,6 +11,7 @@ import drugdealing.Main;
 import drugdealing.utility.Permissions;
 
 public class PlantedDrug implements Listener {
+	
 	private Main mainClass;
     public PlantedDrug(Main mainClass) {
         this.mainClass = mainClass;
@@ -45,7 +46,8 @@ public class PlantedDrug implements Listener {
 			
 			if (mainClass.drugs.isWeedItemStack(placedIS)) {
 				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
-					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_weed"));								
+					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_weed"));	
+					mainClass.plantsreg.addPlant(placed, "weed");
 				}else {
 					p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_surface"));
 					return;
@@ -55,7 +57,7 @@ public class PlantedDrug implements Listener {
 			e.setCancelled(false);			
 		} catch (Exception exception) {
 			e.setCancelled(true);
-			p.sendMessage(mainClass.messages.getMessage("unexpected_error"));
+			p.sendMessage(mainClass.messages.formattedMessage("§c", "unexpected_error"));
 			exception.printStackTrace();
 			return;
 		}
