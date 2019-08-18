@@ -12,6 +12,7 @@ import drugdealing.events.*;
 import drugdealing.managers.*;
 import drugdealing.tabcompleters.*;
 import drugdealing.utility.*;
+
 import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin {
@@ -21,15 +22,19 @@ public class Main extends JavaPlugin {
 	public File datafolder = null;
 	public Messages messages = null;
 	public Drugs drugs = null;
+	public PlantsRegister plantsreg = null;
 	
 	public void onEnable() {
         loadVault();
 		loadCommands();
 		loadEvents();
 		loadManagers();
+		
 		datafolder = getDataFolder();
 		messages = new Messages(this);
 		drugs = new Drugs(this);
+		plantsreg = new PlantsRegister(this);
+		
 		console.info("Loaded successfully");
 	}
 	
@@ -67,6 +72,7 @@ public class Main extends JavaPlugin {
 	private void loadEvents() {
 		getServer().getPluginManager().registerEvents(new PlantedDrug(this), this);
 		getServer().getPluginManager().registerEvents(new RemoveUprootedPlants(this), this);
+		getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(this), this);
 	}
 	
 	@SuppressWarnings("unused")
