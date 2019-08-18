@@ -3,11 +3,13 @@ package drugdealing;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import drugdealing.utility.XMaterial;
+import drugdealing.utility.XSound;
 
 public class Drugs {
 	
@@ -92,4 +94,20 @@ public class Drugs {
 		return false;
 	}
 	
+	public void destroyPlant(Block plant) {
+		Location plantLocation = plant.getLocation();
+		if (mainClass.plantsreg.isDrugPlant(plantLocation)) {
+			plant.setType(XMaterial.AIR.parseItem().getType());
+			plantLocation.getWorld().playSound(plantLocation, XSound.BLOCK_LAVA_POP.parseSound(), 5, 5);
+			String plantType = mainClass.plantsreg.getType(plantLocation);
+			mainClass.console.info(plantType);
+			if (mainClass.plantsreg.getType(plantLocation).equals("coke")) {
+				plant.getWorld().dropItem(plantLocation, mainClass.drugs.getCokeItemStack());
+			}else if (mainClass.plantsreg.getType(plantLocation).equals("weed")) {
+				plant.getWorld().dropItem(plantLocation, mainClass.drugs.getWeedItemStack());
+			}
+			mainClass.plantsreg.removePlant(plantLocation);
+		}
+	}
+
 }
