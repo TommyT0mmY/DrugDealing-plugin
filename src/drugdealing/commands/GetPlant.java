@@ -29,7 +29,7 @@ public class GetPlant implements CommandExecutor {
 		}
 		
 		if (args.length != 1) {
-			p.sendMessage(mainClass.messages.formattedMessage("§c", usage));
+			p.sendMessage(mainClass.messages.formattedText("§c", usage));
 			return true;
 		}
 		
@@ -53,7 +53,7 @@ public class GetPlant implements CommandExecutor {
 			p.sendMessage(mainClass.messages.formattedMessage("§a", "received_weed"));
 			break;
 		default:
-			p.sendMessage(mainClass.messages.formattedMessage("§c", usage));
+			p.sendMessage(mainClass.messages.formattedText("§c", usage));
 			break;
 		}
 		

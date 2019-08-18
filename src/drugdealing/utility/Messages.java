@@ -76,9 +76,10 @@ public class Messages {
     }
     
     public String formattedMessage(String color, String messageName) {
-    	if (getMessage(messageName).equals("")) {
-    		return String.format("%s%s %s", color, getMessage("ingame_prefix"), messageName);
-       	}
     	return String.format("%s%s %s", color, getMessage("ingame_prefix"), getMessage(messageName));
+    }
+    
+    public String formattedText(String color, String message) {
+    	return String.format("%s%s %s", color, getMessage("ingame_prefix"), message);
     }
 }
