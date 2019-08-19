@@ -4,7 +4,6 @@
   author: Tommy_T0mmY
   prefix: DrugDealing
   main: drugdealing.Main
-  api-version: 1.13
   commands:
     drugdealing:
       usage: /<command> [page]
