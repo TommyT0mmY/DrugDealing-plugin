@@ -1,12 +1,17 @@
+//Handles the plants.yml file
+
 package drugdealing.managers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -49,6 +54,7 @@ public class PlantsRegister {
     	registerConfig.set(plantName + ".y", loc.getBlockY());
     	registerConfig.set(plantName + ".z", loc.getBlockZ());
     	registerConfig.set(plantName + ".world", loc.getWorld().getName());
+    	registerConfig.set(plantName + ".grown", false);
     	
     	//saving plants.yml
 		try {
@@ -58,9 +64,10 @@ public class PlantsRegister {
     }
     
     public boolean removePlant(Location loc) {
-    	String plantName = findPlantPosition(loc);
+    	String plantName = getPlantPath(loc);
     	if (plantName != null) {
     		registerConfig.set(plantName, null);
+    		
     		//saving plants.yml
     		try {
 				registerConfig.save(registerConfigFile);
@@ -72,40 +79,65 @@ public class PlantsRegister {
 
     public String getType(Location loc) {
     	String type = "";
-    	String plantName = findPlantPosition(loc);
-    	if (plantName != null) {
-    		type = (String) registerConfig.get(plantName + ".type");
+    	String plantPath = getPlantPath(loc);
+    	if (plantPath != null) {
+    		type = (String) registerConfig.get(plantPath + ".type");
     	}
     	return type;
     }
     
     
 	public boolean isDrugPlant(Location loc) {
-		if (findPlantPosition(loc) != null) {
+		if (getPlantPath(loc) != null) {
 			return true;
 		}
-		
 		return false;
 	}
 	
-	private String findPlantPosition(Location loc) {
-		String result = null;
-		for (int i = 0; i < registerConfig.getInt("plantsNumber"); i++) {
-			String currentPlant = "plants.plant" + i;
-			if (registerConfig.get(currentPlant) == null) {
+	private String getPlantPath(Location loc) { //given a location returns the path of the plant in plants.ynl file
+		int plantsCount = registerConfig.getInt("plantsNumber");
+		for (int i = 0; i < plantsCount; i++) {
+			String currentPlantPath = "plants.plant" + i;
+			if (registerConfig.get(currentPlantPath) == null) {
 				continue;
 			}
-			
-			int x = registerConfig.getInt(currentPlant + ".x");
-			int y = registerConfig.getInt(currentPlant + ".y");
-			int z = registerConfig.getInt(currentPlant + ".z");
-			String worldName = (String) registerConfig.get(currentPlant + ".world");
-			World w = Bukkit.getWorld(worldName);
-			if (loc.distance(new Location(w, x, y, z)) < 0.2) {
-				return currentPlant;
+			ConfigurationSection plant = registerConfig.getConfigurationSection(currentPlantPath);
+			int x = plant.getInt("x");
+			int y = plant.getInt("y");
+			int z = plant.getInt("z");
+			World w = Bukkit.getWorld(plant.getString("world"));
+			if (loc.getWorld().getName().equals(w.getName()) && x == loc.getBlockX() && y == loc.getBlockY() && z == loc.getBlockZ()) {
+				return currentPlantPath;
+			}
+		}
+		return "";
+	}
+	
+	public ConfigurationSection getPlant(String plantName) {
+		return registerConfig.getConfigurationSection(plantName);
+	}
+	
+	public ConfigurationSection getPlant(Location plantLocation) {
+		return registerConfig.getConfigurationSection(getPlantPath(plantLocation));
+	}
+	
+	public List<ConfigurationSection> getPlants() {
+		List<ConfigurationSection> plants = new ArrayList<>();
+		for (int i = 0; i < registerConfig.getInt("plantsNumber"); i++) {
+			String currentPlant = "plants.plant" + i;
+			if (registerConfig.get(currentPlant) != null) {
+				plants.add(getPlant(currentPlant));
 			}
 		}
 		
-		return result;
+		return plants;
+	}
+	
+	public Location getPlantLocation(ConfigurationSection plant) {
+		World w = Bukkit.getWorld((String) plant.get("world"));
+		int x = plant.getInt("x");
+		int y = plant.getInt("y");
+		int z = plant.getInt("z");
+		return new Location(w, x, y, z);
 	}
 }

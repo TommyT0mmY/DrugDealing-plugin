@@ -1,12 +1,18 @@
+//Handles ingame drug tiles
+
 package drugdealing;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 
 import drugdealing.utility.XMaterial;
 import drugdealing.utility.XSound;
@@ -45,15 +51,15 @@ public class Drugs {
 		weed.setItemMeta(weedMeta);
 	}
 	
-	public ItemStack getCokeItemStack() {
+	public ItemStack getCokeItemStack() { //returns a coke itemstack
 		return coke;
 	}
 	
-	public ItemStack getWeedItemStack() {
+	public ItemStack getWeedItemStack() { //returns a weed itemstack
 		return weed;
 	}
 	
-	public boolean isCokeItemStack(ItemStack toCheckIS) {
+	public boolean isCokeItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a coke item
 		String coke_name = mainClass.messages.getMessage("coke_name");
 		if (toCheckIS.getType().equals(XMaterial.POPPY.parseMaterial())) { //checking type
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
@@ -69,7 +75,7 @@ public class Drugs {
 		return false;
 	}
 	
-	public boolean isWeedItemStack(ItemStack toCheckIS) {
+	public boolean isWeedItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a weed item
 		String weed_name = mainClass.messages.getMessage("weed_name");
 		if (toCheckIS.getType().equals(XMaterial.JUNGLE_SAPLING.parseItem().getType())) {
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
@@ -85,7 +91,7 @@ public class Drugs {
 		return false;
 	}
 	
-	public boolean isPlantedOnFarmland(Block plant) {
+	public boolean isPlantedOnFarmland(Block plant) { //checks if the plant is planted on farmland
 		Block belowBlock = plant.getLocation().subtract(0, 1, 0).getBlock();
 		if (belowBlock.getType().equals(XMaterial.FARMLAND.parseItem().getType())) {
 			return true;
@@ -94,20 +100,47 @@ public class Drugs {
 		return false;
 	}
 	
-	public void destroyPlant(Block plant) {
+	public void destroyPlant(Block plant) { //similar to org.bukkit.block.Block.breakNaturally() but with some changes
 		Location plantLocation = plant.getLocation();
 		if (mainClass.plantsreg.isDrugPlant(plantLocation)) {
 			plant.setType(XMaterial.AIR.parseItem().getType());
 			plantLocation.getWorld().playSound(plantLocation, XSound.BLOCK_LAVA_POP.parseSound(), 5, 5);
-			String plantType = mainClass.plantsreg.getType(plantLocation);
-			mainClass.console.info(plantType);
 			if (mainClass.plantsreg.getType(plantLocation).equals("coke")) {
-				plant.getWorld().dropItem(plantLocation, mainClass.drugs.getCokeItemStack());
+				plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getCokeItemStack());
 			}else if (mainClass.plantsreg.getType(plantLocation).equals("weed")) {
 				plant.getWorld().dropItem(plantLocation, mainClass.drugs.getWeedItemStack());
 			}
 			mainClass.plantsreg.removePlant(plantLocation);
 		}
 	}
-
+	
+	@SuppressWarnings("deprecation")
+	public void growPlant(Location loc) { //given a location of a plant it makes the plant grow to it's final stage, ready to be harvested
+		String plantType = mainClass.plantsreg.getType(loc); 
+		Block plantBlock = loc.getBlock();
+		ConfigurationSection plant = mainClass.plantsreg.getPlant(loc);
+		if (plant.getBoolean("grown")) {
+			return;
+		}
+		if (plantType.equals("weed")) {
+			Block top = loc.add(0, 1, 0).getBlock();
+			Block bottom = plantBlock;
+			
+			bottom.setType(XMaterial.ROSE_BUSH.parseMaterial());
+			bottom.setData((byte) 3);
+			top.setType(XMaterial.ROSE_BUSH.parseMaterial());
+			top.setData((byte) 10); 
+		}else if (plantType.equals("coke")) {			
+			Block top = loc.add(0, 1, 0).getBlock();
+			Block bottom = plantBlock;
+			
+			bottom.setType(Material.DOUBLE_PLANT);
+			bottom.setData((byte) 4);
+			top.setType(Material.DOUBLE_PLANT);
+			top.setData((byte) 10); 
+			//mainClass.console.info("top data: " + top.getData()); //debug output
+			//mainClass.console.info("bottom data: "  + bottom.getData());
+		}
+		plant.set("grown", true);
+	}
 }
