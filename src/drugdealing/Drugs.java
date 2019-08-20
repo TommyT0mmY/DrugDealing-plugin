@@ -6,13 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
 import drugdealing.utility.XMaterial;
 import drugdealing.utility.XSound;
@@ -126,17 +123,17 @@ public class Drugs {
 			Block top = loc.add(0, 1, 0).getBlock();
 			Block bottom = plantBlock;
 			
-			bottom.setType(XMaterial.ROSE_BUSH.parseMaterial());
+			bottom.setType(XMaterial.LARGE_FERN.parseMaterial());
 			bottom.setData((byte) 3);
-			top.setType(XMaterial.ROSE_BUSH.parseMaterial());
+			top.setType(XMaterial.LARGE_FERN.parseMaterial());
 			top.setData((byte) 10); 
 		}else if (plantType.equals("coke")) {			
 			Block top = loc.add(0, 1, 0).getBlock();
 			Block bottom = plantBlock;
 			
-			bottom.setType(Material.DOUBLE_PLANT);
+			bottom.setType(XMaterial.ROSE_BUSH.parseMaterial());
 			bottom.setData((byte) 4);
-			top.setType(Material.DOUBLE_PLANT);
+			top.setType(XMaterial.ROSE_BUSH.parseMaterial());
 			top.setData((byte) 10); 
 			//mainClass.console.info("top data: " + top.getData()); //debug output
 			//mainClass.console.info("bottom data: "  + bottom.getData());
