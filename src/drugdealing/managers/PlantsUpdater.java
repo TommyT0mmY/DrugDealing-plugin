@@ -1,5 +1,7 @@
 package drugdealing.managers;
 
+import java.util.List;
+
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
@@ -15,7 +17,8 @@ public class PlantsUpdater extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-		for (ConfigurationSection currentPlant : mainClass.plantsreg.getPlants()) {
+		List<ConfigurationSection> plantsCS = mainClass.plantsreg.getPlants();
+		for (ConfigurationSection currentPlant : plantsCS) {
 			Location currLoc = mainClass.plantsreg.getPlantLocation(currentPlant);
 			//playing particle
 			currLoc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, currLoc.getBlockX() + 0.5, currLoc.getBlockY(), currLoc.getBlockZ() + 0.5, 2, 0.3, 0.3, 0.3);				

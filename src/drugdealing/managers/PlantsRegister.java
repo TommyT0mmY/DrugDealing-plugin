@@ -76,7 +76,7 @@ public class PlantsRegister {
     
     public boolean removePlant(Location loc) {
     	String plantName = getPlantPath(loc);
-    	if (plantName != null) {
+    	if (plantName != "") {
     		registerConfig.set(plantName, null);
     		
     		//saving plants.yml
@@ -154,7 +154,7 @@ public class PlantsRegister {
 	}
 	
 	public Location getPlantLocation(ConfigurationSection plant) {
-		World w = Bukkit.getWorld((String) plant.get("world"));
+		World w = Bukkit.getWorld(plant.getString("world"));
 		int x = plant.getInt("x");
 		int y = plant.getInt("y");
 		int z = plant.getInt("z");
