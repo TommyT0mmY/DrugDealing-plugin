@@ -17,13 +17,15 @@ public class RemoveUprootedPlants implements Listener {
 	}
 	
 	@EventHandler
-	public void removeUprooted(PlayerInteractEvent event)
-	{
+	public void removeUprooted(PlayerInteractEvent event) {
 	    if(event.getAction() == Action.PHYSICAL && event.getClickedBlock().getType().equals(XMaterial.FARMLAND.parseItem().getType())) {
 			if (event.getClickedBlock().getType().equals(XMaterial.FARMLAND.parseItem().getType())) {
 				Block plantBlock = event.getClickedBlock().getLocation().add(0, 1, 0).getBlock();
-				mainClass.drugs.destroyPlant(plantBlock);
+				if (mainClass.plantsreg.isDrugPlant(plantBlock.getLocation())) {
+					mainClass.drugs.destroyPlant(plantBlock);
+				}
 			}
 		}
-    }
+	}
 }
+	
