@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,17 +45,27 @@ public class PlantsRegister {
         }
     }
     
+    private int randomGrowthTime() {
+    	int currentTime = (int) (System.currentTimeMillis() / 1000L);
+    	int minTime = mainClass.configs.getConfigs().getInt("growthTimeMin");
+    	int maxTime = mainClass.configs.getConfigs().getInt("growthTimeMax");
+    	Random randomGenerator = new Random();
+    	int randomTime = randomGenerator.nextInt(maxTime) + minTime;
+    	return (int) (currentTime + randomTime);
+    }
+    
     public void addPlant(Block plant, String type) {
     	Location loc = plant.getLocation();
     	String plantName = "plants.plant" + registerConfig.getInt("plantsNumber");
     	int newPlantsNumber = registerConfig.getInt("plantsNumber") + 1;
-    	registerConfig.set("plantsNumber", newPlantsNumber);
+    	registerConfig.set(".plantsNumber", newPlantsNumber);
     	registerConfig.set(plantName + ".type", type);
     	registerConfig.set(plantName + ".x", loc.getBlockX());
     	registerConfig.set(plantName + ".y", loc.getBlockY());
     	registerConfig.set(plantName + ".z", loc.getBlockZ());
     	registerConfig.set(plantName + ".world", loc.getWorld().getName());
     	registerConfig.set(plantName + ".grown", false);
+    	registerConfig.set(plantName + ".growthTime", randomGrowthTime());
     	
     	//saving plants.yml
 		try {
@@ -86,9 +97,18 @@ public class PlantsRegister {
     	return type;
     }
     
+    public int getGrowthTime(Location loc) {
+    	int growthTime = 0;
+    	String plantPath = getPlantPath(loc);
+    	if (plantPath != null) {
+    		growthTime = registerConfig.getInt(plantPath + ".growthTime");
+    	}
+    	return growthTime;
+    }
+    
     
 	public boolean isDrugPlant(Location loc) {
-		if (getPlantPath(loc) != null) {
+		if (getPlantPath(loc) != "") {
 			return true;
 		}
 		return false;
