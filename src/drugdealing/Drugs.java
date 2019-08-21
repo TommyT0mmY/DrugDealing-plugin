@@ -99,13 +99,24 @@ public class Drugs {
 	
 	public void destroyPlant(Block plant) { //similar to org.bukkit.block.Block.breakNaturally() but with some changes
 		Location plantLocation = plant.getLocation();
-		if (mainClass.plantsreg.isDrugPlant(plantLocation)) {
-			plant.setType(XMaterial.AIR.parseItem().getType());
-			plantLocation.getWorld().playSound(plantLocation, XSound.BLOCK_LAVA_POP.parseSound(), 5, 5);
+		if (mainClass.plantsreg.isDrugPlant(plantLocation)) { //if the plant is registered in plants.yml
+			
+			plant.setType(XMaterial.AIR.parseItem().getType()); //removing the plant's block
+			plantLocation.getWorld().playSound(plantLocation, XSound.BLOCK_LAVA_POP.parseSound(), 5, 5); //sound feedback
+			ConfigurationSection plantCS = mainClass.plantsreg.getPlant(plantLocation); //the plant's section in plants.yml
+			
+			//Plant drops
 			if (mainClass.plantsreg.getType(plantLocation).equals("coke")) {
-				plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getCokeItemStack());
+				plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getCokeItemStack()); //first drop
+				if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
+					plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getCokeItemStack());
+				}
+				
 			}else if (mainClass.plantsreg.getType(plantLocation).equals("weed")) {
-				plant.getWorld().dropItem(plantLocation, mainClass.drugs.getWeedItemStack());
+				plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getWeedItemStack()); //first drop
+				if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
+					plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getWeedItemStack());
+				}
 			}
 			mainClass.plantsreg.removePlant(plantLocation);
 		}
