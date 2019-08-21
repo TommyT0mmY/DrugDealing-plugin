@@ -23,6 +23,7 @@ public class Main extends JavaPlugin {
 	public Messages messages = null;
 	public Drugs drugs = null;
 	public PlantsRegister plantsreg = null;
+	public Configs configs = null;
 	
 	public void onEnable() {
         loadVault();
@@ -34,6 +35,7 @@ public class Main extends JavaPlugin {
 		messages = new Messages(this);
 		drugs = new Drugs(this);
 		plantsreg = new PlantsRegister(this);
+		configs = new Configs(this);
 		
 		console.info("Loaded successfully");
 	}
@@ -77,7 +79,7 @@ public class Main extends JavaPlugin {
 	
 	@SuppressWarnings("unused")
 	private void loadManagers() {
-		BukkitTask task1 = new PlantsUpdater(this).runTaskTimer(this, 0, 20 * 20/*20 seconds*/);
+		BukkitTask task1 = new PlantsUpdater(this).runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
 	}
 	
 	
