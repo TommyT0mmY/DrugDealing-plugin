@@ -91,7 +91,7 @@ public class PlantsRegister {
     public String getType(Location loc) {
     	String type = "";
     	String plantPath = getPlantPath(loc);
-    	if (plantPath != null) {
+    	if (plantPath != "") {
     		type = (String) registerConfig.get(plantPath + ".type");
     	}
     	return type;

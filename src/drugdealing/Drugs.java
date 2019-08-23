@@ -97,7 +97,7 @@ public class Drugs {
 		return false;
 	}
 	
-	public void destroyPlant(Block plant) { //similar to org.bukkit.block.Block.breakNaturally() but with some changes
+	public void destroyPlant(Block plant, boolean dropItems) { //similar to org.bukkit.block.Block.breakNaturally() but with some changes
 		Location plantLocation = plant.getLocation();
 		if (mainClass.plantsreg.isDrugPlant(plantLocation)) { //if the plant is registered in plants.yml
 			
@@ -106,16 +106,18 @@ public class Drugs {
 			ConfigurationSection plantCS = mainClass.plantsreg.getPlant(plantLocation); //the plant's section in plants.yml
 			
 			//Plant drops
-			if (mainClass.plantsreg.getType(plantLocation).equals("coke")) {
-				plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getCokeItemStack()); //first drop
-				if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
-					plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getCokeItemStack());
-				}
-				
-			}else if (mainClass.plantsreg.getType(plantLocation).equals("weed")) {
-				plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getWeedItemStack()); //first drop
-				if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
-					plant.getWorld().dropItem(plantLocation.add(0.5, 0, 0.5), mainClass.drugs.getWeedItemStack());
+			if (dropItems) {
+				if (mainClass.plantsreg.getType(plantLocation).equals("coke")) {
+					plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokeItemStack()); //first drop
+					if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
+						plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokeItemStack());
+					}
+					
+				}else if (mainClass.plantsreg.getType(plantLocation).equals("weed")) {
+					plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedItemStack()); //first drop
+					if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
+						plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedItemStack());
+					}
 				}
 			}
 			mainClass.plantsreg.removePlant(plantLocation);
