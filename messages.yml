@@ -1,4 +1,5 @@
 messages:
+  only_players_command: "Only players can execute this command" #When a command is executed by an entity that isn't a player
   ingame_prefix: "[Drugs]" #The prefix that will be shown behind other messages
   unexpected_error: "§cUnexpected error occurred!" #If something goes wrong
   invalid_permission: "§cYou don't have the permission to do this" #If the player hasn't the permission
@@ -10,3 +11,6 @@ messages:
   received_coke: "§aYou received a coke plant!" #The message shown when a coke plant is received
   received_weed: "§aYou received a weed plant!" #The message shown when a weed plant is received
   cannot_grow_weed: "§cYou cannot make a weed plant grow with bone meal!" #If a player tries to make a weed plant grow with bone meal
+  spawned_dealer: §aYou spawned a drug dealer! #If the player spawns a drug dealer NPC
+  spawned_producer: §aYou spawned a drug producer! #If the player spawns a drug producer NPC
+  name_too_long: §cThe selected name is too long! #If the given name to an NPC is too long

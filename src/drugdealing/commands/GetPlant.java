@@ -18,6 +18,7 @@ public class GetPlant implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) {
+			sender.sendMessage(mainClass.messages.formattedMessage("", "only_players_command"));
 			return true;
 		}
 		Player p = (Player) sender;
@@ -62,5 +63,5 @@ public class GetPlant implements CommandExecutor {
 	
 	
 	
-
+	
 }

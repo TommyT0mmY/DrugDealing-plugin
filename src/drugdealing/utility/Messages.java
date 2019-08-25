@@ -23,6 +23,7 @@ public class Messages {
 	@SuppressWarnings("serial")
 	private static Map < String, String > messagesMap = new HashMap < String, String > () {
         {
+        	put("only_players_command", "Only players can execute this command");
         	put("ingame_prefix", "[Drugs]");
         	put("unexpected_error", "§cUnexpected error occurred!");
         	put("invalid_permission", "§cYou don't have the permission to do this");
@@ -34,6 +35,9 @@ public class Messages {
         	put("received_coke", "§aYou received a coke plant!");
         	put("received_weed", "§aYou received a weed plant!");
         	put("cannot_grow_weed", "§cYou cannot make a weed plant grow with bone meal!");
+        	put("spawned_dealer", "§aYou spawned a drug dealer!");
+        	put("spawned_producer", "§aYou spawned a drug producer!");
+        	put("name_too_long", "§cThe selected name is too long!");
         }
 	};
 	
@@ -62,6 +66,7 @@ public class Messages {
     }
     
     private void loadMessages() {
+    	messagesMap.put("only_players_command", (String) messagesConfig.get("messages.only_players_command"));
     	messagesMap.put("ingame_prefix", (String) messagesConfig.get("messages.ingame_prefix"));
     	messagesMap.put("unexpected_error", (String) messagesConfig.get("messages.unexpected_error"));
     	messagesMap.put("invalid_permission", (String) messagesConfig.get("messages.invalid_permission"));
@@ -73,6 +78,9 @@ public class Messages {
     	messagesMap.put("received_coke", (String) messagesConfig.get("messages.received_coke"));
     	messagesMap.put("received_weed", (String) messagesConfig.get("messages.received_weed"));
     	messagesMap.put("cannot_grow_weed", (String) messagesConfig.get("messages.cannot_grow_weed"));
+    	messagesMap.put("spawned_dealer", (String) messagesConfig.get("messages.spawned_dealer"));
+    	messagesMap.put("spawned_producer", (String) messagesConfig.get("messages.spawned_producer"));
+    	messagesMap.put("name_too_long", (String) messagesConfig.get("messages.name_too_long"));
     }
     
     public String formattedMessage(String color, String messageName) {

@@ -15,6 +15,8 @@ public class Permissions {
         	put("getplant_coke", "drugdealing.getplant.coke");
         	put("getplant_weed", "drugdealing.getplant.weed");
         	put("help_menu", "drugdealing.help");
+        	put("spawn_dealer", "drugdealing.setnpc.dealer");
+        	put("spawn_producer", "drugdealing.setnpc.producer");
         }
 	};
 	

@@ -12,3 +12,7 @@
     getplant:
       usage: /<command> [coke|weed]
       description: Gives a drug plant
+    setnpc:
+      usage: /<command> <producer|dealer> <name>
+      description: Spawns a criminal NPC
+      aliases: setcriminal
