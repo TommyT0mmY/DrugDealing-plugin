@@ -1,4 +1,0 @@
-#Minimum time for a plant to grow in seconds (20 seconds imprecision)
-growthTimeMin: 25 
-#maximum time for a plant to grow in seconds (20 seconds imprecision)
-growthTimeMax: 300

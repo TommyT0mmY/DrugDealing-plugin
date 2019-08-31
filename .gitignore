@@ -1,3 +1,9 @@
 /bin/
 .classpath
-.settings/
+.settings
+target
+Spigot
+*.iml
+.idea
+.project
+src/test

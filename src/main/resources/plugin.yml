@@ -1,0 +1,20 @@
+  name: DrugDealing
+  version: ${version}
+  description: A roleplay plugin that allows players to plant drugs and sell them.
+  author: Tommy_T0mmY
+  prefix: DrugDealing
+  main: com.github.tommyt0mmy.drugdealing.DrugDealing
+  depend: [Vault, Citizens]
+  api-version: 1.13
+  commands:
+    drugdealing:
+      usage: /<command> [page]
+      description: Shows help menu
+      aliases: dd
+    getplant:
+      usage: /<command> [coke|weed]
+      description: Gives a drug plant
+    setnpc:
+      usage: /<command> <producer|dealer> <name>
+      description: Spawns a criminal NPC
+      aliases: setcriminal
