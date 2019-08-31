@@ -4,6 +4,6 @@
 target/
 Spigot/
 *.iml
-.idea/*
+.idea/
 .project/
 src/test
