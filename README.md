@@ -4,7 +4,7 @@ Project licensed under the [MIT License](/LICENSE "License")
 
 > [Download page](https://www.spigotmc.org "spigotmc.org")
 
->[Guide page](/GUIDE.md "Guide")
+> [Wiki page](https://github.com/TommyT0mmY/DrugDealing-plugin/wiki#drugdealing-plugin-wiki "Wiki")
 
 ![logo](/logo.png "Plugin logo")
 
