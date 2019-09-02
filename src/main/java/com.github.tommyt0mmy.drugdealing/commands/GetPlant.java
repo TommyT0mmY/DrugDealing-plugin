@@ -21,7 +21,7 @@ public class GetPlant implements CommandExecutor {
 			return true;
 		}
 		Player p = (Player) sender;
-		String usage = mainClass.getCommand("getplant").getUsage().replaceAll("<command>", "getplant");
+		String usage = mainClass.getCommand("getplant").getUsage().replaceAll("<command>", label);
 		
 		if (!p.hasPermission(Permissions.getPermission("getplant_weed")) || !p.hasPermission(Permissions.getPermission("getplant_coke"))) {
 			p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
@@ -40,8 +40,8 @@ public class GetPlant implements CommandExecutor {
 				break;
 			}
 			
-			p.getInventory().addItem(mainClass.drugs.getCokeItemStack());
-			p.sendMessage(mainClass.messages.formattedMessage("§a", "received_coke"));
+			p.getInventory().addItem(mainClass.drugs.getCokePlantItemStack());
+			p.sendMessage(mainClass.messages.formattedMessage("§a", "received_coke_plant"));
 			break;
 		case "weed":	
 			if (!p.hasPermission(Permissions.getPermission("getplant_weed"))) {
@@ -49,8 +49,8 @@ public class GetPlant implements CommandExecutor {
 				break;
 			}
 			
-			p.getInventory().addItem(mainClass.drugs.getWeedItemStack());	
-			p.sendMessage(mainClass.messages.formattedMessage("§a", "received_weed"));
+			p.getInventory().addItem(mainClass.drugs.getWeedPlantItemStack());
+			p.sendMessage(mainClass.messages.formattedMessage("§a", "received_weed_plant"));
 			break;
 		default:
 			p.sendMessage(mainClass.messages.formattedText("§c", usage));
@@ -59,8 +59,5 @@ public class GetPlant implements CommandExecutor {
 		
 		return true;
 	}
-	
-	
-	
-	
+
 }

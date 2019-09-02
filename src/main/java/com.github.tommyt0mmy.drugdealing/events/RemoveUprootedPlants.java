@@ -2,6 +2,7 @@ package com.github.tommyt0mmy.drugdealing.events;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
 import com.github.tommyt0mmy.drugdealing.utility.XMaterial;
+import net.minecraft.server.v1_13_R1.Tag;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -29,26 +30,28 @@ public class RemoveUprootedPlants implements Listener {
 	
 	@EventHandler
 	public void removeDestroyed(BlockBreakEvent event) {
-		//if the hitten block is the plant
-		Block plantBase = event.getBlock();
+		Block destroyedBlock = event.getBlock();
+		Location loc = destroyedBlock.getLocation();
+		Block aboveBlock = loc.add(0, 1, 0).getBlock();
+		Block belowBlock = loc.subtract(0 ,2, 0).getBlock();
+		loc.add(0, 1, 0);
+		boolean dropItems = true; //drops will be produced only if not in adventure or creative
 		GameMode gamemode = event.getPlayer().getGameMode();
-		boolean dropItem = true; //drops will be produced only if not in adventure or creative
 		if (gamemode.equals(GameMode.ADVENTURE) || gamemode.equals(GameMode.CREATIVE)) {
-			dropItem = false;
-		}
-		removeProcedure(plantBase, false, dropItem);
-		
-		//if the hitten block is the base of the plant
-		if (plantBase.getType().equals(XMaterial.FARMLAND.parseItem().getType())) {
-			plantBase = plantBase.getLocation().add(0, 1, 0).getBlock(); //setting plantBase to the block above
-			removeProcedure(plantBase, false, dropItem);
+			dropItems = false;
 		}
 
-		if (mainClass.plantsreg.isDrugPlant(plantBase.getLocation())) {
-			removeProcedure(plantBase, false, dropItem);
+		if (!removeProcedure(destroyedBlock, false, dropItems)) { //if broken block isn't a plant base
+			if (!removeProcedure(aboveBlock, false, dropItems)) { //if the broken block isn't the soil of the plant
+				if (mainClass.plantsreg.isDrugPlant(belowBlock.getLocation())) { //if the broken block isn't the second part of a grown plant
+					if (mainClass.plantsreg.isGrown(belowBlock)) {
+						removeProcedure(belowBlock, false, dropItems);
+					}
+				}
+			}
 		}
 	}
-	
+
 	@EventHandler
 	public void removeDestroyedByLiquid(BlockFromToEvent event) {
 		Block destinationBlock = event.getToBlock();
@@ -58,7 +61,7 @@ public class RemoveUprootedPlants implements Listener {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private boolean removeProcedure(Block plantBase, boolean checkFarmland, boolean dropItems) {
+	private boolean removeProcedure(Block plantBase, boolean checkFarmland, boolean dropItems) { //returns true if plantBase is the base of a drug plant and gets removed successfukky
 		//getting farm land block and plant base location
 		Location plantBaseLocation = plantBase.getLocation(); //getting the plantBase location
 		Block farmland = plantBaseLocation.subtract(0, 1, 0).getBlock();

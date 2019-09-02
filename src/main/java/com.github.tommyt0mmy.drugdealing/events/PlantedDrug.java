@@ -32,7 +32,7 @@ public class PlantedDrug implements Listener {
 
 			//Coke placed
 
-			if (mainClass.drugs.isCokeItemStack(placedIS)) {
+			if (mainClass.drugs.isCokePlantItemStack(placedIS)) {
 				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
 					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_coke"));
 					mainClass.plantsreg.addPlant(placed, "coke");
@@ -44,7 +44,7 @@ public class PlantedDrug implements Listener {
 			
 			//Weed planted
 			
-			if (mainClass.drugs.isWeedItemStack(placedIS)) {
+			if (mainClass.drugs.isWeedPlantItemStack(placedIS)) {
 				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
 					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_weed"));
 					mainClass.plantsreg.addPlant(placed, "weed");

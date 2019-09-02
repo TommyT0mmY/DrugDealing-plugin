@@ -4,13 +4,17 @@ messages:
   unexpected_error: "§cUnexpected error occurred!" #If something goes wrong
   invalid_permission: "§cYou don't have the permission to do this" #If the player hasn't the permission
   invalid_surface: "§cPlants need to be placed on farmland" #If a plant is planted on an invalid terrain
-  coke_name: "§aCoke Plant" #The name that the coke item will get ingame
-  weed_name: "§aWeed Plant" #The name that the weed item will get ingame
+  coke_plant_name: "§aCoke Plant" #The name that the coke plant item will get in-game
+  weed_plant_name: "§aWeed Plant" #The name that the weed plant item will get in-game
+  coke_drug_name: "§aCocaine" #The name that the coke item will get in-game
+  weed_drug_name: "§aWeed" #The name that the weed item will get in-game
   planted_coke: "§aYou planted a coke plant!" #The message shown when a coke plant is planted
   planted_weed: "§aYou planted a weed plant!" #The message shown when a weed plant is planted
-  received_coke: "§aYou received a coke plant!" #The message shown when a coke plant is received
-  received_weed: "§aYou received a weed plant!" #The message shown when a weed plant is received
+  received_coke_plant: "§aYou received a coke plant!" #The message shown when a coke plant is received
+  received_weed_plant: "§aYou received a weed plant!" #The message shown when a weed plant is received
+  received_coke_drug: "§aYou received cocaine!" #Shown when cocaine is received
+  received_weed_drug: "§aYou received weed!" #Shown when weed is received
   cannot_grow_weed: "§cYou cannot make a weed plant grow with bone meal!" #If a player tries to make a weed plant grow with bone meal
-  spawned_dealer: §aYou spawned a drug dealer! #If the player spawns a drug dealer NPC
-  spawned_producer: §aYou spawned a drug producer! #If the player spawns a drug producer NPC
-  name_too_long: §cThe selected name is too long! #If the given name to an NPC is too long
+  spawned_dealer: "§aYou spawned a drug dealer!" #If the player spawns a drug dealer NPC
+  spawned_producer: "§aYou spawned a drug producer!" #If the player spawns a drug producer NPC
+  name_too_long: "§cThe selected name is too long!" #If the given name to an NPC is too long

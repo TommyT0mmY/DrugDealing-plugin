@@ -104,13 +104,18 @@ public class PlantsRegister {
     	}
     	return growthTime;
     }
-    
+    public boolean isGrown(Block plantBlock) {
+		boolean grown = false;
+		Location loc = plantBlock.getLocation();
+		if (isDrugPlant(loc)) { //if the given block represents a plant base
+			ConfigurationSection plantCS = getPlant(getPlantPath(loc));
+			grown = plantCS.getBoolean("grown");
+		}
+		return grown;
+	}
     
 	public boolean isDrugPlant(Location loc) {
-		if (getPlantPath(loc) != "") {
-			return true;
-		}
-		return false;
+		return getPlantPath(loc) != "";
 	}
 	
 	private String getPlantPath(Location loc) { //given a location returns the path of the plant in plants.ynl file

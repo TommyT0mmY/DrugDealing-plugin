@@ -1,6 +1,7 @@
 package com.github.tommyt0mmy.drugdealing;
 
 import com.github.tommyt0mmy.drugdealing.commands.CreateNPC;
+import com.github.tommyt0mmy.drugdealing.commands.GetDrug;
 import com.github.tommyt0mmy.drugdealing.commands.GetPlant;
 import com.github.tommyt0mmy.drugdealing.commands.Help;
 import com.github.tommyt0mmy.drugdealing.events.PlantedDrug;
@@ -9,6 +10,7 @@ import com.github.tommyt0mmy.drugdealing.events.RemoveUprootedPlants;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsUpdater;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.CreateNPCTabCompleter;
+import com.github.tommyt0mmy.drugdealing.tabcompleters.getDrugTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getPlantTabCompleter;
 import com.github.tommyt0mmy.drugdealing.utility.Configs;
 import com.github.tommyt0mmy.drugdealing.utility.Messages;
@@ -86,6 +88,8 @@ public class DrugDealing extends JavaPlugin {
 		getCommand("drugdealing").setExecutor(new Help(this));
 		getCommand("getplant").setExecutor(new GetPlant(this));
 		getCommand("getplant").setTabCompleter(new getPlantTabCompleter(this));
+		getCommand("getdrug").setExecutor(new GetDrug(this));
+		getCommand("getdrug").setTabCompleter(new getDrugTabCompleter(this));
 		getCommand("setnpc").setExecutor(new CreateNPC());
 		getCommand("setnpc").setTabCompleter(new CreateNPCTabCompleter());
 	}

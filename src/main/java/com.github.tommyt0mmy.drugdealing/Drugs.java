@@ -1,4 +1,4 @@
-//Handles ingame drug tiles
+//Handles ingame drugs and itemstacks
 
 package com.github.tommyt0mmy.drugdealing;
 
@@ -7,20 +7,20 @@ import com.github.tommyt0mmy.drugdealing.utility.XSound;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Drugs {
 	
-	private ItemStack coke;
-	private ItemStack weed; 
+	private ItemStack coke_plant;
+	private ItemStack weed_plant;
+	private ItemStack coke_drug;
+	private ItemStack weed_drug;
 	
 	private DrugDealing mainClass;
 	public Drugs(DrugDealing mainClass) {
@@ -30,42 +30,66 @@ public class Drugs {
 	
 	private void initItemStacks() {
 		
-		//coke ItemStack
+		//coke plant ItemStack
+
+		coke_plant = XMaterial.POPPY.parseItem();
+		ItemMeta cokePlantMeta = coke_plant.getItemMeta();
+		List<String> cokePlantLore = new ArrayList<>();
+		cokePlantLore.add(mainClass.messages.getMessage("coke_plant_name"));
+		cokePlantMeta.setLore(cokePlantLore);
+		cokePlantMeta.setDisplayName(mainClass.messages.getMessage("coke_plant_name"));
+		coke_plant.setItemMeta(cokePlantMeta);
 		
-		coke = XMaterial.POPPY.parseItem();
-		ItemMeta cokeMeta = coke.getItemMeta();
-		List<String> cokeLore = new ArrayList<>();
-		cokeLore.add(mainClass.messages.getMessage("coke_name"));
-		cokeMeta.setLore(cokeLore);
-		cokeMeta.setDisplayName(mainClass.messages.getMessage("coke_name"));
-		coke.setItemMeta(cokeMeta);
-		
-		//weed ItemStack
-		
-		weed = XMaterial.JUNGLE_SAPLING.parseItem();
-		ItemMeta weedMeta = weed.getItemMeta();
-		List<String> weedLore = new ArrayList<>();
-		weedLore.add(mainClass.messages.getMessage("weed_name"));
-		weedMeta.setLore(weedLore);
-		weedMeta.setDisplayName(mainClass.messages.getMessage("weed_name"));
-		weed.setItemMeta(weedMeta);
+		//weed plant ItemStack
+
+		weed_plant = XMaterial.JUNGLE_SAPLING.parseItem();
+		ItemMeta weedPlantMeta = weed_plant.getItemMeta();
+		List<String> weedPlantLore = new ArrayList<>();
+		weedPlantLore.add(mainClass.messages.getMessage("weed_plant_name"));
+		weedPlantMeta.setLore(weedPlantLore);
+		weedPlantMeta.setDisplayName(mainClass.messages.getMessage("weed_plant_name"));
+		weed_plant.setItemMeta(weedPlantMeta);
+
+		//coke drug ItemStack
+
+		coke_drug = XMaterial.SUGAR.parseItem();
+		ItemMeta cokeDrugItemMeta = coke_drug.getItemMeta();
+		List<String> cokeDrugLore = new ArrayList<>();
+		cokeDrugLore.add(mainClass.messages.getMessage("coke_drug_name"));
+		cokeDrugItemMeta.setLore(cokeDrugLore);
+		cokeDrugItemMeta.setDisplayName(mainClass.messages.getMessage("coke_drug_name"));
+		coke_drug.setItemMeta(cokeDrugItemMeta);
+
+		//weed drug ItemStack
+
+		weed_drug = XMaterial.GREEN_DYE.parseItem();
+		ItemMeta weedDrugItemMeta = coke_drug.getItemMeta();
+		List<String> weedDrugLore = new ArrayList<>();
+		weedDrugLore.add(mainClass.messages.getMessage("weed_drug_name"));
+		weedDrugItemMeta.setLore(weedDrugLore);
+		weedDrugItemMeta.setDisplayName(mainClass.messages.getMessage("weed_drug_name"));
+		weed_drug.setItemMeta(weedDrugItemMeta);
 	}
 	
-	public ItemStack getCokeItemStack() { //returns a coke itemstack
-		return coke;
+	public ItemStack getCokePlantItemStack() { //returns a coke itemstack
+		return coke_plant;
 	}
 	
-	public ItemStack getWeedItemStack() { //returns a weed itemstack
-		return weed;
+	public ItemStack getWeedPlantItemStack() { //returns a weed itemstack
+		return weed_plant;
 	}
-	
-	public boolean isCokeItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a coke item
-		String coke_name = mainClass.messages.getMessage("coke_name");
+
+	public ItemStack getCokeDrugItemStack() { return coke_drug; }
+
+	public ItemStack getWeedDrugItemStack() { return weed_drug; }
+
+	public boolean isCokePlantItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a coke plant item
+		String coke_plant_name = mainClass.messages.getMessage("coke_plant_name");
 		if (toCheckIS.getType().equals(XMaterial.POPPY.parseMaterial())) { //checking type
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
-				ItemMeta placedMeta = toCheckIS.getItemMeta();
-				if (placedMeta.hasDisplayName() && placedMeta.hasLore()) {
-					if (placedMeta.getLore().get(0).equals(coke_name) && placedMeta.getDisplayName().equals(coke_name)) {
+				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
+				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
+					if (toCheckMeta.getLore().get(0).equals(coke_plant_name) && toCheckMeta.getDisplayName().equals(coke_plant_name)) {
 						return true;
 					}
 				}
@@ -75,19 +99,51 @@ public class Drugs {
 		return false;
 	}
 	
-	public boolean isWeedItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a weed item
-		String weed_name = mainClass.messages.getMessage("weed_name");
+	public boolean isWeedPlantItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a weed plant item
+		String weed_plant_name = mainClass.messages.getMessage("weed_plant_name");
 		if (toCheckIS.getType().equals(XMaterial.JUNGLE_SAPLING.parseItem().getType())) {
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
-				ItemMeta placedMeta = toCheckIS.getItemMeta();
-				if (placedMeta.hasDisplayName() && placedMeta.hasLore()) {
-					if (placedMeta.getLore().get(0).equals(weed_name) && placedMeta.getDisplayName().equals(weed_name)) {
+				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
+				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
+					if (toCheckMeta.getLore().get(0).equals(weed_plant_name) && toCheckMeta.getDisplayName().equals(weed_plant_name)) {
 						return true;
 					}
 				}
 			}
 		}
 		
+		return false;
+	}
+
+	public boolean isCokeDrugItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a coke item
+		String coke_drug_name = mainClass.messages.getMessage("coke_drug_name");
+		if (toCheckIS.getType().equals(XMaterial.SUGAR.parseMaterial())) { //checking type
+			if (toCheckIS.hasItemMeta()) { //checking name & lore
+				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
+				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
+					if (toCheckMeta.getLore().get(0).equals(coke_drug_name) && toCheckMeta.getDisplayName().equals(coke_drug_name)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public boolean isWeedDrugItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a weed item
+		String weed_drug_name = mainClass.messages.getMessage("weed_drug_name");
+		if (toCheckIS.getType().equals(XMaterial.GREEN_DYE.parseItem().getType())) {
+			if (toCheckIS.hasItemMeta()) { //checking name & lore
+				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
+				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
+					if (toCheckMeta.getLore().get(0).equals(weed_drug_name) && toCheckMeta.getDisplayName().equals(weed_drug_name)) {
+						return true;
+					}
+				}
+			}
+		}
+
 		return false;
 	}
 	
@@ -111,15 +167,15 @@ public class Drugs {
 			//Plant drops
 			if (dropItems) {
 				if (mainClass.plantsreg.getType(plantLocation).equals("coke")) {
-					plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokeItemStack()); //first drop
+					plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokePlantItemStack()); //first drop
 					if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
-						plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokeItemStack());
+						plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokePlantItemStack());
 					}
 					
 				}else if (mainClass.plantsreg.getType(plantLocation).equals("weed")) {
-					plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedItemStack()); //first drop
+					plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedPlantItemStack()); //first drop
 					if (plantCS.getBoolean("grown")) { //If the plant is grown a second drop will appear
-						plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedItemStack());
+						plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedPlantItemStack());
 					}
 				}
 			}
