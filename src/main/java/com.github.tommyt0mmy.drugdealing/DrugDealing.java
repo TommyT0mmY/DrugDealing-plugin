@@ -16,6 +16,7 @@ import com.github.tommyt0mmy.drugdealing.managers.PlantsUpdater;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.CreateNPCTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getDrugTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getPlantTabCompleter;
+import com.github.tommyt0mmy.drugdealing.tabcompleters.HelpTabCompleter;
 import com.github.tommyt0mmy.drugdealing.utility.Configs;
 import com.github.tommyt0mmy.drugdealing.utility.Messages;
 import net.milkbowl.vault.economy.Economy;
@@ -40,6 +41,7 @@ public class DrugDealing extends JavaPlugin {
 	public NpcRegister npcsreg = null;
 	public Configs configs = null;
 	public List< UUID > toRemoveNPCS = new ArrayList<>();
+	public String version = getDescription().getVersion();
 	
 	public static DrugDealing getInstance() {
 		return instance;
@@ -93,6 +95,7 @@ public class DrugDealing extends JavaPlugin {
 	
 	private void loadCommands() {
 		getCommand("drugdealing").setExecutor(new Help());
+		getCommand("drugdealing").setTabCompleter(new HelpTabCompleter());
 		getCommand("getplant").setExecutor(new GetPlant(this));
 		getCommand("getplant").setTabCompleter(new getPlantTabCompleter(this));
 		getCommand("getdrug").setExecutor(new GetDrug(this));

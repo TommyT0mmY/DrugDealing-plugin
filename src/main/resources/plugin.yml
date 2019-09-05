@@ -11,7 +11,7 @@
   api-version: 1.13
   commands:
     drugdealing:
-      usage: /<command> [page]
+      usage: /<command> <page> [page number]
       description: Shows help menu
       aliases: dd
     getplant:

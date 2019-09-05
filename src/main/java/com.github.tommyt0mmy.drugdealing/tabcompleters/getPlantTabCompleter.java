@@ -31,7 +31,5 @@ public class getPlantTabCompleter implements TabCompleter {
 		
 		return suggestions;
 	}
-	
-	
-	
+
 }

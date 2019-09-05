@@ -32,6 +32,4 @@ public class getDrugTabCompleter implements TabCompleter {
         return suggestions;
     }
 
-
-
 }
