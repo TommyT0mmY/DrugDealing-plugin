@@ -1,3 +1,6 @@
+#  Copyright (c) 2019 Tommaso Goni  #
+# DO NOT MODIFY THIS FILE #
+
   name: DrugDealing
   version: ${version}
   description: A roleplay plugin that allows players to plant drugs and sell them.
@@ -18,6 +21,11 @@
        usage: /<command> [coke|weed]
        description: Gives a drug
     setnpc:
-      usage: /<command> <producer|dealer> <name>
+      usage: /<command> <producer|dealer> <name> [not accepted drugs] ...
       description: Spawns a criminal NPC
       aliases: setcriminal
+    removenpc:
+      usage: /<command>
+      description: Right clicking an NPC after that command is going to delete it
+      aliases: removecriminal
+

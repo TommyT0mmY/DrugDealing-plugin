@@ -22,6 +22,22 @@ public class CreateNPCTabCompleter implements TabCompleter {
 				suggestions.add("dealer");
 			}
 		}
+
+		if (args.length >= 3) {
+			String uncompleteArg = args[args.length-1].toUpperCase();
+			if ("COKE_PRODUCT".startsWith(uncompleteArg)) {
+				suggestions.add("COKE_PRODUCT");
+			}
+			if ("COKE_PLANT".startsWith(uncompleteArg)) {
+				suggestions.add("COKE_PLANT");
+			}
+			if ("WEED_PRODUCT".startsWith(uncompleteArg)) {
+				suggestions.add("WEED_PRODUCT");
+			}
+			if ("WEED_PLANT".startsWith(uncompleteArg)) {
+				suggestions.add("WEED_PLANT");
+			}
+		}
 		
 		return suggestions;
 	}

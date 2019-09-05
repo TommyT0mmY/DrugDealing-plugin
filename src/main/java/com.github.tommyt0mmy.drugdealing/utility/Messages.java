@@ -30,6 +30,7 @@ public class Messages {
         	put("weed_plant_name", "§aWeed Plant");
 			put("coke_drug_name", "§aCocaine");
 			put("weed_drug_name", "§aWeed");
+			put("consumed_coke", "§aYou consumed cocaine");
         	put("planted_coke", "§aYou planted a coke plant!");
         	put("planted_weed", "§aYou planted a weed plant!");
         	put("received_coke_plant", "§aYou received a coke plant!");
@@ -40,6 +41,21 @@ public class Messages {
         	put("spawned_dealer", "§aYou spawned a drug dealer!");
         	put("spawned_producer", "§aYou spawned a drug producer!");
         	put("name_too_long", "§cThe selected name is too long!");
+        	put("cannot_sell_plants", "§cPlants cannot be sold!");
+        	put("dealer_wrong_item", "To sell drugs right click me with drugs in the main hand");
+        	put("producer_wrong_item", "To make me produce drugs for you right click me with drug plants in the main hand");
+        	put("producer_invalid_balance", "You don't have enough money! You need <PRICE>");
+        	put("dealer_bought_item", "You sold 1 <DRUG-NAME> item for <PRICE>");
+        	put("dealer_bought_item_plural", "You sold <AMOUNT> <DRUG-NAME> items for <PRICE>");
+        	put("npc_drug_not_accepted", "I do not accept <DRUG-NAME>");
+        	put("producer_converted_drug_plural", "You converted <AMOUNT> <PLANT-NAME> items to <AMOUNT> <DRUG-NAME> items for <PRICE>");
+			put("producer_converted_drug", "You converted one <PLANT-NAME> item to one <DRUG-NAME> item for <PRICE>");
+			put("right_click_npc_to_delete", "§aRight click a criminal to remove him");
+			put("remove_dealer_invalid_permission", "§cYou don't have the permission to delete a Dealer NPC");
+			put("remove_producer_invalid_permission", "§cYou don't have the permission to delete a Producer NPC");
+			put("removenpc_time_is_up", "§cCancelling <COMMAND> command: Time is up");
+			put("removenpc_success", "§aCriminal removed successfully");
+			put("page_not_found", "§cPage not found");
         }
 	};
 	
@@ -68,6 +84,7 @@ public class Messages {
     }
     
     private void loadMessages() {
+		/*
     	messagesMap.put("only_players_command", (String) messagesConfig.get("messages.only_players_command"));
     	messagesMap.put("ingame_prefix", (String) messagesConfig.get("messages.ingame_prefix"));
     	messagesMap.put("unexpected_error", (String) messagesConfig.get("messages.unexpected_error"));
@@ -83,8 +100,49 @@ public class Messages {
     	messagesMap.put("spawned_dealer", (String) messagesConfig.get("messages.spawned_dealer"));
     	messagesMap.put("spawned_producer", (String) messagesConfig.get("messages.spawned_producer"));
     	messagesMap.put("name_too_long", (String) messagesConfig.get("messages.name_too_long"));
-    }
-    
+    	messagesMap.put("cannot_sell_plants", (String) messagesConfig.get("messages.cannot_sell_plants"));
+		*/
+		loadMessage("only_players_command");
+		loadMessage("ingame_prefix");
+		loadMessage("unexpected_error");
+		loadMessage("invalid_permission");
+		loadMessage("page_not_found");
+		loadMessage("invalid_surface");
+		loadMessage("coke_plant_name");
+		loadMessage("weed_plant_name");
+		loadMessage("coke_drug_name");
+		loadMessage("weed_drug_name");
+		loadMessage("consumed_coke");
+		loadMessage("planted_coke");
+		loadMessage("planted_weed");
+    	loadMessage("received_coke_plant");
+		loadMessage("received_weed_plant");
+		loadMessage("received_coke_drug");
+		loadMessage("received_weed_drug");
+		loadMessage("cannot_grow_weed");
+		loadMessage("spawned_dealer");
+    	loadMessage("spawned_producer");
+		loadMessage("name_too_long");
+		loadMessage("cannot_sell_plants");
+		loadMessage("dealer_wrong_item");
+		loadMessage("producer_wrong_item");
+		loadMessage("producer_invalid_balance");
+		loadMessage("dealer_bought_item");
+		loadMessage("dealer_bought_item_plural");
+		loadMessage("npc_drug_not_accepted");
+		loadMessage("producer_converted_drug");
+		loadMessage("producer_converted_drug_plural");
+		loadMessage("right_click_npc_to_delete");
+		loadMessage("remove_dealer_invalid_permission");
+		loadMessage("remove_producer_invalid_permission");
+		loadMessage("removenpc_time_is_up");
+		loadMessage("removenpc_success");
+
+		mainClass.console.info("Loaded custom messages");
+	}
+
+	private void loadMessage (String messageName) { messagesMap.put(messageName, (String) messagesConfig.get("messages." + messageName)); }
+
     public String formattedMessage(String color, String messageName) {
     	return String.format("%s%s %s", color, getMessage("ingame_prefix"), getMessage(messageName));
     }

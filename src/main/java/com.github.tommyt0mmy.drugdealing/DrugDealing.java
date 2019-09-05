@@ -4,9 +4,13 @@ import com.github.tommyt0mmy.drugdealing.commands.CreateNPC;
 import com.github.tommyt0mmy.drugdealing.commands.GetDrug;
 import com.github.tommyt0mmy.drugdealing.commands.GetPlant;
 import com.github.tommyt0mmy.drugdealing.commands.Help;
+import com.github.tommyt0mmy.drugdealing.commands.RemoveNPC;
+import com.github.tommyt0mmy.drugdealing.events.ConsumedDrug;
+import com.github.tommyt0mmy.drugdealing.events.NpcInteractions;
 import com.github.tommyt0mmy.drugdealing.events.PlantedDrug;
 import com.github.tommyt0mmy.drugdealing.events.PreventSaplingGrowth;
 import com.github.tommyt0mmy.drugdealing.events.RemoveUprootedPlants;
+import com.github.tommyt0mmy.drugdealing.managers.NpcRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsUpdater;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.CreateNPCTabCompleter;
@@ -20,6 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class DrugDealing extends JavaPlugin {
@@ -32,7 +37,9 @@ public class DrugDealing extends JavaPlugin {
 	public Messages messages = null;
 	public Drugs drugs = null;
 	public PlantsRegister plantsreg = null;
+	public NpcRegister npcsreg = null;
 	public Configs configs = null;
+	public List< UUID > toRemoveNPCS = new ArrayList<>();
 	
 	public static DrugDealing getInstance() {
 		return instance;
@@ -55,7 +62,7 @@ public class DrugDealing extends JavaPlugin {
 		drugs = new Drugs(this);
 		plantsreg = new PlantsRegister(this);
 		configs = new Configs(this);
-		
+		npcsreg = new NpcRegister(this);
 		
 		console.info("Loaded successfully");
 	}
@@ -85,19 +92,22 @@ public class DrugDealing extends JavaPlugin {
     }
 	
 	private void loadCommands() {
-		getCommand("drugdealing").setExecutor(new Help(this));
+		getCommand("drugdealing").setExecutor(new Help());
 		getCommand("getplant").setExecutor(new GetPlant(this));
 		getCommand("getplant").setTabCompleter(new getPlantTabCompleter(this));
 		getCommand("getdrug").setExecutor(new GetDrug(this));
 		getCommand("getdrug").setTabCompleter(new getDrugTabCompleter(this));
 		getCommand("setnpc").setExecutor(new CreateNPC());
 		getCommand("setnpc").setTabCompleter(new CreateNPCTabCompleter());
+		getCommand("removenpc").setExecutor(new RemoveNPC());
 	}
 	
 	private void loadEvents() {
 		getServer().getPluginManager().registerEvents(new PlantedDrug(this), this);
 		getServer().getPluginManager().registerEvents(new RemoveUprootedPlants(this), this);
 		getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(this), this);
+		getServer().getPluginManager().registerEvents(new NpcInteractions(), this);
+		getServer().getPluginManager().registerEvents(new ConsumedDrug(), this);
 	}
 	
 	@SuppressWarnings("unused")

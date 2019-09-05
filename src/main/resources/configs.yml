@@ -2,3 +2,9 @@
 growthTimeMin: 25 
 #maximum time for a plant to grow in seconds (20 seconds imprecision)
 growthTimeMax: 300
+#   PRICES  #
+# IT'S HIGHLY SUGGESTED TO CHANGE THOSE PRICES TO MATCH THE SERVER'S ECONOMY
+cokeDrugSellingPrice: 225 #Price per item of refined coke
+weedDrugSellingPrice: 115 #Price per item of refined weed
+cokeProductionPrice: 200 #Price per conversion from coke plant to refined coke
+weedProductionPrice: 100 #Price per conversion from weed plant to refined weed

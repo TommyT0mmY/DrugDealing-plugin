@@ -2,12 +2,14 @@ messages:
   only_players_command: "Only players can execute this command" #When a command is executed by an entity that isn't a player
   ingame_prefix: "[Drugs]" #The prefix that will be shown behind other messages
   unexpected_error: "§cUnexpected error occurred!" #If something goes wrong
-  invalid_permission: "§cYou don't have the permission to do this" #If the player hasn't the permission
+  invalid_permission: "§cYou don't have the permission to do this" #If the player hasn't the permission to interact with a part of the plugin
+  page_not_found: "§cPage not found" #When a player is searching for a help page that doesn't exist
   invalid_surface: "§cPlants need to be placed on farmland" #If a plant is planted on an invalid terrain
   coke_plant_name: "§aCoke Plant" #The name that the coke plant item will get in-game
   weed_plant_name: "§aWeed Plant" #The name that the weed plant item will get in-game
   coke_drug_name: "§aCocaine" #The name that the coke item will get in-game
   weed_drug_name: "§aWeed" #The name that the weed item will get in-game
+  consumed_coke: "§aYou consumed cocaine" #When a player consumes coke drug
   planted_coke: "§aYou planted a coke plant!" #The message shown when a coke plant is planted
   planted_weed: "§aYou planted a weed plant!" #The message shown when a weed plant is planted
   received_coke_plant: "§aYou received a coke plant!" #The message shown when a coke plant is received
@@ -18,3 +20,17 @@ messages:
   spawned_dealer: "§aYou spawned a drug dealer!" #If the player spawns a drug dealer NPC
   spawned_producer: "§aYou spawned a drug producer!" #If the player spawns a drug producer NPC
   name_too_long: "§cThe selected name is too long!" #If the given name to an NPC is too long
+  npc_drug_not_accepted: "I do not accept <DRUG-NAME>" #If the NPC doesn't accept a drug type
+  cannot_sell_plants: "Plants cannot be sold! Sell me refined drugs" #If a player tries to sell an NPC drug plants
+  dealer_wrong_item: "To sell drugs right click me with drugs in the main hand" #When a player tries to sell a dealer a wrong item
+  dealer_bought_item: "You sold 1 <DRUG-NAME> item for <PRICE>" #When a player sells a drug to a drug dealer
+  dealer_bought_item_plural: "You sold <AMOUNT> <DRUG-NAME> items for <PRICE>" #When a player sells drugs to a drug dealer
+  producer_wrong_item: "To make me produce drugs for you right click me with drug plants in the main hand" #When a player tries to interact with a producer with a wrong item
+  producer_invalid_balance: "You don't have enough money! You need <PRICE>" #When a player's balance is too low, leave '<PRICE>' in the message to make the player know how much will cost the conversion
+  producer_converted_drug: "You converted one <PLANT-NAME> item to one <DRUG-NAME> item for <PRICE>" #When a player correctly utilize a Producer NPC
+  producer_converted_drug_plural: "You converted <AMOUNT> <PLANT-NAME> items to <AMOUNT> <DRUG-NAME> items for <PRICE>" #When a player correctly utilize a Producer NPC
+  right_click_npc_to_delete: "§aRight click a criminal to remove him" #When executed correctly /removenpc command
+  remove_dealer_invalid_permission: "§cYou don't have the permission to delete a Dealer NPC" #When a player cannot delete a delaer NPC
+  remove_producer_invalid_permission: "§cYou don't have the permission to delete a Producer NPC" #When a player cannot delete a producer NPC
+  removenpc_time_is_up: "§cCancelling /<COMMAND> command: Time is up" #Whem the given one minute timeout ends without the command being executed
+  removenpc_success: "§aCriminal removed successfully" #When an NPC gets deleted successfully

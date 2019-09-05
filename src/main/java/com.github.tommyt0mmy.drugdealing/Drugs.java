@@ -2,6 +2,7 @@
 
 package com.github.tommyt0mmy.drugdealing;
 
+import com.github.tommyt0mmy.drugdealing.utility.DrugType;
 import com.github.tommyt0mmy.drugdealing.utility.XMaterial;
 import com.github.tommyt0mmy.drugdealing.utility.XSound;
 import org.bukkit.Location;
@@ -145,6 +146,16 @@ public class Drugs {
 		}
 
 		return false;
+	}
+
+	//if the given ItemStack isn't a drug type return null
+	public DrugType getDrugType (ItemStack toCheckIS) {
+		if (isCokePlantItemStack(toCheckIS)) { return DrugType.COKE_PLANT; }
+		if (isWeedPlantItemStack(toCheckIS)) { return DrugType.WEED_PLANT; }
+		if (isCokeDrugItemStack(toCheckIS)) { return DrugType.COKE_PRODUCT; }
+		if (isWeedDrugItemStack(toCheckIS)) { return DrugType.WEED_PRODUCT; }
+
+		return null;
 	}
 	
 	public boolean isPlantedOnFarmland(Block plant) { //checks if the plant is planted on farmland

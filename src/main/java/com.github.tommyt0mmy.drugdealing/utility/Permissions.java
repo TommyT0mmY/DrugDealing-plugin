@@ -19,6 +19,11 @@ public class Permissions {
         	put("help_menu", "drugdealing.help");
         	put("spawn_dealer", "drugdealing.setnpc.dealer");
         	put("spawn_producer", "drugdealing.setnpc.producer");
+			put("remove_dealer", "drugdealing.removenpc.dealer");
+			put("remove_producer", "drugdealing.removenpc.producer");
+        	put("use_dealer", "drugdealing.usenpc.dealer");
+        	put("use_producer", "drugdealing.usenpc.producer");
+        	put("consume_coke", "drugdealing.consume.coke");
         }
 	};
 	
