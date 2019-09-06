@@ -21,6 +21,8 @@ public class PlantedDrug implements Listener {
 		Player p = (Player) e.getPlayer();
 		try {
 			if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed")))) {
+				e.setCancelled(true);
+				//temporary fix, add a message feedback in future (TODO)
 				return;
 			}
 			
