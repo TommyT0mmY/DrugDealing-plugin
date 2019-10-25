@@ -20,21 +20,23 @@ public class PlantedDrug implements Listener {
 	public void onPlantedDrug(BlockPlaceEvent e) {
 		Player p = (Player) e.getPlayer();
 		try {
-			if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed")))) {
-				e.setCancelled(true);
-				//temporary fix, add a message feedback in future (TODO)
-				return;
-			}
-			
+
 			Block placed = (Block) e.getBlock();
-			
+
 			e.setCancelled(true);
-			
+
 			ItemStack placedIS= p.getInventory().getItemInMainHand();
 
 			//Coke placed
 
 			if (mainClass.drugs.isCokePlantItemStack(placedIS)) {
+				//permissions check
+				if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed")))) {
+					e.setCancelled(true);
+					p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
+					return;
+				}
+
 				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
 					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_coke"));
 					mainClass.plantsreg.addPlant(placed, "coke");
