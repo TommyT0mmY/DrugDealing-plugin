@@ -7,6 +7,7 @@ import com.github.tommyt0mmy.drugdealing.utility.CriminalRole;
 import com.github.tommyt0mmy.drugdealing.utility.DrugType;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +24,7 @@ public class CreateNPC implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) { //if the sender isn't a player
-			sender.sendMessage(mainClass.messages.formattedMessage("", "only_players_command")); //sending player error message
+			sender.sendMessage(mainClass.messages.getChatMessage("only_players_command")); //sending player error message
 			return true;
 		}
 		Player p = (Player) sender;
@@ -31,7 +32,7 @@ public class CreateNPC implements CommandExecutor {
 		String usage = mainClass.getCommand("setnpc").getUsage().replaceAll("<command>", label); //usage message
 		
 		if (args.length < 2) {
-			p.sendMessage(mainClass.messages.formattedText("§c", usage)); //sending player usage message
+			p.sendMessage(mainClass.messages.formattedText(ChatColor.RED, usage)); //sending player usage message
 			return true;
 		}
 		
@@ -40,23 +41,23 @@ public class CreateNPC implements CommandExecutor {
 		List<DrugType> notAcceptedDrugTypes = new ArrayList<DrugType>();
 
 		if (args[1].length() > 12) { //do not remove
-			p.sendMessage(mainClass.messages.formattedMessage("§c", "name_too_long")); //sending player error message
+			p.sendMessage(mainClass.messages.formattedChatMessage("name_too_long")); //sending player error message
 			return true;
 		}
 
 		switch(args[0].toLowerCase()) {
 			case "producer":
 				role = CriminalRole.PRODUCER;
-				p.sendMessage(mainClass.messages.formattedMessage("§a", "spawned_producer"));
+				p.sendMessage(mainClass.messages.formattedChatMessage("spawned_producer"));
 				name = ("§a" + args[1]).trim();
 				break;
 			case "dealer":
 				role = CriminalRole.DEALER;
-				p.sendMessage(mainClass.messages.formattedMessage("§a", "spawned_dealer"));
+				p.sendMessage(mainClass.messages.formattedChatMessage("spawned_dealer"));
 				name = ("§6" + args[1]).trim();
 				break;
 			default:
-				p.sendMessage(mainClass.messages.formattedText("§c", usage)); //sending player usage message
+				p.sendMessage(mainClass.messages.formattedText(ChatColor.RED, usage)); //sending player usage message
 				return true;
 		}
 
@@ -88,7 +89,7 @@ public class CreateNPC implements CommandExecutor {
 	}
 
 	private void IllegalNotAcceptedDrugTypeMessage(Player receiver, String usage, String label) { // long message repeated two times
-		receiver.sendMessage(mainClass.messages.formattedText("§c", usage)); //sending player usage message
+		receiver.sendMessage(mainClass.messages.formattedText(ChatColor.RED, usage)); //sending player usage message
 		receiver.sendMessage("§cAccepted drug types: WEED_PLANT, WEED_PRODUCT, COKE_PLANT and COKE_PRODUCT");
 		receiver.sendMessage("§c" + String.format("Command example: /%s Dealer Bob WEED_PRODUCT", label));
 	}

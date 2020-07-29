@@ -33,15 +33,15 @@ public class PlantedDrug implements Listener {
 				//permissions check
 				if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed")))) {
 					e.setCancelled(true);
-					p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
+					p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
 					return;
 				}
 
 				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
-					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_coke"));
+					p.sendMessage(mainClass.messages.formattedChatMessage("planted_coke"));
 					mainClass.plantsreg.addPlant(placed, "coke");
 				}else {
-					p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_surface"));
+					p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
 					return;
 				}
 			}
@@ -50,10 +50,10 @@ public class PlantedDrug implements Listener {
 			
 			if (mainClass.drugs.isWeedPlantItemStack(placedIS)) {
 				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
-					p.sendMessage(mainClass.messages.formattedMessage("§a", "planted_weed"));
+					p.sendMessage(mainClass.messages.formattedChatMessage("planted_weed"));
 					mainClass.plantsreg.addPlant(placed, "weed");
 				}else {
-					p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_surface"));
+					p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
 					return;
 				}
 			}
@@ -61,7 +61,7 @@ public class PlantedDrug implements Listener {
 			e.setCancelled(false);			
 		} catch (Exception exception) {
 			e.setCancelled(true);
-			p.sendMessage(mainClass.messages.formattedMessage("§c", "unexpected_error"));
+			p.sendMessage(mainClass.messages.formattedChatMessage("unexpected_error"));
 			exception.printStackTrace();
 			return;
 		}

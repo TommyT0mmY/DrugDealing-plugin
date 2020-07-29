@@ -10,9 +10,8 @@ import java.io.File;
 
 public class Configs {
 	
-	private DrugDealing mainClass;
-	public Configs(DrugDealing mainClass) {
-		this.mainClass = mainClass;
+	private DrugDealing mainClass = DrugDealing.getInstance();
+	public Configs() {
 		loadConfigs();
 	}
 

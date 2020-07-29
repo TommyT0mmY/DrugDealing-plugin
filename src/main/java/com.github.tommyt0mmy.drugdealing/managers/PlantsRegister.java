@@ -19,9 +19,8 @@ import java.util.Random;
 
 public class PlantsRegister {
 	
-	private DrugDealing mainClass;
-	public PlantsRegister(DrugDealing mainClass) {
-		this.mainClass = mainClass;
+	private DrugDealing mainClass = DrugDealing.getInstance();
+	public PlantsRegister() {
 		loadRegister();
 	}
 	

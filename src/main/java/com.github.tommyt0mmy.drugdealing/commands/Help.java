@@ -2,6 +2,7 @@ package com.github.tommyt0mmy.drugdealing.commands;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
 import com.github.tommyt0mmy.drugdealing.utility.Permissions;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,12 +22,12 @@ public class Help implements CommandExecutor {
 		Player p;
 
 		if (!(sender instanceof Player)) {
-			sender.sendMessage(mainClass.messages.formattedMessage("", "only_players_command"));
+			sender.sendMessage(mainClass.messages.formattedChatMessage("only_players_command"));
 			return true;
 		} else p = (Player) sender;
 
 		if (!p.hasPermission(Permissions.getPermission("help_menu"))) {
-			p.sendMessage(mainClass.messages.getMessage("invalid_permission"));
+			p.sendMessage(mainClass.messages.getChatMessage("invalid_permission"));
 			return true;
 		}
 
@@ -35,7 +36,7 @@ public class Help implements CommandExecutor {
 		Integer pageNumber = 1;
 
 		if (args.length != 1 && args.length != 2) {
-			p.sendMessage(mainClass.messages.formattedText("§c", usage));
+			p.sendMessage(mainClass.messages.formattedText(ChatColor.RED, usage));
 			return true;
 		} else if (args.length == 2) {
 			pageNumber = Integer.parseInt(args[1]);
@@ -138,7 +139,7 @@ public class Help implements CommandExecutor {
 				break;
 
 			default:
-				p.sendMessage(mainClass.messages.formattedMessage("§c", "page_not_found"));
+				p.sendMessage(mainClass.messages.formattedChatMessage("page_not_found"));
 				return true;
 		}
 

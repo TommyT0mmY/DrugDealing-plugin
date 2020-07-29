@@ -20,9 +20,8 @@ public class NpcRegister {
     private File registerConfigFile;
     private YamlConfiguration registerConfig;
 
-    private DrugDealing mainClass;
-    public NpcRegister(DrugDealing mainClass) {
-        this.mainClass = mainClass;
+    private DrugDealing mainClass = DrugDealing.getInstance();
+    public NpcRegister() {
         loadRegister();
     }
 

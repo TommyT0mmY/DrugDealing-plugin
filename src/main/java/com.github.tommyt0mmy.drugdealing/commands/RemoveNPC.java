@@ -2,6 +2,7 @@ package com.github.tommyt0mmy.drugdealing.commands;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
 import com.github.tommyt0mmy.drugdealing.utility.Permissions;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,13 +18,13 @@ public class RemoveNPC implements CommandExecutor {
         Player p;
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(mainClass.messages.formattedMessage("", "only_players_command"));
+            sender.sendMessage(mainClass.messages.formattedChatMessage("only_players_command"));
             return true;
         } else p = (Player) sender;
 
         if (p.hasPermission(Permissions.getPermission("remove_dealer")) || p.hasPermission(Permissions.getPermission("remove_producer"))) {
             if (args.length == 0) {
-                p.sendMessage(mainClass.messages.formattedMessage("§a", "right_click_npc_to_delete"));
+                p.sendMessage(mainClass.messages.formattedChatMessage("right_click_npc_to_delete"));
                 if (mainClass.toRemoveNPCS.contains(p.getUniqueId())) {
                     return true;
                 }
@@ -35,17 +36,17 @@ public class RemoveNPC implements CommandExecutor {
                     public void run () {
                         if (mainClass.toRemoveNPCS.contains(p.getUniqueId())) {
                             mainClass.toRemoveNPCS.remove(p.getUniqueId());
-                            p.sendMessage(mainClass.messages.formattedMessage("§c" , "removenpc_time_is_up").replaceAll("<COMMAND>", label));
+                            p.sendMessage(mainClass.messages.formattedChatMessage("removenpc_time_is_up").replaceAll("<COMMAND>", label));
                         }
                         cancel();
                     }
                 }.runTaskTimer(mainClass, 60 * 20, 1);
 
             } else {
-                p.sendMessage(mainClass.messages.formattedText("§c", usage));
+                p.sendMessage(mainClass.messages.formattedText(ChatColor.RED, usage));
             }
         } else {
-            p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
+            p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
         }
         return true;
     }

@@ -29,13 +29,13 @@ public class NpcInteractions implements Listener {
                 switch (role) {
                     case DEALER:
                         if (!p.hasPermission(Permissions.getPermission("remove_dealer"))) {
-                            p.sendMessage(mainClass.messages.formattedMessage("§c", "remove_dealer_invalid_permission"));
+                            p.sendMessage(mainClass.messages.formattedChatMessage("remove_dealer_invalid_permission"));
                             mainClass.toRemoveNPCS.remove(p.getUniqueId());
                             return;
                         }
                     case PRODUCER:
                         if (!p.hasPermission(Permissions.getPermission("remove_producer"))) {
-                            p.sendMessage(mainClass.messages.formattedMessage("§c", "remove_producer_invalid_permission"));
+                            p.sendMessage(mainClass.messages.formattedChatMessage("remove_producer_invalid_permission"));
                             mainClass.toRemoveNPCS.remove(p.getUniqueId());
                             return;
                         }
@@ -45,7 +45,7 @@ public class NpcInteractions implements Listener {
                 npc.destroy();
 
                 mainClass.toRemoveNPCS.remove(p.getUniqueId());
-                p.sendMessage(mainClass.messages.formattedMessage("§a", "removenpc_success"));
+                p.sendMessage(mainClass.messages.formattedChatMessage("removenpc_success"));
                 return;
             }
 
@@ -58,16 +58,16 @@ public class NpcInteractions implements Listener {
             switch (role) {
                 case DEALER:
                     if (!p.hasPermission("use_dealer")) {
-                        p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
+                        p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
                     }
 
                     if (drugType == null) { //if it isn't a drug item
-                        p.sendMessage(DealerFormattedMessage(mainClass.messages.getMessage("dealer_wrong_item"), npcName, null, null, null));
+                        p.sendMessage(DealerFormattedMessage(mainClass.messages.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
                         return;
                     }
                     //checks if the player clicked with a plant, plants cannot be sold
                     if (drugType.isPlant()) {
-                        p.sendMessage(DealerFormattedMessage(mainClass.messages.getMessage("cannot_sell_plants"), npcName, null, null, null));
+                        p.sendMessage(DealerFormattedMessage(mainClass.messages.getChatMessage("cannot_sell_plants"), npcName, null, null, null));
 
                     //if sold item is accepted
                     } else if (drugType.isAcceptedByDealer()) {
@@ -90,29 +90,29 @@ public class NpcInteractions implements Listener {
                         mainClass.economy.depositPlayer(p, price);
 
                         if (amount == 1) {
-                            p.sendMessage(DealerFormattedMessage(mainClass.messages.getMessage("dealer_bought_item"), npcName, 1, drugType.getPrettyName(), price));
+                            p.sendMessage(DealerFormattedMessage(mainClass.messages.getChatMessage("dealer_bought_item"), npcName, 1, drugType.getPrettyName(), price));
                         } else {
-                            p.sendMessage(DealerFormattedMessage(mainClass.messages.getMessage("dealer_bought_item_plural"), npcName, amount, drugType.getPrettyName(), price));
+                            p.sendMessage(DealerFormattedMessage(mainClass.messages.getChatMessage("dealer_bought_item_plural"), npcName, amount, drugType.getPrettyName(), price));
                         }
                     //every other case
                     } else {
-                        p.sendMessage(DealerFormattedMessage(mainClass.messages.getMessage("dealer_wrong_item"), npcName, null, null, null));
+                        p.sendMessage(DealerFormattedMessage(mainClass.messages.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
                     }
 
                     break;
                 case PRODUCER:
                     if (!p.hasPermission("use_producer")) {
-                        p.sendMessage(mainClass.messages.formattedMessage("§c", "invalid_permission"));
+                        p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
                     }
 
                     if (drugType == null) { //if it isn't a drug item
-                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getMessage("producer_wrong_item"), npcName, null, null, null, null));
+                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
                         return;
                     }
 
                     //producers only accept plants
                     if (!drugType.isPlant()) {
-                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getMessage("producer_wrong_item"), npcName, null, null, null, null));
+                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
                         return;
                     }
 
@@ -145,7 +145,7 @@ public class NpcInteractions implements Listener {
                     //Checking player's balance
                     double balance = mainClass.economy.getBalance(p);
                     if (balance < cost) {
-                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getMessage("producer_invalid_balance"), npcName, cost, null, null, null));
+                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getChatMessage("producer_invalid_balance"), npcName, cost, null, null, null));
                         return;
                     }
 
@@ -157,9 +157,9 @@ public class NpcInteractions implements Listener {
 
                     //Sending success message
                     if (amount == 1) {
-                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getMessage("producer_converted_drug"), npcName, cost, amount, drug_name, plant_name));
+                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getChatMessage("producer_converted_drug"), npcName, cost, amount, drug_name, plant_name));
                     } else {
-                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getMessage("producer_converted_drug_plural"), npcName, cost, amount, drug_name, plant_name));
+                        p.sendMessage(ProducerFormattedMessage(mainClass.messages.getChatMessage("producer_converted_drug_plural"), npcName, cost, amount, drug_name, plant_name));
                     }
 
                     break;
@@ -172,10 +172,10 @@ public class NpcInteractions implements Listener {
         if (mainClass.npcsreg.acceptsDrugType(npc, drugType)) {
             switch (role) {
                 case DEALER:
-                    receiver.sendMessage(DealerFormattedMessage(mainClass.messages.getMessage("npc_drug_not_accepted"), npc.getName(), null, drugType.getPrettyName(), null));
+                    receiver.sendMessage(DealerFormattedMessage(mainClass.messages.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, drugType.getPrettyName(), null));
                     return false;
                 case PRODUCER:
-                    receiver.sendMessage(ProducerFormattedMessage(mainClass.messages.getMessage("npc_drug_not_accepted"), npc.getName(), null, null, drugType.getPrettyName(), null));
+                    receiver.sendMessage(ProducerFormattedMessage(mainClass.messages.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, null, drugType.getPrettyName(), null));
                     return false;
             }
             return false;

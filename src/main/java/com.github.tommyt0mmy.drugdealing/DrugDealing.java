@@ -60,17 +60,17 @@ public class DrugDealing extends JavaPlugin {
 		loadManagers();
 		
 		datafolder = getDataFolder();
-		messages = new Messages(this);
-		drugs = new Drugs(this);
-		plantsreg = new PlantsRegister(this);
-		configs = new Configs(this);
-		npcsreg = new NpcRegister(this);
+		messages = new Messages();
+		drugs = new Drugs();
+		plantsreg = new PlantsRegister();
+		configs = new Configs();
+		npcsreg = new NpcRegister();
 		
 		console.info("Loaded successfully");
 	}
 	
 	public void onDisable() {
-		console.info("Unloaded successfully");
+		console.info("Unloading plugin...");
 	}
 	
     private boolean setupEconomy() { //Vault
@@ -87,9 +87,8 @@ public class DrugDealing extends JavaPlugin {
     
     private void loadVault() {
     	if (!setupEconomy()) {
-    		console.severe("Disabled due to no Vault dependency found!");
+    		console.severe("Disabled due to no Vault economy found!");
     		getServer().getPluginManager().disablePlugin(this);
-    		return;
     	}
     }
 	
