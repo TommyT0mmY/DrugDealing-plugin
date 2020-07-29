@@ -1,10 +1,9 @@
 package com.github.tommyt0mmy.drugdealing.events;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
-import com.github.tommyt0mmy.drugdealing.utility.XMaterial;
-import net.minecraft.server.v1_13_R1.Tag;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -69,7 +68,7 @@ public class RemoveUprootedPlants implements Listener {
 		
 		//checking farm land
 		if (checkFarmland) {
-			if (!farmland.getType().equals(XMaterial.FARMLAND.parseItem().getType())) { //if the block below the plant isn't made of farm land
+			if (!farmland.getType().equals(Material.FARMLAND)) { //if the block below the plant isn't made of farm land
 				return false;
 			}
 		}

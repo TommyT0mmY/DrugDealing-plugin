@@ -3,10 +3,9 @@
 package com.github.tommyt0mmy.drugdealing;
 
 import com.github.tommyt0mmy.drugdealing.utility.DrugType;
-import com.github.tommyt0mmy.drugdealing.utility.XMaterial;
-import com.github.tommyt0mmy.drugdealing.utility.XSound;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,7 +32,7 @@ public class Drugs {
 		
 		//coke plant ItemStack
 
-		coke_plant = XMaterial.POPPY.parseItem();
+		coke_plant = new ItemStack(Material.POPPY);
 		ItemMeta cokePlantMeta = coke_plant.getItemMeta();
 		List<String> cokePlantLore = new ArrayList<>();
 		cokePlantLore.add(mainClass.messages.getMessage("coke_plant_name"));
@@ -43,7 +42,7 @@ public class Drugs {
 		
 		//weed plant ItemStack
 
-		weed_plant = XMaterial.JUNGLE_SAPLING.parseItem();
+		weed_plant = new ItemStack(Material.JUNGLE_SAPLING);
 		ItemMeta weedPlantMeta = weed_plant.getItemMeta();
 		List<String> weedPlantLore = new ArrayList<>();
 		weedPlantLore.add(mainClass.messages.getMessage("weed_plant_name"));
@@ -53,7 +52,7 @@ public class Drugs {
 
 		//coke drug ItemStack
 
-		coke_drug = XMaterial.SUGAR.parseItem();
+		coke_drug = new ItemStack(Material.SUGAR);
 		ItemMeta cokeDrugItemMeta = coke_drug.getItemMeta();
 		List<String> cokeDrugLore = new ArrayList<>();
 		cokeDrugLore.add(mainClass.messages.getMessage("coke_drug_name"));
@@ -63,7 +62,7 @@ public class Drugs {
 
 		//weed drug ItemStack
 
-		weed_drug = XMaterial.GREEN_DYE.parseItem();
+		weed_drug = new ItemStack(Material.CACTUS_GREEN);
 		ItemMeta weedDrugItemMeta = coke_drug.getItemMeta();
 		List<String> weedDrugLore = new ArrayList<>();
 		weedDrugLore.add(mainClass.messages.getMessage("weed_drug_name"));
@@ -86,7 +85,7 @@ public class Drugs {
 
 	public boolean isCokePlantItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a coke plant item
 		String coke_plant_name = mainClass.messages.getMessage("coke_plant_name");
-		if (toCheckIS.getType().equals(XMaterial.POPPY.parseMaterial())) { //checking type
+		if (toCheckIS.getType().equals(Material.POPPY)) { //checking type
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
 				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
 				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
@@ -102,7 +101,7 @@ public class Drugs {
 	
 	public boolean isWeedPlantItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a weed plant item
 		String weed_plant_name = mainClass.messages.getMessage("weed_plant_name");
-		if (toCheckIS.getType().equals(XMaterial.JUNGLE_SAPLING.parseItem().getType())) {
+		if (toCheckIS.getType().equals(Material.JUNGLE_SAPLING)) {
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
 				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
 				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
@@ -118,7 +117,7 @@ public class Drugs {
 
 	public boolean isCokeDrugItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a coke item
 		String coke_drug_name = mainClass.messages.getMessage("coke_drug_name");
-		if (toCheckIS.getType().equals(XMaterial.SUGAR.parseMaterial())) { //checking type
+		if (toCheckIS.getType().equals(Material.SUGAR)) { //checking type
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
 				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
 				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
@@ -134,7 +133,7 @@ public class Drugs {
 
 	public boolean isWeedDrugItemStack(ItemStack toCheckIS) { //given an ItemStack returns true if it's a weed item
 		String weed_drug_name = mainClass.messages.getMessage("weed_drug_name");
-		if (toCheckIS.getType().equals(XMaterial.GREEN_DYE.parseItem().getType())) {
+		if (toCheckIS.getType().equals(Material.CACTUS_GREEN)) {
 			if (toCheckIS.hasItemMeta()) { //checking name & lore
 				ItemMeta toCheckMeta = toCheckIS.getItemMeta();
 				if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore()) {
@@ -160,7 +159,7 @@ public class Drugs {
 	
 	public boolean isPlantedOnFarmland(Block plant) { //checks if the plant is planted on farmland
 		Block belowBlock = plant.getLocation().subtract(0, 1, 0).getBlock();
-		if (belowBlock.getType().equals(XMaterial.FARMLAND.parseItem().getType())) {
+		if (belowBlock.getType().equals(Material.FARMLAND)) {
 			return true;
 		}
 		
@@ -171,8 +170,8 @@ public class Drugs {
 		Location plantLocation = plant.getLocation();
 		if (mainClass.plantsreg.isDrugPlant(plantLocation)) { //if the plant is registered in plants.yml
 			
-			plant.setType(XMaterial.AIR.parseItem().getType()); //removing the plant's block
-			plantLocation.getWorld().playSound(plantLocation, XSound.BLOCK_LAVA_POP.parseSound(), 5, 5); //sound feedback
+			plant.setType(Material.AIR); //removing the plant's block
+			plantLocation.getWorld().playSound(plantLocation, Sound.BLOCK_LAVA_POP, 5, 5); //sound feedback
 			ConfigurationSection plantCS = mainClass.plantsreg.getPlant(plantLocation); //the plant's section in plants.yml
 			
 			//Plant drops
