@@ -8,4 +8,4 @@ Project licensed under the [MIT License](/LICENSE "License")
 
 ![logo](/logo.png "Plugin logo")
 
-###### This is a role-playing game, anything written in this project is not related in any way to drug dealing
+###### This is a role-playing game, anything written in this project is not related in any way to real world drug dealing
