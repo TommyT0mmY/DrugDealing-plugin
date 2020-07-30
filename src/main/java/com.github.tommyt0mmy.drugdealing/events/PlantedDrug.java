@@ -9,58 +9,69 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PlantedDrug implements Listener {
-	
-	private DrugDealing mainClass = DrugDealing.getInstance();
-	
-	@EventHandler
-	public void onPlantedDrug(BlockPlaceEvent e) {
-		Player p = (Player) e.getPlayer();
-		try {
+public class PlantedDrug implements Listener
+{
 
-			Block placed = (Block) e.getBlock();
+    private DrugDealing mainClass = DrugDealing.getInstance();
 
-			e.setCancelled(true);
+    @EventHandler
+    public void onPlantedDrug(BlockPlaceEvent e)
+    {
+        Player p = (Player) e.getPlayer();
+        try
+        {
 
-			ItemStack placedIS= p.getInventory().getItemInMainHand();
+            Block placed = (Block) e.getBlock();
 
-			//Coke placed
+            e.setCancelled(true);
 
-			if (mainClass.drugs.isCokePlantItemStack(placedIS)) {
-				//permissions check
-				if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed")))) {
-					e.setCancelled(true);
-					p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
-					return;
-				}
+            ItemStack placedIS = p.getInventory().getItemInMainHand();
 
-				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
-					p.sendMessage(mainClass.messages.formattedChatMessage("planted_coke"));
-					mainClass.plantsreg.addPlant(placed, "coke");
-				}else {
-					p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
-					return;
-				}
-			}
-			
-			//Weed planted
-			
-			if (mainClass.drugs.isWeedPlantItemStack(placedIS)) {
-				if (mainClass.drugs.isPlantedOnFarmland(placed)) {
-					p.sendMessage(mainClass.messages.formattedChatMessage("planted_weed"));
-					mainClass.plantsreg.addPlant(placed, "weed");
-				}else {
-					p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
-					return;
-				}
-			}
-			
-			e.setCancelled(false);			
-		} catch (Exception exception) {
-			e.setCancelled(true);
-			p.sendMessage(mainClass.messages.formattedChatMessage("unexpected_error"));
-			exception.printStackTrace();
-			return;
-		}
-	}
+            //Coke placed
+
+            if (mainClass.drugs.isCokePlantItemStack(placedIS))
+            {
+                //permissions check
+                if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed"))))
+                {
+                    e.setCancelled(true);
+                    p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
+                    return;
+                }
+
+                if (mainClass.drugs.isPlantedOnFarmland(placed))
+                {
+                    p.sendMessage(mainClass.messages.formattedChatMessage("planted_coke"));
+                    mainClass.plantsreg.addPlant(placed, "coke");
+                } else
+                {
+                    p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
+                    return;
+                }
+            }
+
+            //Weed planted
+
+            if (mainClass.drugs.isWeedPlantItemStack(placedIS))
+            {
+                if (mainClass.drugs.isPlantedOnFarmland(placed))
+                {
+                    p.sendMessage(mainClass.messages.formattedChatMessage("planted_weed"));
+                    mainClass.plantsreg.addPlant(placed, "weed");
+                } else
+                {
+                    p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
+                    return;
+                }
+            }
+
+            e.setCancelled(false);
+        } catch (Exception exception)
+        {
+            e.setCancelled(true);
+            p.sendMessage(mainClass.messages.formattedChatMessage("unexpected_error"));
+            exception.printStackTrace();
+            return;
+        }
+    }
 }

@@ -7,20 +7,24 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.StructureGrowEvent;
 
-public class PreventSaplingGrowth implements Listener {
-	
-	private DrugDealing mainClass = DrugDealing.getInstance();
+public class PreventSaplingGrowth implements Listener
+{
 
-	@EventHandler
-	public void onStructureGrow(StructureGrowEvent e) {
-		Location loc = e.getLocation();
-		if (mainClass.plantsreg.isDrugPlant(loc)) {
-			e.setCancelled(true);
-			if (e.isFromBonemeal()) {
-				Player p = e.getPlayer();
-				p.sendMessage(mainClass.messages.formattedChatMessage("cannot_grow_weed"));
-			}
-		}
-	}
+    private DrugDealing mainClass = DrugDealing.getInstance();
+
+    @EventHandler
+    public void onStructureGrow(StructureGrowEvent e)
+    {
+        Location loc = e.getLocation();
+        if (mainClass.plantsreg.isDrugPlant(loc))
+        {
+            e.setCancelled(true);
+            if (e.isFromBonemeal())
+            {
+                Player p = e.getPlayer();
+                p.sendMessage(mainClass.messages.formattedChatMessage("cannot_grow_weed"));
+            }
+        }
+    }
 
 }

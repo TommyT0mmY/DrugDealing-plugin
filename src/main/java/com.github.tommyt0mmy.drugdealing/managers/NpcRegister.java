@@ -15,45 +15,57 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class NpcRegister {
+public class NpcRegister
+{
 
     private File registerConfigFile;
     private YamlConfiguration registerConfig;
 
     private DrugDealing mainClass = DrugDealing.getInstance();
-    public NpcRegister() {
+
+    public NpcRegister()
+    {
         loadRegister();
     }
 
-    private void loadRegister() { //loading npcs.yml
+    private void loadRegister()
+    { //loading npcs.yml
         registerConfigFile = new File(mainClass.datafolder, "npcs.yml");
-        if (!registerConfigFile.exists()) {
+        if (!registerConfigFile.exists())
+        {
             registerConfigFile.getParentFile().mkdirs();
             mainClass.saveResource("npcs.yml", false);
             mainClass.console.info("Created file npcs.yml");
         }
 
         registerConfig = new YamlConfiguration();
-        try {
+        try
+        {
             registerConfig.load(registerConfigFile);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             mainClass.console.severe("Couldn't load npcs.yml file properly!");
         }
     }
 
-    private void loadConfigs() {
-        try {
+    private void loadConfigs()
+    {
+        try
+        {
             registerConfig.load(registerConfigFile);
         } catch (Exception exception) {mainClass.console.severe("Couldn't load npcs.yml file properly!");}
     }
 
-    private void saveConfigs() {
-        try {
+    private void saveConfigs()
+    {
+        try
+        {
             registerConfig.save(registerConfigFile);
         } catch (Exception e) {mainClass.console.severe("Couldn't save to file npcs.yml");}
     }
 
-    public void saveNpc (NPC npc, CriminalRole role, List<DrugType> notAcceptedDrugs) {
+    public void saveNpc(NPC npc, CriminalRole role, List<DrugType> notAcceptedDrugs)
+    {
         loadConfigs();
         String name = npc.getName();
         Location loc = npc.getStoredLocation();
@@ -69,8 +81,10 @@ public class NpcRegister {
         registerConfig.set(newKey + ".notaccepted.COKE_PLANT", false);
         registerConfig.set(newKey + ".notaccepted.WEED_PRODUCT", false);
         registerConfig.set(newKey + ".notaccepted.COKE_PRODUCT", false);
-        if (notAcceptedDrugs != null) {
-            for (DrugType notAcceptedDrug : notAcceptedDrugs) {
+        if (notAcceptedDrugs != null)
+        {
+            for (DrugType notAcceptedDrug : notAcceptedDrugs)
+            {
                 registerConfig.set(newKey + ".notaccepted." + notAcceptedDrug.toString(), true);
             }
         }
@@ -78,15 +92,19 @@ public class NpcRegister {
     }
 
     //if the NPC isn't registered returns null
-    private ConfigurationSection getNpcCS (NPC npc) {
+    private ConfigurationSection getNpcCS(NPC npc)
+    {
         return getNpcCS(npc.getId());
     }
 
     //if the NPC isn't registered returns null
-    private ConfigurationSection getNpcCS(int ID) {
+    private ConfigurationSection getNpcCS(int ID)
+    {
         List<ConfigurationSection> ConfSections = getConfigurationSections();
-        for (ConfigurationSection cs : ConfSections) {
-            if (cs.getInt("ID") == ID) {
+        for (ConfigurationSection cs : ConfSections)
+        {
+            if (cs.getInt("ID") == ID)
+            {
                 return cs;
             }
         }
@@ -94,43 +112,54 @@ public class NpcRegister {
     }
 
     //checks if the clicked NPC is a NPC handled by this plugin
-    public boolean isCriminalNpc (NPC npc) {
+    public boolean isCriminalNpc(NPC npc)
+    {
         return getNpcCS(npc) != null;
     }
 
-    private List<ConfigurationSection> getConfigurationSections () {
+    private List<ConfigurationSection> getConfigurationSections()
+    {
         List<ConfigurationSection> CSlist = new ArrayList<ConfigurationSection>();
         Set<String> keys = registerConfig.getKeys(false);
-        for (String key : keys) {
-            if (key.startsWith("NPC") && registerConfig.isConfigurationSection(key)) {
+        for (String key : keys)
+        {
+            if (key.startsWith("NPC") && registerConfig.isConfigurationSection(key))
+            {
                 CSlist.add(registerConfig.getConfigurationSection(key));
             }
         }
         return CSlist;
     }
 
-    public CriminalRole getRole (NPC npc) {
+    public CriminalRole getRole(NPC npc)
+    {
         ConfigurationSection cs = getNpcCS(npc);
-        if (cs != null) {
+        if (cs != null)
+        {
             String role = cs.getString("role");
-            if (role.equalsIgnoreCase(CriminalRole.DEALER.toString())) {
+            if (role.equalsIgnoreCase(CriminalRole.DEALER.toString()))
+            {
                 return CriminalRole.DEALER;
-            } else if (role.equalsIgnoreCase(CriminalRole.PRODUCER.toString())) {
+            } else if (role.equalsIgnoreCase(CriminalRole.PRODUCER.toString()))
+            {
                 return CriminalRole.PRODUCER;
             }
         }
         return null;
     }
 
-    public boolean acceptsDrugType (NPC npc, DrugType drugType) {
+    public boolean acceptsDrugType(NPC npc, DrugType drugType)
+    {
         ConfigurationSection cs = getNpcCS(npc);
-        if (cs != null) {
+        if (cs != null)
+        {
             return cs.getBoolean("notaccepted." + drugType.toString());
         }
         return false;
     }
 
-    public void removeNpc (NPC npc) {
+    public void removeNpc(NPC npc)
+    {
         loadConfigs();
         ConfigurationSection npcCS = getNpcCS(npc);
         String sectionName = npcCS.getName();

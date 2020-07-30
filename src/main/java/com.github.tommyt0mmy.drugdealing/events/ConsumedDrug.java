@@ -16,35 +16,43 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ConsumedDrug implements Listener {
+public class ConsumedDrug implements Listener
+{
     private DrugDealing mainClass = DrugDealing.getInstance();
 
-    private Map<UUID, Boolean > shiftings;
+    private Map<UUID, Boolean> shiftings;
     //Sets to true when a player has consumed a drug, after 2 seconds he can consume again another item
-    private Map<UUID, Boolean > timeout;
+    private Map<UUID, Boolean> timeout;
 
-    public ConsumedDrug() {
+    public ConsumedDrug()
+    {
         shiftings = new HashMap<>();
         timeout = new HashMap<>();
     }
 
     @EventHandler
-    public void onPlayerShift(PlayerToggleSneakEvent sneakEvent) {
+    public void onPlayerShift(PlayerToggleSneakEvent sneakEvent)
+    {
         shiftings.put(sneakEvent.getPlayer().getUniqueId(), sneakEvent.isSneaking());
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent interactEvent) {
+    public void onPlayerInteract(PlayerInteractEvent interactEvent)
+    {
         Player p = interactEvent.getPlayer();
         UUID playerUUID = p.getUniqueId();
-        if (!timeout.containsKey(playerUUID)) {
+        if (!timeout.containsKey(playerUUID))
+        {
             timeout.put(playerUUID, false);
         }
         ItemStack itemInHand = p.getInventory().getItemInMainHand();
         Boolean isPlayerShifting = shiftings.get(playerUUID);
-        if (mainClass.drugs.isCokeDrugItemStack(itemInHand) && isPlayerShifting) {
-            if (p.hasPermission(Permissions.getPermission("consume_coke"))) {
-                if (timeout.get(playerUUID)) return;
+        if (mainClass.drugs.isCokeDrugItemStack(itemInHand) && isPlayerShifting)
+        {
+            if (p.hasPermission(Permissions.getPermission("consume_coke")))
+            {
+                if (timeout.get(playerUUID))
+                    return;
                 timeout.put(playerUUID, true);
                 p.getInventory().getItemInMainHand().setAmount(itemInHand.getAmount() - 1);
                 PotionEffect cokeEffect = new PotionEffect(PotionEffectType.SPEED, 600, 0);
@@ -52,14 +60,17 @@ public class ConsumedDrug implements Listener {
                 p.sendMessage(mainClass.messages.formattedChatMessage("consumed_coke"));
 
                 //Starting the timeout
-                new BukkitRunnable() {
-                    public void run() {
+                new BukkitRunnable()
+                {
+                    public void run()
+                    {
                         timeout.put(playerUUID, false);
                         cancel();
                     }
                 }.runTaskTimer(mainClass, 40, 1);
 
-            } else {
+            } else
+            {
                 p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
             }
         }
