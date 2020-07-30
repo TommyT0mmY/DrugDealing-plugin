@@ -5,7 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.tommyt0mmy</groupId>
     <artifactId>DrugDealing</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/TommyT0mmY/DrugDealing-plugin/blob/master/LICENSE</url>
+        </license>
+    </licenses>
 
     <repositories>
         <repository>

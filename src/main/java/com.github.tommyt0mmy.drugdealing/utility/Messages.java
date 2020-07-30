@@ -84,8 +84,8 @@ public class Messages
             put("messages.remove_producer_invalid_permission.prefix_color", "&c");
             put("messages.removenpc_time_is_up.text", "Cancelling /<COMMAND> command: Time is up");
             put("messages.removenpc_time_is_up.prefix_color", "&c");
-            put("removenpc_success.text", "Criminal removed successfully");
-            put("removenpc_success.prefix_color", "&a");
+            put("messages.removenpc_success.text", "Criminal removed successfully");
+            put("messages.removenpc_success.prefix_color", "&a");
             put("keywords.coke_plant_name", "&aCoke Plant");
             put("keywords.weed_plant_name", "&aWeed Plant");
             put("keywords.coke_drug_name", "&aCocaine");

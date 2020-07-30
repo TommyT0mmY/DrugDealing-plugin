@@ -10,9 +10,11 @@ import com.github.tommyt0mmy.drugdealing.events.NpcInteractions;
 import com.github.tommyt0mmy.drugdealing.events.PlantedDrug;
 import com.github.tommyt0mmy.drugdealing.events.PreventSaplingGrowth;
 import com.github.tommyt0mmy.drugdealing.events.RemoveUprootedPlants;
+import com.github.tommyt0mmy.drugdealing.events.onPlayerJoin;
 import com.github.tommyt0mmy.drugdealing.managers.NpcRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsUpdater;
+import com.github.tommyt0mmy.drugdealing.managers.UpdateChecker;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.CreateNPCTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getDrugTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getPlantTabCompleter;
@@ -32,6 +34,9 @@ public class DrugDealing extends JavaPlugin
 {
 
     private static DrugDealing instance;
+
+    private final int spigotResourceId = 00000; /*TODO PUT RESOURCE ID*/
+    private final String spigotResourceUrl = "https://www.spigotmc.org/resources/"; /*TODO PUT RESOURCE URL*/
 
     public Logger console = getLogger();
     public static Economy economy = null;
@@ -69,6 +74,15 @@ public class DrugDealing extends JavaPlugin
         plantsreg = new PlantsRegister();
         configs = new Configs();
         npcsreg = new NpcRegister();
+
+        //checking for updates
+        UpdateChecker updateChecker = new UpdateChecker();
+        if (updateChecker.needsUpdate())
+        {
+            console.info("An update for DrugDealing is available at:");
+            console.info(spigotResourceUrl);
+            console.info(String.format("Installed version: %s Lastest version: %s", updateChecker.getCurrent_version(), updateChecker.getLastest_version()));
+        }
 
         console.info("Loaded successfully");
     }
@@ -122,6 +136,7 @@ public class DrugDealing extends JavaPlugin
         getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(), this);
         getServer().getPluginManager().registerEvents(new NpcInteractions(), this);
         getServer().getPluginManager().registerEvents(new ConsumedDrug(), this);
+        getServer().getPluginManager().registerEvents(new onPlayerJoin(), this);
     }
 
     @SuppressWarnings("unused")
@@ -130,4 +145,13 @@ public class DrugDealing extends JavaPlugin
         BukkitTask task1 = new PlantsUpdater(this).runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
     }
 
+    public int getSpigotResourceId()
+    {
+        return spigotResourceId;
+    }
+
+    public String getSpigotResourceUrl()
+    {
+        return spigotResourceUrl;
+    }
 }
