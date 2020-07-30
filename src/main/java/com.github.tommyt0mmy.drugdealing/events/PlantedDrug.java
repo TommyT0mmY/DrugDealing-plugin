@@ -11,10 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class PlantedDrug implements Listener {
 	
-	private DrugDealing mainClass;
-    public PlantedDrug(DrugDealing mainClass) {
-        this.mainClass = mainClass;
-    }
+	private DrugDealing mainClass = DrugDealing.getInstance();
 	
 	@EventHandler
 	public void onPlantedDrug(BlockPlaceEvent e) {

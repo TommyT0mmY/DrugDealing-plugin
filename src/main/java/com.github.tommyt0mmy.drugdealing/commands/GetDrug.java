@@ -10,10 +10,7 @@ import org.bukkit.entity.Player;
 
 public class GetDrug implements CommandExecutor {
 
-    private DrugDealing mainClass;
-    public GetDrug(DrugDealing mainClass) {
-        this.mainClass = mainClass;
-    }
+    private DrugDealing mainClass = DrugDealing.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

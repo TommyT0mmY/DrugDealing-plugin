@@ -9,11 +9,8 @@ import org.bukkit.event.world.StructureGrowEvent;
 
 public class PreventSaplingGrowth implements Listener {
 	
-	private DrugDealing mainClass;
-	public PreventSaplingGrowth(DrugDealing mainClass) {
-		this.mainClass = mainClass;
-	}
-	
+	private DrugDealing mainClass = DrugDealing.getInstance();
+
 	@EventHandler
 	public void onStructureGrow(StructureGrowEvent e) {
 		Location loc = e.getLocation();

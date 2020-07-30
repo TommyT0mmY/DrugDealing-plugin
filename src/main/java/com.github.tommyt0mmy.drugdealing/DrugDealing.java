@@ -95,19 +95,19 @@ public class DrugDealing extends JavaPlugin {
 	private void loadCommands() {
 		getCommand("drugdealing").setExecutor(new Help());
 		getCommand("drugdealing").setTabCompleter(new HelpTabCompleter());
-		getCommand("getplant").setExecutor(new GetPlant(this));
-		getCommand("getplant").setTabCompleter(new getPlantTabCompleter(this));
-		getCommand("getdrug").setExecutor(new GetDrug(this));
-		getCommand("getdrug").setTabCompleter(new getDrugTabCompleter(this));
+		getCommand("getplant").setExecutor(new GetPlant());
+		getCommand("getplant").setTabCompleter(new getPlantTabCompleter());
+		getCommand("getdrug").setExecutor(new GetDrug());
+		getCommand("getdrug").setTabCompleter(new getDrugTabCompleter());
 		getCommand("setnpc").setExecutor(new CreateNPC());
 		getCommand("setnpc").setTabCompleter(new CreateNPCTabCompleter());
 		getCommand("removenpc").setExecutor(new RemoveNPC());
 	}
 	
 	private void loadEvents() {
-		getServer().getPluginManager().registerEvents(new PlantedDrug(this), this);
-		getServer().getPluginManager().registerEvents(new RemoveUprootedPlants(this), this);
-		getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(this), this);
+		getServer().getPluginManager().registerEvents(new PlantedDrug(), this);
+		getServer().getPluginManager().registerEvents(new RemoveUprootedPlants(), this);
+		getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(), this);
 		getServer().getPluginManager().registerEvents(new NpcInteractions(), this);
 		getServer().getPluginManager().registerEvents(new ConsumedDrug(), this);
 	}

@@ -10,10 +10,7 @@ import java.util.List;
 
 public class getDrugTabCompleter implements TabCompleter {
     @SuppressWarnings("unused")
-    private DrugDealing mainClass;
-    public getDrugTabCompleter(DrugDealing mainClass) {
-        this.mainClass = mainClass;
-    }
+    private DrugDealing mainClass = DrugDealing.getInstance();
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {

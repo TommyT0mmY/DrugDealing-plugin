@@ -14,10 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class RemoveUprootedPlants implements Listener {
 	
-	private DrugDealing mainClass;
-	public RemoveUprootedPlants(DrugDealing mainClass) {
-		this.mainClass = mainClass;
-	}
+	private DrugDealing mainClass = DrugDealing.getInstance();
 	
 	@EventHandler
 	public void removeUprooted(PlayerInteractEvent event) {
