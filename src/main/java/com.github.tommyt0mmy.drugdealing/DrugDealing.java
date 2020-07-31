@@ -35,8 +35,9 @@ public class DrugDealing extends JavaPlugin
 
     private static DrugDealing instance;
 
-    private final int spigotResourceId = 00000; /*TODO PUT RESOURCE ID*/
-    private final String spigotResourceUrl = "https://www.spigotmc.org/resources/"; /*TODO PUT RESOURCE URL*/
+    private final int spigotResourceId = 82163;
+
+    private final String spigotResourceUrl = "https://www.spigotmc.org/resources/drugdealing.82163/";
 
     public Logger console = getLogger();
     public static Economy economy = null;
