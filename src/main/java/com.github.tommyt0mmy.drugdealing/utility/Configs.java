@@ -12,15 +12,13 @@ public class Configs
 {
 
     private final DrugDealing plugin = DrugDealing.getInstance();
-
+    @SuppressWarnings("FieldCanBeLocal")
+    private File configsFile;
+    private FileConfiguration configs;
     public Configs()
     {
         loadConfigs();
     }
-
-    @SuppressWarnings("FieldCanBeLocal")
-    private File configsFile;
-    private FileConfiguration configs;
 
     private void loadConfigs()
     { //loading plants.yml

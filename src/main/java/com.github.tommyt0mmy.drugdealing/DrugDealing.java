@@ -16,9 +16,9 @@ import com.github.tommyt0mmy.drugdealing.managers.PlantsRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsUpdater;
 import com.github.tommyt0mmy.drugdealing.managers.UpdateChecker;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.CreateNPCTabCompleter;
+import com.github.tommyt0mmy.drugdealing.tabcompleters.HelpTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getDrugTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getPlantTabCompleter;
-import com.github.tommyt0mmy.drugdealing.tabcompleters.HelpTabCompleter;
 import com.github.tommyt0mmy.drugdealing.utility.Configs;
 import com.github.tommyt0mmy.drugdealing.utility.Messages;
 import net.milkbowl.vault.economy.Economy;
@@ -26,20 +26,21 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class DrugDealing extends JavaPlugin
 {
 
+    public static Economy economy = null;
     private static DrugDealing instance;
-
+    public final Logger console = getLogger();
     @SuppressWarnings("FieldCanBeLocal")
     private final int spigotResourceId = 82163;
     private final String spigotResourceUrl = "https://www.spigotmc.org/resources/drugdealing.82163/";
-
-    public final Logger console = getLogger();
-    public static Economy economy = null;
     public File dataFolder = null;
     public Messages messages = null;
     public Drugs drugs = null;
@@ -102,7 +103,8 @@ public class DrugDealing extends JavaPlugin
         {
             console.severe("Invalid economy system, disabling plugin!");
             getServer().getPluginManager().disablePlugin(this);
-        } else {
+        } else
+        {
             console.info("Loaded successfully");
         }
     }

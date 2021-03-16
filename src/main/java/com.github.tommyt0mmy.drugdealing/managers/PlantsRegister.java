@@ -20,14 +20,12 @@ import java.util.Random;
 public class PlantsRegister
 {
     private final DrugDealing plugin = DrugDealing.getInstance();
-
+    private File registerConfigFile;
+    private FileConfiguration registerConfig;
     public PlantsRegister()
     {
         loadRegister();
     }
-
-    private File registerConfigFile;
-    private FileConfiguration registerConfig;
 
     private void loadRegister()
     { //loading plants.yml

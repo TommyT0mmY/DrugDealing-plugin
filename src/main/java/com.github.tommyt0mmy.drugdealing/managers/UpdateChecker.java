@@ -11,11 +11,9 @@ import java.net.URL;
 public class UpdateChecker
 {
     private final DrugDealing plugin = DrugDealing.getInstance();
-
-    private String spigot_url = "https://api.spigotmc.org/legacy/update.php?resource=%d";
-
-    private boolean needs_update = false;
     private final String current_version = plugin.getDescription().getVersion();
+    private String spigot_url = "https://api.spigotmc.org/legacy/update.php?resource=%d";
+    private boolean needs_update = false;
     private String latest_version = "";
 
     public UpdateChecker()
@@ -40,7 +38,8 @@ public class UpdateChecker
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuilder content = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
+            while ((inputLine = in.readLine()) != null)
+            {
                 content.append(inputLine);
             }
 

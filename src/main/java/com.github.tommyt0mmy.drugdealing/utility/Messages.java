@@ -11,17 +11,7 @@ import java.util.HashMap;
 public class Messages
 {
 
-    public Messages()
-    {
-        loadMessagesFile();
-    }
-
     private final DrugDealing plugin = DrugDealing.getInstance();
-
-    private FileConfiguration messagesConfig;
-    private File messagesConfigFile;
-
-
     private final HashMap<String, String> messagesMap = new HashMap<String, String>()
     {
         {
@@ -92,6 +82,14 @@ public class Messages
             put("keywords.weed_drug_name", "&aWeed");
         }
     };
+    private FileConfiguration messagesConfig;
+    private File messagesConfigFile;
+
+
+    public Messages()
+    {
+        loadMessagesFile();
+    }
 
     private void loadMessagesFile()
     { //loading messages.yml
