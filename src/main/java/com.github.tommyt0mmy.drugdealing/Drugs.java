@@ -98,10 +98,7 @@ public class Drugs
                 ItemMeta toCheckMeta = toCheckIS.getItemMeta();
                 if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
                 {
-                    if (toCheckMeta.getLore().get(0).equals(coke_plant_name) && toCheckMeta.getDisplayName().equals(coke_plant_name))
-                    {
-                        return true;
-                    }
+                    return toCheckMeta.getLore().get(0).equals(coke_plant_name) && toCheckMeta.getDisplayName().equals(coke_plant_name);
                 }
             }
         }
@@ -119,10 +116,7 @@ public class Drugs
                 ItemMeta toCheckMeta = toCheckIS.getItemMeta();
                 if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
                 {
-                    if (toCheckMeta.getLore().get(0).equals(weed_plant_name) && toCheckMeta.getDisplayName().equals(weed_plant_name))
-                    {
-                        return true;
-                    }
+                    return toCheckMeta.getLore().get(0).equals(weed_plant_name) && toCheckMeta.getDisplayName().equals(weed_plant_name);
                 }
             }
         }
@@ -140,10 +134,7 @@ public class Drugs
                 ItemMeta toCheckMeta = toCheckIS.getItemMeta();
                 if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
                 {
-                    if (toCheckMeta.getLore().get(0).equals(coke_drug_name) && toCheckMeta.getDisplayName().equals(coke_drug_name))
-                    {
-                        return true;
-                    }
+                    return toCheckMeta.getLore().get(0).equals(coke_drug_name) && toCheckMeta.getDisplayName().equals(coke_drug_name);
                 }
             }
         }
@@ -161,10 +152,7 @@ public class Drugs
                 ItemMeta toCheckMeta = toCheckIS.getItemMeta();
                 if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
                 {
-                    if (toCheckMeta.getLore().get(0).equals(weed_drug_name) && toCheckMeta.getDisplayName().equals(weed_drug_name))
-                    {
-                        return true;
-                    }
+                    return toCheckMeta.getLore().get(0).equals(weed_drug_name) && toCheckMeta.getDisplayName().equals(weed_drug_name);
                 }
             }
         }
@@ -186,28 +174,23 @@ public class Drugs
     public boolean isPlantedOnFarmland(Block plant)
     { //checks if the plant is planted on farmland
         Block belowBlock = plant.getLocation().subtract(0, 1, 0).getBlock();
-        if (belowBlock.getType().equals(Material.FARMLAND))
-        {
-            return true;
-        }
-
-        return false;
+        return belowBlock.getType().equals(Material.FARMLAND);
     }
 
     public void destroyPlant(Block plant, boolean dropItems)
     { //similar to org.bukkit.block.Block.breakNaturally() but with some changes
         Location plantLocation = plant.getLocation();
-        if (mainClass.plantsreg.isDrugPlant(plantLocation))
+        if (mainClass.plantsRegister.isDrugPlant(plantLocation))
         { //if the plant is registered in plants.yml
 
             plant.setType(Material.AIR); //removing the plant's block
             plantLocation.getWorld().playSound(plantLocation, Sound.BLOCK_LAVA_POP, 5, 5); //sound feedback
-            ConfigurationSection plantCS = mainClass.plantsreg.getPlant(plantLocation); //the plant's section in plants.yml
+            ConfigurationSection plantCS = mainClass.plantsRegister.getPlant(plantLocation); //the plant's section in plants.yml
 
             //Plant drops
             if (dropItems)
             {
-                if (mainClass.plantsreg.getType(plantLocation).equals("coke"))
+                if (mainClass.plantsRegister.getType(plantLocation).equals("coke"))
                 {
                     plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokePlantItemStack()); //first drop
                     if (plantCS.getBoolean("grown"))
@@ -215,7 +198,7 @@ public class Drugs
                         plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokePlantItemStack());
                     }
 
-                } else if (mainClass.plantsreg.getType(plantLocation).equals("weed"))
+                } else if (mainClass.plantsRegister.getType(plantLocation).equals("weed"))
                 {
                     plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedPlantItemStack()); //first drop
                     if (plantCS.getBoolean("grown"))
@@ -224,29 +207,27 @@ public class Drugs
                     }
                 }
             }
-            mainClass.plantsreg.removePlant(plantLocation);
+            mainClass.plantsRegister.removePlant(plantLocation);
         }
     }
 
-    @SuppressWarnings("deprecation")
     public void growPlant(Location loc)
     { //given a location of a plant it makes the plant grow to it's final stage, ready to be harvested
-        String plantType = mainClass.plantsreg.getType(loc);
+        String plantType = mainClass.plantsRegister.getType(loc);
         Block plantBlock = loc.getBlock();
-        ConfigurationSection plant = mainClass.plantsreg.getPlant(loc);
+        ConfigurationSection plant = mainClass.plantsRegister.getPlant(loc);
         if (plant.getBoolean("grown"))
         {
             return;
         }
 
         Block top = loc.add(0, 1, 0).getBlock();
-        Block bottom = plantBlock;
         if (plantType.equals("weed"))
         {
             //TOP DATA: 10
             //BOTTOM DATA: 3
 
-            setFlower(bottom, Material.LARGE_FERN, Bisected.Half.BOTTOM);
+            setFlower(plantBlock, Material.LARGE_FERN, Bisected.Half.BOTTOM);
             setFlower(top, Material.LARGE_FERN, Bisected.Half.TOP);
 
         } else if (plantType.equals("coke"))
@@ -254,7 +235,7 @@ public class Drugs
             //TOP DATA: 10
             //BOTTOM DATA: 4
 
-            setFlower(bottom, Material.ROSE_BUSH, Bisected.Half.BOTTOM);
+            setFlower(plantBlock, Material.ROSE_BUSH, Bisected.Half.BOTTOM);
             setFlower(top, Material.ROSE_BUSH, Bisected.Half.TOP);
         }
         plant.set("grown", true);

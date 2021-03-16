@@ -6,7 +6,6 @@ import com.github.tommyt0mmy.drugdealing.DrugDealing;
 import com.github.tommyt0mmy.drugdealing.utility.CriminalRole;
 import com.github.tommyt0mmy.drugdealing.utility.DrugType;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -18,10 +17,10 @@ import java.util.Set;
 public class NpcRegister
 {
 
+    private final DrugDealing plugin = DrugDealing.getInstance();
+
     private File registerConfigFile;
     private YamlConfiguration registerConfig;
-
-    private DrugDealing mainClass = DrugDealing.getInstance();
 
     public NpcRegister()
     {
@@ -30,12 +29,12 @@ public class NpcRegister
 
     private void loadRegister()
     { //loading npcs.yml
-        registerConfigFile = new File(mainClass.datafolder, "npcs.yml");
+        registerConfigFile = new File(plugin.dataFolder, "npcs.yml");
         if (!registerConfigFile.exists())
         {
             registerConfigFile.getParentFile().mkdirs();
-            mainClass.saveResource("npcs.yml", false);
-            mainClass.console.info("Created file npcs.yml");
+            plugin.saveResource("npcs.yml", false);
+            plugin.console.info("Created file npcs.yml");
         }
 
         registerConfig = new YamlConfiguration();
@@ -44,7 +43,7 @@ public class NpcRegister
             registerConfig.load(registerConfigFile);
         } catch (Exception e)
         {
-            mainClass.console.severe("Couldn't load npcs.yml file properly!");
+            plugin.console.severe("Couldn't load npcs.yml file properly!");
         }
     }
 
@@ -53,7 +52,7 @@ public class NpcRegister
         try
         {
             registerConfig.load(registerConfigFile);
-        } catch (Exception exception) {mainClass.console.severe("Couldn't load npcs.yml file properly!");}
+        } catch (Exception exception) {plugin.console.severe("Couldn't load npcs.yml file properly!");}
     }
 
     private void saveConfigs()
@@ -61,14 +60,14 @@ public class NpcRegister
         try
         {
             registerConfig.save(registerConfigFile);
-        } catch (Exception e) {mainClass.console.severe("Couldn't save to file npcs.yml");}
+        } catch (Exception e) {plugin.console.severe("Couldn't save to file npcs.yml");}
     }
 
     public void saveNpc(NPC npc, CriminalRole role, List<DrugType> notAcceptedDrugs)
     {
         loadConfigs();
         String name = npc.getName();
-        Location loc = npc.getStoredLocation();
+        //Location loc = npc.getStoredLocation();
         int ID = npc.getId();
         int npcCount = registerConfig.getInt("npcNumber");
         npcCount++;
@@ -119,7 +118,7 @@ public class NpcRegister
 
     private List<ConfigurationSection> getConfigurationSections()
     {
-        List<ConfigurationSection> CSlist = new ArrayList<ConfigurationSection>();
+        List<ConfigurationSection> CSlist = new ArrayList<>();
         Set<String> keys = registerConfig.getKeys(false);
         for (String key : keys)
         {

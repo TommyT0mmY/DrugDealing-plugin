@@ -10,39 +10,42 @@ import org.bukkit.entity.Player;
 
 public class Help implements CommandExecutor
 {
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final String beforeCommand = "§e§l>";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String beforeParagraph = "§c§l>";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String footer = "§c§l+ - - - - - - - - - - - - - - - - - +§r";
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        String usage = mainClass.getCommand("drugdealing").getUsage().replaceAll("<command>", label); //usage message
+        String usage = plugin.getCommand("drugdealing").getUsage().replaceAll("<command>", label); //usage message
 
         Player p;
 
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(mainClass.messages.formattedChatMessage("only_players_command"));
+            sender.sendMessage(plugin.messages.formattedChatMessage("only_players_command"));
             return true;
         } else
             p = (Player) sender;
 
         if (!p.hasPermission(Permissions.getPermission("help_menu")))
         {
-            p.sendMessage(mainClass.messages.getChatMessage("invalid_permission"));
+            p.sendMessage(plugin.messages.getChatMessage("invalid_permission"));
             return true;
         }
 
         String message = "";
         String pageTitle;
-        Integer pageNumber = 1;
+        int pageNumber = 1;
 
         if (args.length != 1 && args.length != 2)
         {
-            p.sendMessage(mainClass.messages.formattedText(ChatColor.RED, usage));
+            p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage));
             return true;
         } else if (args.length == 2)
         {
@@ -77,7 +80,7 @@ public class Help implements CommandExecutor
                 message += (beforeCommand + "§eUsage: §7/drugdealing <page> [page number]\n");
                 message += (beforeCommand + "§eDescription: §7Opens the help menu\n");
                 message += (beforeCommand + "§ePermission node: §7" + Permissions.getPermission("help_menu") + "\n");
-                message += ("§aVersion §2" + mainClass.version + "\n");
+                message += ("§aVersion §2" + plugin.version + "\n");
                 message += footer;
 
                 break;
@@ -147,7 +150,7 @@ public class Help implements CommandExecutor
                 break;
 
             default:
-                p.sendMessage(mainClass.messages.formattedChatMessage("page_not_found"));
+                p.sendMessage(plugin.messages.formattedChatMessage("page_not_found"));
                 return true;
         }
 

@@ -10,13 +10,13 @@ import java.net.URL;
 
 public class UpdateChecker
 {
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     private String spigot_url = "https://api.spigotmc.org/legacy/update.php?resource=%d";
 
     private boolean needs_update = false;
-    private String current_version = mainClass.getDescription().getVersion();
-    private String lastest_version = "";
+    private final String current_version = plugin.getDescription().getVersion();
+    private String latest_version = "";
 
     public UpdateChecker()
     {
@@ -28,7 +28,7 @@ public class UpdateChecker
         try
         {
             //connection
-            spigot_url = String.format(spigot_url, mainClass.getSpigotResourceId());
+            spigot_url = String.format(spigot_url, plugin.getSpigotResourceId());
             URL url = new URL(spigot_url);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -39,7 +39,7 @@ public class UpdateChecker
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
-            StringBuffer content = new StringBuffer();
+            StringBuilder content = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 content.append(inputLine);
             }
@@ -47,9 +47,9 @@ public class UpdateChecker
             if (content.toString().equals("Invalid resource"))
                 return;
 
-            lastest_version = content.toString();
+            latest_version = content.toString();
 
-            if (!current_version.equals(lastest_version))
+            if (!current_version.equals(latest_version))
                 needs_update = true;
 
         } catch (IOException e) { e.printStackTrace(); }
@@ -65,8 +65,8 @@ public class UpdateChecker
         return current_version;
     }
 
-    public String getLastest_version()
+    public String getLatest_version()
     {
-        return lastest_version;
+        return latest_version;
     }
 }

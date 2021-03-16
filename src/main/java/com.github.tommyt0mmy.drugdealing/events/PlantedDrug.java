@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 public class PlantedDrug implements Listener
 {
 
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     @EventHandler
     public void onPlantedDrug(BlockPlaceEvent e)
@@ -29,38 +29,38 @@ public class PlantedDrug implements Listener
 
             //Coke placed
 
-            if (mainClass.drugs.isCokePlantItemStack(placedIS))
+            if (plugin.drugs.isCokePlantItemStack(placedIS))
             {
                 //permissions check
                 if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed"))))
                 {
                     e.setCancelled(true);
-                    p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
+                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
                     return;
                 }
 
-                if (mainClass.drugs.isPlantedOnFarmland(placed))
+                if (plugin.drugs.isPlantedOnFarmland(placed))
                 {
-                    p.sendMessage(mainClass.messages.formattedChatMessage("planted_coke"));
-                    mainClass.plantsreg.addPlant(placed, "coke");
+                    p.sendMessage(plugin.messages.formattedChatMessage("planted_coke"));
+                    plugin.plantsRegister.addPlant(placed, "coke");
                 } else
                 {
-                    p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
+                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_surface"));
                     return;
                 }
             }
 
             //Weed planted
 
-            if (mainClass.drugs.isWeedPlantItemStack(placedIS))
+            if (plugin.drugs.isWeedPlantItemStack(placedIS))
             {
-                if (mainClass.drugs.isPlantedOnFarmland(placed))
+                if (plugin.drugs.isPlantedOnFarmland(placed))
                 {
-                    p.sendMessage(mainClass.messages.formattedChatMessage("planted_weed"));
-                    mainClass.plantsreg.addPlant(placed, "weed");
+                    p.sendMessage(plugin.messages.formattedChatMessage("planted_weed"));
+                    plugin.plantsRegister.addPlant(placed, "weed");
                 } else
                 {
-                    p.sendMessage(mainClass.messages.formattedChatMessage("invalid_surface"));
+                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_surface"));
                     return;
                 }
             }
@@ -69,7 +69,7 @@ public class PlantedDrug implements Listener
         } catch (Exception exception)
         {
             e.setCancelled(true);
-            p.sendMessage(mainClass.messages.formattedChatMessage("unexpected_error"));
+            p.sendMessage(plugin.messages.formattedChatMessage("unexpected_error"));
             exception.printStackTrace();
             return;
         }

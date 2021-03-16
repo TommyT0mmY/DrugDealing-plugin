@@ -16,7 +16,7 @@ public class Messages
         loadMessagesFile();
     }
 
-    private final DrugDealing instance = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     private FileConfiguration messagesConfig;
     private File messagesConfigFile;
@@ -96,13 +96,13 @@ public class Messages
     private void loadMessagesFile()
     { //loading messages.yml
         String fileName = "messages.yml";
-        messagesConfigFile = new File(instance.getDataFolder(), fileName);
+        messagesConfigFile = new File(plugin.getDataFolder(), fileName);
         if (!messagesConfigFile.exists())
         {
             messagesConfigFile.getParentFile().mkdirs();
-            instance.saveResource(fileName, false);
-            instance.getLogger().info("Created messages.yml");
-            instance.getLogger().info("To modify ingame messages edit messages.yml and reload the plugin");
+            plugin.saveResource(fileName, false);
+            plugin.getLogger().info("Created messages.yml");
+            plugin.getLogger().info("To modify ingame messages edit messages.yml and reload the plugin");
         }
 
         messagesConfig = new YamlConfiguration();
@@ -112,7 +112,7 @@ public class Messages
             loadMessages();
         } catch (Exception e)
         {
-            instance.getLogger().severe("Couldn't load messages.yml file properly!");
+            plugin.getLogger().severe("Couldn't load messages.yml file properly!");
         }
     }
 
@@ -143,15 +143,15 @@ public class Messages
                     messagesConfig.save(messagesConfigFile);
                 } else
                 {
-                    instance.getLogger().severe("Couldn't load messages.yml file properly!");
+                    plugin.getLogger().severe("Couldn't load messages.yml file properly!");
                 }
             } catch (Exception e)
             {
-                instance.getLogger().severe("Couldn't load messages.yml file properly!");
+                plugin.getLogger().severe("Couldn't load messages.yml file properly!");
             }
         }
 
-        instance.getLogger().info("Loaded custom messages");
+        plugin.getLogger().info("Loaded custom messages");
     }
 
     private boolean loadMessage(String messagePath)

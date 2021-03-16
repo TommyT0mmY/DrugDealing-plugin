@@ -5,7 +5,6 @@ import java.util.Map;
 
 public class Permissions
 {
-
     @SuppressWarnings("serial")
     private static final Map<String, String> permissionsMap = new HashMap<String, String>()
     {
@@ -31,9 +30,7 @@ public class Permissions
 
     public static String getPermission(String permissionName)
     {
-        String perm = "";
-        perm = permissionsMap.get(permissionName);
-        return perm;
+        return permissionsMap.get(permissionName);
     }
 
 }

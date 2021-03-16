@@ -11,7 +11,7 @@ import java.util.List;
 public class getPlantTabCompleter implements TabCompleter
 {
     @SuppressWarnings("unused")
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args)
@@ -20,12 +20,12 @@ public class getPlantTabCompleter implements TabCompleter
 
         if (args.length == 1)
         {
-            String uncompleteArg = args[0];
-            if ("coke".startsWith(uncompleteArg))
+            String uncompletedArgument = args[0];
+            if ("coke".startsWith(uncompletedArgument))
             {
                 suggestions.add("coke");
             }
-            if ("weed".startsWith(uncompleteArg))
+            if ("weed".startsWith(uncompletedArgument))
             {
                 suggestions.add("weed");
             }

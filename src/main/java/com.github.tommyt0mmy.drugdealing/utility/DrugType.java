@@ -9,9 +9,9 @@ public enum DrugType
     WEED_PRODUCT(true, false, DrugDealing.getInstance().messages.getKeyword("weed_drug_name")),
     COKE_PRODUCT(true, false, DrugDealing.getInstance().messages.getKeyword("coke_drug_name"));
 
-    private boolean isAcceptedByDealer;
-    private boolean isPlant;
-    private String prettyName;
+    private final boolean isAcceptedByDealer;
+    private final boolean isPlant;
+    private final String prettyName;
 
     DrugType(final boolean isAcceptedByDealer, final boolean isPlant, final String prettyName)
     {

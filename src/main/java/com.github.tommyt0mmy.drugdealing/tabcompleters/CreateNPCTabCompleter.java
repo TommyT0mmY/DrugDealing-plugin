@@ -9,7 +9,6 @@ import java.util.List;
 
 public class CreateNPCTabCompleter implements TabCompleter
 {
-
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args)
     {
@@ -17,12 +16,12 @@ public class CreateNPCTabCompleter implements TabCompleter
 
         if (args.length == 1)
         {
-            String uncompleteArg = args[0];
-            if ("producer".startsWith(uncompleteArg))
+            String uncompletedArgument = args[0];
+            if ("producer".startsWith(uncompletedArgument))
             {
                 suggestions.add("producer");
             }
-            if ("dealer".startsWith(uncompleteArg))
+            if ("dealer".startsWith(uncompletedArgument))
             {
                 suggestions.add("dealer");
             }
@@ -30,20 +29,20 @@ public class CreateNPCTabCompleter implements TabCompleter
 
         if (args.length >= 3)
         {
-            String uncompleteArg = args[args.length - 1].toUpperCase();
-            if ("COKE_PRODUCT".startsWith(uncompleteArg))
+            String uncompletedArgument = args[args.length - 1].toUpperCase();
+            if ("COKE_PRODUCT".startsWith(uncompletedArgument))
             {
                 suggestions.add("COKE_PRODUCT");
             }
-            if ("COKE_PLANT".startsWith(uncompleteArg))
+            if ("COKE_PLANT".startsWith(uncompletedArgument))
             {
                 suggestions.add("COKE_PLANT");
             }
-            if ("WEED_PRODUCT".startsWith(uncompleteArg))
+            if ("WEED_PRODUCT".startsWith(uncompletedArgument))
             {
                 suggestions.add("WEED_PRODUCT");
             }
-            if ("WEED_PLANT".startsWith(uncompleteArg))
+            if ("WEED_PLANT".startsWith(uncompletedArgument))
             {
                 suggestions.add("WEED_PLANT");
             }

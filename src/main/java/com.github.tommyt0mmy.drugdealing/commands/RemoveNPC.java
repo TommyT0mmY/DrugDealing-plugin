@@ -11,17 +11,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class RemoveNPC implements CommandExecutor
 {
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        String usage = mainClass.getCommand("removenpc").getUsage().replaceAll("<command>", label); //usage message
+        String usage = plugin.getCommand("removenpc").getUsage().replaceAll("<command>", label); //usage message
         Player p;
 
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(mainClass.messages.formattedChatMessage("only_players_command"));
+            sender.sendMessage(plugin.messages.formattedChatMessage("only_players_command"));
             return true;
         } else
             p = (Player) sender;
@@ -30,35 +30,35 @@ public class RemoveNPC implements CommandExecutor
         {
             if (args.length == 0)
             {
-                p.sendMessage(mainClass.messages.formattedChatMessage("right_click_npc_to_delete"));
-                if (mainClass.toRemoveNPCS.contains(p.getUniqueId()))
+                p.sendMessage(plugin.messages.formattedChatMessage("right_click_npc_to_delete"));
+                if (plugin.toRemoveNPCs.contains(p.getUniqueId()))
                 {
                     return true;
                 }
 
-                mainClass.toRemoveNPCS.add(p.getUniqueId());
+                plugin.toRemoveNPCs.add(p.getUniqueId());
 
                 //one minute timer
                 new BukkitRunnable()
                 {
                     public void run()
                     {
-                        if (mainClass.toRemoveNPCS.contains(p.getUniqueId()))
+                        if (plugin.toRemoveNPCs.contains(p.getUniqueId()))
                         {
-                            mainClass.toRemoveNPCS.remove(p.getUniqueId());
-                            p.sendMessage(mainClass.messages.formattedChatMessage("removenpc_time_is_up").replaceAll("<COMMAND>", label));
+                            plugin.toRemoveNPCs.remove(p.getUniqueId());
+                            p.sendMessage(plugin.messages.formattedChatMessage("removenpc_time_is_up").replaceAll("<COMMAND>", label));
                         }
                         cancel();
                     }
-                }.runTaskTimer(mainClass, 60 * 20, 1);
+                }.runTaskTimer(plugin, 60 * 20, 1);
 
             } else
             {
-                p.sendMessage(mainClass.messages.formattedText(ChatColor.RED, usage));
+                p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage));
             }
         } else
         {
-            p.sendMessage(mainClass.messages.formattedChatMessage("invalid_permission"));
+            p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
         }
         return true;
     }

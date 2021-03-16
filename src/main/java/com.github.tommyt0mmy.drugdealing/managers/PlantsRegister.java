@@ -19,8 +19,7 @@ import java.util.Random;
 
 public class PlantsRegister
 {
-
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     public PlantsRegister()
     {
@@ -32,12 +31,12 @@ public class PlantsRegister
 
     private void loadRegister()
     { //loading plants.yml
-        registerConfigFile = new File(mainClass.datafolder, "plants.yml");
+        registerConfigFile = new File(plugin.dataFolder, "plants.yml");
         if (!registerConfigFile.exists())
         {
             registerConfigFile.getParentFile().mkdirs();
-            mainClass.saveResource("plants.yml", false);
-            mainClass.console.info("Created file plants.yml");
+            plugin.saveResource("plants.yml", false);
+            plugin.console.info("Created file plants.yml");
         }
 
         registerConfig = new YamlConfiguration();
@@ -46,18 +45,18 @@ public class PlantsRegister
             registerConfig.load(registerConfigFile);
         } catch (Exception e)
         {
-            mainClass.console.severe("Couldn't load plants.yml file properly!");
+            plugin.console.severe("Couldn't load plants.yml file properly!");
         }
     }
 
     private int randomGrowthTime()
     {
         int currentTime = (int) (System.currentTimeMillis() / 1000L);
-        int minTime = mainClass.configs.getConfigs().getInt("growthTimeMin");
-        int maxTime = mainClass.configs.getConfigs().getInt("growthTimeMax");
+        int minTime = plugin.configs.getConfigs().getInt("growthTimeMin");
+        int maxTime = plugin.configs.getConfigs().getInt("growthTimeMax");
         Random randomGenerator = new Random();
         int randomTime = randomGenerator.nextInt(maxTime) + minTime;
-        return (int) (currentTime + randomTime);
+        return currentTime + randomTime;
     }
 
     public void addPlant(Block plant, String type)
@@ -78,14 +77,13 @@ public class PlantsRegister
         try
         {
             registerConfig.save(registerConfigFile);
-        } catch (IOException e) {mainClass.console.severe("Couldn't save plants.yml file properly!");}
-        return;
+        } catch (IOException e) {plugin.console.severe("Couldn't save plants.yml file properly!");}
     }
 
-    public boolean removePlant(Location loc)
+    public void removePlant(Location loc)
     {
         String plantName = getPlantPath(loc);
-        if (plantName != "")
+        if (!plantName.equals(""))
         {
             registerConfig.set(plantName, null);
 
@@ -93,17 +91,15 @@ public class PlantsRegister
             try
             {
                 registerConfig.save(registerConfigFile);
-            } catch (IOException e) {mainClass.console.severe("Couldn't save plants.yml file properly!");}
-            return true;
+            } catch (IOException e) {plugin.console.severe("Couldn't save plants.yml file properly!");}
         }
-        return false;
     }
 
     public String getType(Location loc)
     {
         String type = "";
         String plantPath = getPlantPath(loc);
-        if (plantPath != "")
+        if (!plantPath.equals(""))
         {
             type = (String) registerConfig.get(plantPath + ".type");
         }
@@ -112,12 +108,9 @@ public class PlantsRegister
 
     public int getGrowthTime(Location loc)
     {
-        int growthTime = 0;
+        int growthTime;
         String plantPath = getPlantPath(loc);
-        if (plantPath != null)
-        {
-            growthTime = registerConfig.getInt(plantPath + ".growthTime");
-        }
+        growthTime = registerConfig.getInt(plantPath + ".growthTime");
         return growthTime;
     }
 
@@ -135,7 +128,7 @@ public class PlantsRegister
 
     public boolean isDrugPlant(Location loc)
     {
-        return getPlantPath(loc) != "";
+        return !getPlantPath(loc).equals("");
     }
 
     private String getPlantPath(Location loc)

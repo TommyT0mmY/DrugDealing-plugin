@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class RemoveUprootedPlants implements Listener
 {
 
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     @EventHandler
     public void removeUprooted(PlayerInteractEvent event)
@@ -46,9 +46,9 @@ public class RemoveUprootedPlants implements Listener
         { //if broken block isn't a plant base
             if (!removeProcedure(aboveBlock, false, dropItems))
             { //if the broken block isn't the soil of the plant
-                if (mainClass.plantsreg.isDrugPlant(belowBlock.getLocation()))
+                if (plugin.plantsRegister.isDrugPlant(belowBlock.getLocation()))
                 { //if the broken block isn't the second part of a grown plant
-                    if (mainClass.plantsreg.isGrown(belowBlock))
+                    if (plugin.plantsRegister.isGrown(belowBlock))
                     {
                         removeProcedure(belowBlock, false, dropItems);
                     }
@@ -61,7 +61,7 @@ public class RemoveUprootedPlants implements Listener
     public void removeDestroyedByLiquid(BlockFromToEvent event)
     {
         Block destinationBlock = event.getToBlock();
-        if (mainClass.plantsreg.isDrugPlant(destinationBlock.getLocation()))
+        if (plugin.plantsRegister.isDrugPlant(destinationBlock.getLocation()))
         {
             removeProcedure(destinationBlock, false, true);
         }
@@ -85,9 +85,9 @@ public class RemoveUprootedPlants implements Listener
         }
 
         //checking plant
-        if (mainClass.plantsreg.isDrugPlant(plantBaseLocation))
+        if (plugin.plantsRegister.isDrugPlant(plantBaseLocation))
         {
-            mainClass.drugs.destroyPlant(plantBase, dropItems); //removing the plant
+            plugin.drugs.destroyPlant(plantBase, dropItems); //removing the plant
             return true;
         }
         return false;

@@ -24,7 +24,6 @@ import com.github.tommyt0mmy.drugdealing.utility.Messages;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.*;
@@ -35,18 +34,19 @@ public class DrugDealing extends JavaPlugin
 
     private static DrugDealing instance;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final int spigotResourceId = 82163;
     private final String spigotResourceUrl = "https://www.spigotmc.org/resources/drugdealing.82163/";
 
-    public Logger console = getLogger();
+    public final Logger console = getLogger();
     public static Economy economy = null;
-    public File datafolder = null;
+    public File dataFolder = null;
     public Messages messages = null;
     public Drugs drugs = null;
-    public PlantsRegister plantsreg = null;
-    public NpcRegister npcsreg = null;
+    public PlantsRegister plantsRegister = null;
+    public NpcRegister npcRegister = null;
     public Configs configs = null;
-    public List<UUID> toRemoveNPCS = new ArrayList<>();
+    public List<UUID> toRemoveNPCs = new ArrayList<>();
     public String version = getDescription().getVersion();
 
     public static DrugDealing getInstance()
@@ -54,22 +54,21 @@ public class DrugDealing extends JavaPlugin
         return instance;
     }
 
-    @SuppressWarnings("static-access")
     private void setInstance(DrugDealing instance)
     {
-        this.instance = instance;
+        DrugDealing.instance = instance;
     }
 
     public void onEnable()
     {
         setInstance(this);
 
-        datafolder = getDataFolder();
+        dataFolder = getDataFolder();
         messages = new Messages();
         drugs = new Drugs();
-        plantsreg = new PlantsRegister();
+        plantsRegister = new PlantsRegister();
         configs = new Configs();
-        npcsreg = new NpcRegister();
+        npcRegister = new NpcRegister();
 
         Objects.requireNonNull(getCommand("drugdealing")).setExecutor(new Help());
         Objects.requireNonNull(getCommand("drugdealing")).setTabCompleter(new HelpTabCompleter());
@@ -88,7 +87,7 @@ public class DrugDealing extends JavaPlugin
         getServer().getPluginManager().registerEvents(new ConsumedDrug(), this);
         getServer().getPluginManager().registerEvents(new onPlayerJoin(), this);
 
-        BukkitTask task1 = new PlantsUpdater(this).runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
+        new PlantsUpdater().runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
 
         //checking for updates
         UpdateChecker updateChecker = new UpdateChecker();
@@ -96,7 +95,7 @@ public class DrugDealing extends JavaPlugin
         {
             console.info("An update for DrugDealing is available at:");
             console.info(spigotResourceUrl);
-            console.info(String.format("Installed version: %s Lastest version: %s", updateChecker.getCurrent_version(), updateChecker.getLastest_version()));
+            console.info(String.format("Installed version: %s Lastest version: %s", updateChecker.getCurrent_version(), updateChecker.getLatest_version()));
         }
 
         if (!setupEconomy())

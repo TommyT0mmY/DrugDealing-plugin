@@ -12,31 +12,26 @@ import java.util.List;
 
 public class PlantsUpdater extends BukkitRunnable
 {
-    private DrugDealing mainClass;
-
-    public PlantsUpdater(DrugDealing mainClass)
-    {
-        this.mainClass = mainClass;
-    }
+    private final DrugDealing plugin = DrugDealing.getInstance();
 
     @Override
     public void run()
     {
-        List<ConfigurationSection> plantsCS = mainClass.plantsreg.getPlants();
+        List<ConfigurationSection> plantsCS = plugin.plantsRegister.getPlants();
         for (ConfigurationSection currentPlant : plantsCS)
         {
-            Location currLoc = mainClass.plantsreg.getPlantLocation(currentPlant);
+            Location currLoc = plugin.plantsRegister.getPlantLocation(currentPlant);
             //playing particle
             currLoc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, currLoc.getBlockX() + 0.5, currLoc.getBlockY(), currLoc.getBlockZ() + 0.5, 2, 0.3, 0.3, 0.3);
             //check if still planted on farmland
-            if (!mainClass.drugs.isPlantedOnFarmland(currLoc.getBlock()))
+            if (!plugin.drugs.isPlantedOnFarmland(currLoc.getBlock()))
             {
-                mainClass.drugs.destroyPlant(currLoc.getBlock(), true);
+                plugin.drugs.destroyPlant(currLoc.getBlock(), true);
             }
             //checking if some plants need to grow up
             if (hasToGrow(currLoc))
             {
-                mainClass.drugs.growPlant(currLoc);
+                plugin.drugs.growPlant(currLoc);
             }
         }
     }
@@ -44,11 +39,7 @@ public class PlantsUpdater extends BukkitRunnable
     public boolean hasToGrow(Location loc)
     {
         int currentTime = (int) (System.currentTimeMillis() / 1000L);
-        int plantsGrowthTime = mainClass.plantsreg.getGrowthTime(loc);
-        if (plantsGrowthTime - currentTime <= 0)
-        {
-            return true;
-        }
-        return false;
+        int plantsGrowthTime = plugin.plantsRegister.getGrowthTime(loc);
+        return plantsGrowthTime - currentTime <= 0;
     }
 }

@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class onPlayerJoin implements Listener
 {
-    DrugDealing mainClass = DrugDealing.getInstance();
-    UpdateChecker updateChecker = new UpdateChecker();
+    private final DrugDealing plugin = DrugDealing.getInstance();
+    private final UpdateChecker updateChecker = new UpdateChecker();
 
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent e)
@@ -22,8 +22,8 @@ public class onPlayerJoin implements Listener
             if (updateChecker.needsUpdate())
             {
                 p.sendMessage("§aAn update for §6DrugDealing§a is available at");
-                p.sendMessage("§6" + mainClass.getSpigotResourceUrl());
-                p.sendMessage(String.format("§aInstalled version: §e%s§a Lastest version: §e%s§r", updateChecker.getCurrent_version(), updateChecker.getLastest_version()));
+                p.sendMessage("§6" + plugin.getSpigotResourceUrl());
+                p.sendMessage(String.format("§aInstalled version: §e%s§a Lastest version: §e%s§r", updateChecker.getCurrent_version(), updateChecker.getLatest_version()));
             }
         }
     }
