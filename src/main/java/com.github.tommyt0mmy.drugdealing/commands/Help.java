@@ -1,3 +1,5 @@
+//command 'help'
+
 package com.github.tommyt0mmy.drugdealing.commands;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
