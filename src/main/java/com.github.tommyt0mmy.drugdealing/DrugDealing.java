@@ -36,7 +36,6 @@ public class DrugDealing extends JavaPlugin
     private static DrugDealing instance;
 
     private final int spigotResourceId = 82163;
-
     private final String spigotResourceUrl = "https://www.spigotmc.org/resources/drugdealing.82163/";
 
     public Logger console = getLogger();
@@ -64,10 +63,6 @@ public class DrugDealing extends JavaPlugin
     public void onEnable()
     {
         setInstance(this);
-        loadVault();
-        loadCommands();
-        loadEvents();
-        loadManagers();
 
         datafolder = getDataFolder();
         messages = new Messages();
@@ -75,6 +70,25 @@ public class DrugDealing extends JavaPlugin
         plantsreg = new PlantsRegister();
         configs = new Configs();
         npcsreg = new NpcRegister();
+
+        Objects.requireNonNull(getCommand("drugdealing")).setExecutor(new Help());
+        Objects.requireNonNull(getCommand("drugdealing")).setTabCompleter(new HelpTabCompleter());
+        Objects.requireNonNull(getCommand("getplant")).setExecutor(new GetPlant());
+        Objects.requireNonNull(getCommand("getplant")).setTabCompleter(new getPlantTabCompleter());
+        Objects.requireNonNull(getCommand("getdrug")).setExecutor(new GetDrug());
+        Objects.requireNonNull(getCommand("getdrug")).setTabCompleter(new getDrugTabCompleter());
+        Objects.requireNonNull(getCommand("setnpc")).setExecutor(new CreateNPC());
+        Objects.requireNonNull(getCommand("setnpc")).setTabCompleter(new CreateNPCTabCompleter());
+        Objects.requireNonNull(getCommand("removenpc")).setExecutor(new RemoveNPC());
+
+        getServer().getPluginManager().registerEvents(new PlantedDrug(), this);
+        getServer().getPluginManager().registerEvents(new RemoveUprootedPlants(), this);
+        getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(), this);
+        getServer().getPluginManager().registerEvents(new NpcInteractions(), this);
+        getServer().getPluginManager().registerEvents(new ConsumedDrug(), this);
+        getServer().getPluginManager().registerEvents(new onPlayerJoin(), this);
+
+        BukkitTask task1 = new PlantsUpdater(this).runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
 
         //checking for updates
         UpdateChecker updateChecker = new UpdateChecker();
@@ -85,7 +99,13 @@ public class DrugDealing extends JavaPlugin
             console.info(String.format("Installed version: %s Lastest version: %s", updateChecker.getCurrent_version(), updateChecker.getLastest_version()));
         }
 
-        console.info("Loaded successfully");
+        if (!setupEconomy())
+        {
+            console.severe("Invalid economy system, disabling plugin!");
+            getServer().getPluginManager().disablePlugin(this);
+        } else {
+            console.info("Loaded successfully");
+        }
     }
 
     public void onDisable()
@@ -106,44 +126,6 @@ public class DrugDealing extends JavaPlugin
         }
         economy = rsp.getProvider();
         return economy != null;
-    }
-
-    private void loadVault()
-    {
-        if (!setupEconomy())
-        {
-            console.severe("Disabled due to no Vault economy found!");
-            getServer().getPluginManager().disablePlugin(this);
-        }
-    }
-
-    private void loadCommands()
-    {
-        getCommand("drugdealing").setExecutor(new Help());
-        getCommand("drugdealing").setTabCompleter(new HelpTabCompleter());
-        getCommand("getplant").setExecutor(new GetPlant());
-        getCommand("getplant").setTabCompleter(new getPlantTabCompleter());
-        getCommand("getdrug").setExecutor(new GetDrug());
-        getCommand("getdrug").setTabCompleter(new getDrugTabCompleter());
-        getCommand("setnpc").setExecutor(new CreateNPC());
-        getCommand("setnpc").setTabCompleter(new CreateNPCTabCompleter());
-        getCommand("removenpc").setExecutor(new RemoveNPC());
-    }
-
-    private void loadEvents()
-    {
-        getServer().getPluginManager().registerEvents(new PlantedDrug(), this);
-        getServer().getPluginManager().registerEvents(new RemoveUprootedPlants(), this);
-        getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(), this);
-        getServer().getPluginManager().registerEvents(new NpcInteractions(), this);
-        getServer().getPluginManager().registerEvents(new ConsumedDrug(), this);
-        getServer().getPluginManager().registerEvents(new onPlayerJoin(), this);
-    }
-
-    @SuppressWarnings("unused")
-    private void loadManagers()
-    {
-        BukkitTask task1 = new PlantsUpdater(this).runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
     }
 
     public int getSpigotResourceId()
