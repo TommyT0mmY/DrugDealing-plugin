@@ -50,8 +50,8 @@ public class PlantsRegister
     private int randomGrowthTime()
     {
         int currentTime = (int) (System.currentTimeMillis() / 1000L);
-        int minTime = plugin.configs.getConfigs().getInt("growthTimeMin");
-        int maxTime = plugin.configs.getConfigs().getInt("growthTimeMax");
+        int minTime = plugin.settings.getFileConfiguration().getInt("growthTimeMin");
+        int maxTime = plugin.settings.getFileConfiguration().getInt("growthTimeMax");
         Random randomGenerator = new Random();
         int randomTime = randomGenerator.nextInt(maxTime) + minTime;
         return currentTime + randomTime;

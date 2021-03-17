@@ -21,7 +21,7 @@ public class RemoveNPC implements CommandExecutor
 
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(plugin.messages.formattedChatMessage("only_players_command"));
+            sender.sendMessage(plugin.language.formattedChatMessage("only_players_command"));
             return true;
         } else
             p = (Player) sender;
@@ -30,7 +30,7 @@ public class RemoveNPC implements CommandExecutor
         {
             if (args.length == 0)
             {
-                p.sendMessage(plugin.messages.formattedChatMessage("right_click_npc_to_delete"));
+                p.sendMessage(plugin.language.formattedChatMessage("right_click_npc_to_delete"));
                 if (plugin.toRemoveNPCs.contains(p.getUniqueId()))
                 {
                     return true;
@@ -46,7 +46,7 @@ public class RemoveNPC implements CommandExecutor
                         if (plugin.toRemoveNPCs.contains(p.getUniqueId()))
                         {
                             plugin.toRemoveNPCs.remove(p.getUniqueId());
-                            p.sendMessage(plugin.messages.formattedChatMessage("removenpc_time_is_up").replaceAll("<COMMAND>", label));
+                            p.sendMessage(plugin.language.formattedChatMessage("removenpc_time_is_up").replaceAll("<COMMAND>", label));
                         }
                         cancel();
                     }
@@ -54,11 +54,11 @@ public class RemoveNPC implements CommandExecutor
 
             } else
             {
-                p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage));
+                p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage));
             }
         } else
         {
-            p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+            p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
         }
         return true;
     }

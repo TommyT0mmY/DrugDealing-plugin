@@ -20,7 +20,7 @@ public class GetDrug implements CommandExecutor
     {
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(plugin.messages.getChatMessage("only_players_command"));
+            sender.sendMessage(plugin.language.getChatMessage("only_players_command"));
             return true;
         }
         Player p = (Player) sender;
@@ -28,13 +28,13 @@ public class GetDrug implements CommandExecutor
 
         if (!p.hasPermission(Permissions.getPermission("getdrug_weed")) || !p.hasPermission(Permissions.getPermission("getdrug_coke")))
         {
-            p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+            p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
             return true;
         }
 
         if (args.length != 1)
         {
-            p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage));
+            p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage));
             return true;
         }
 
@@ -43,25 +43,25 @@ public class GetDrug implements CommandExecutor
             case "coke":
                 if (!p.hasPermission(Permissions.getPermission("getdrug_coke")))
                 {
-                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+                    p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
                     break;
                 }
 
                 p.getInventory().addItem(plugin.drugs.getCokeDrugItemStack());
-                p.sendMessage(plugin.messages.formattedChatMessage("received_coke_drug"));
+                p.sendMessage(plugin.language.formattedChatMessage("received_coke_drug"));
                 break;
             case "weed":
                 if (!p.hasPermission(Permissions.getPermission("getdrug_weed")))
                 {
-                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+                    p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
                     break;
                 }
 
                 p.getInventory().addItem(plugin.drugs.getWeedDrugItemStack());
-                p.sendMessage(plugin.messages.formattedChatMessage("received_weed_drug"));
+                p.sendMessage(plugin.language.formattedChatMessage("received_weed_drug"));
                 break;
             default:
-                p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage));
+                p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage));
                 break;
         }
 

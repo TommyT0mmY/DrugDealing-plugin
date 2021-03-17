@@ -38,9 +38,9 @@ public class Drugs
         coke_plant = new ItemStack(Material.POPPY);
         ItemMeta cokePlantMeta = coke_plant.getItemMeta();
         List<String> cokePlantLore = new ArrayList<>();
-        cokePlantLore.add(mainClass.messages.getKeyword("coke_plant_name"));
+        cokePlantLore.add(mainClass.language.getKeyword("coke_plant_name"));
         cokePlantMeta.setLore(cokePlantLore);
-        cokePlantMeta.setDisplayName(mainClass.messages.getKeyword("coke_plant_name"));
+        cokePlantMeta.setDisplayName(mainClass.language.getKeyword("coke_plant_name"));
         coke_plant.setItemMeta(cokePlantMeta);
 
         //weed plant ItemStack
@@ -48,9 +48,9 @@ public class Drugs
         weed_plant = new ItemStack(Material.JUNGLE_SAPLING);
         ItemMeta weedPlantMeta = weed_plant.getItemMeta();
         List<String> weedPlantLore = new ArrayList<>();
-        weedPlantLore.add(mainClass.messages.getKeyword("weed_plant_name"));
+        weedPlantLore.add(mainClass.language.getKeyword("weed_plant_name"));
         weedPlantMeta.setLore(weedPlantLore);
-        weedPlantMeta.setDisplayName(mainClass.messages.getKeyword("weed_plant_name"));
+        weedPlantMeta.setDisplayName(mainClass.language.getKeyword("weed_plant_name"));
         weed_plant.setItemMeta(weedPlantMeta);
 
         //coke drug ItemStack
@@ -58,9 +58,9 @@ public class Drugs
         coke_drug = new ItemStack(Material.SUGAR);
         ItemMeta cokeDrugItemMeta = coke_drug.getItemMeta();
         List<String> cokeDrugLore = new ArrayList<>();
-        cokeDrugLore.add(mainClass.messages.getKeyword("coke_drug_name"));
+        cokeDrugLore.add(mainClass.language.getKeyword("coke_drug_name"));
         cokeDrugItemMeta.setLore(cokeDrugLore);
-        cokeDrugItemMeta.setDisplayName(mainClass.messages.getKeyword("coke_drug_name"));
+        cokeDrugItemMeta.setDisplayName(mainClass.language.getKeyword("coke_drug_name"));
         coke_drug.setItemMeta(cokeDrugItemMeta);
 
         //weed drug ItemStack
@@ -68,9 +68,9 @@ public class Drugs
         weed_drug = new ItemStack(Material.CACTUS_GREEN);
         ItemMeta weedDrugItemMeta = coke_drug.getItemMeta();
         List<String> weedDrugLore = new ArrayList<>();
-        weedDrugLore.add(mainClass.messages.getKeyword("weed_drug_name"));
+        weedDrugLore.add(mainClass.language.getKeyword("weed_drug_name"));
         weedDrugItemMeta.setLore(weedDrugLore);
-        weedDrugItemMeta.setDisplayName(mainClass.messages.getKeyword("weed_drug_name"));
+        weedDrugItemMeta.setDisplayName(mainClass.language.getKeyword("weed_drug_name"));
         weed_drug.setItemMeta(weedDrugItemMeta);
     }
 
@@ -90,7 +90,7 @@ public class Drugs
 
     public boolean isCokePlantItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a coke plant item
-        String coke_plant_name = mainClass.messages.getKeyword("coke_plant_name");
+        String coke_plant_name = mainClass.language.getKeyword("coke_plant_name");
         if (toCheckIS.getType().equals(Material.POPPY))
         { //checking type
             if (toCheckIS.hasItemMeta())
@@ -108,7 +108,7 @@ public class Drugs
 
     public boolean isWeedPlantItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a weed plant item
-        String weed_plant_name = mainClass.messages.getKeyword("weed_plant_name");
+        String weed_plant_name = mainClass.language.getKeyword("weed_plant_name");
         if (toCheckIS.getType().equals(Material.JUNGLE_SAPLING))
         {
             if (toCheckIS.hasItemMeta())
@@ -126,7 +126,7 @@ public class Drugs
 
     public boolean isCokeDrugItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a coke item
-        String coke_drug_name = mainClass.messages.getKeyword("coke_drug_name");
+        String coke_drug_name = mainClass.language.getKeyword("coke_drug_name");
         if (toCheckIS.getType().equals(Material.SUGAR))
         { //checking type
             if (toCheckIS.hasItemMeta())
@@ -144,7 +144,7 @@ public class Drugs
 
     public boolean isWeedDrugItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a weed item
-        String weed_drug_name = mainClass.messages.getKeyword("weed_drug_name");
+        String weed_drug_name = mainClass.language.getKeyword("weed_drug_name");
         if (toCheckIS.getType().equals(Material.CACTUS_GREEN))
         {
             if (toCheckIS.hasItemMeta())

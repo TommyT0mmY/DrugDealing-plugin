@@ -22,7 +22,7 @@ public class PreventSaplingGrowth implements Listener
             if (e.isFromBonemeal())
             {
                 Player p = e.getPlayer();
-                p.sendMessage(plugin.messages.formattedChatMessage("cannot_grow_weed"));
+                p.sendMessage(plugin.language.formattedChatMessage("cannot_grow_weed"));
             }
         }
     }

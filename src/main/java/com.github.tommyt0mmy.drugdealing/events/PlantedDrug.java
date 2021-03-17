@@ -35,17 +35,17 @@ public class PlantedDrug implements Listener
                 if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed"))))
                 {
                     e.setCancelled(true);
-                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+                    p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
                     return;
                 }
 
                 if (plugin.drugs.isPlantedOnFarmland(placed))
                 {
-                    p.sendMessage(plugin.messages.formattedChatMessage("planted_coke"));
+                    p.sendMessage(plugin.language.formattedChatMessage("planted_coke"));
                     plugin.plantsRegister.addPlant(placed, "coke");
                 } else
                 {
-                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_surface"));
+                    p.sendMessage(plugin.language.formattedChatMessage("invalid_surface"));
                     return;
                 }
             }
@@ -56,11 +56,11 @@ public class PlantedDrug implements Listener
             {
                 if (plugin.drugs.isPlantedOnFarmland(placed))
                 {
-                    p.sendMessage(plugin.messages.formattedChatMessage("planted_weed"));
+                    p.sendMessage(plugin.language.formattedChatMessage("planted_weed"));
                     plugin.plantsRegister.addPlant(placed, "weed");
                 } else
                 {
-                    p.sendMessage(plugin.messages.formattedChatMessage("invalid_surface"));
+                    p.sendMessage(plugin.language.formattedChatMessage("invalid_surface"));
                     return;
                 }
             }
@@ -69,7 +69,7 @@ public class PlantedDrug implements Listener
         } catch (Exception exception)
         {
             e.setCancelled(true);
-            p.sendMessage(plugin.messages.formattedChatMessage("unexpected_error"));
+            p.sendMessage(plugin.language.formattedChatMessage("unexpected_error"));
             exception.printStackTrace();
             return;
         }

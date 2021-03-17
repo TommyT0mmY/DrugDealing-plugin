@@ -49,7 +49,7 @@ public class ConsumedDrug implements Listener
                 p.getInventory().getItemInMainHand().setAmount(itemInHand.getAmount() - 1);
                 PotionEffect cokeEffect = new PotionEffect(PotionEffectType.SPEED, 600, 0);
                 p.addPotionEffect(cokeEffect);
-                p.sendMessage(plugin.messages.formattedChatMessage("consumed_coke"));
+                p.sendMessage(plugin.language.formattedChatMessage("consumed_coke"));
 
                 //Starting the timeout
                 new BukkitRunnable()
@@ -63,7 +63,7 @@ public class ConsumedDrug implements Listener
 
             } else
             {
-                p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+                p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
             }
         }
     }

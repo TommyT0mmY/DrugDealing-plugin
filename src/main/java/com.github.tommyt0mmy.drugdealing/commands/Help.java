@@ -30,14 +30,14 @@ public class Help implements CommandExecutor
 
         if (!(sender instanceof Player))
         {
-            sender.sendMessage(plugin.messages.formattedChatMessage("only_players_command"));
+            sender.sendMessage(plugin.language.formattedChatMessage("only_players_command"));
             return true;
         } else
             p = (Player) sender;
 
         if (!p.hasPermission(Permissions.getPermission("help_menu")))
         {
-            p.sendMessage(plugin.messages.getChatMessage("invalid_permission"));
+            p.sendMessage(plugin.language.getChatMessage("invalid_permission"));
             return true;
         }
 
@@ -47,7 +47,7 @@ public class Help implements CommandExecutor
 
         if (args.length != 1 && args.length != 2)
         {
-            p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage));
+            p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage));
             return true;
         } else if (args.length == 2)
         {
@@ -152,7 +152,7 @@ public class Help implements CommandExecutor
                 break;
 
             default:
-                p.sendMessage(plugin.messages.formattedChatMessage("page_not_found"));
+                p.sendMessage(plugin.language.formattedChatMessage("page_not_found"));
                 return true;
         }
 

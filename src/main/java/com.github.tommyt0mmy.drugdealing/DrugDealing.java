@@ -19,8 +19,8 @@ import com.github.tommyt0mmy.drugdealing.tabcompleters.CreateNPCTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.HelpTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getDrugTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getPlantTabCompleter;
-import com.github.tommyt0mmy.drugdealing.utility.Configs;
-import com.github.tommyt0mmy.drugdealing.utility.Messages;
+import com.github.tommyt0mmy.drugdealing.utility.Language;
+import com.github.tommyt0mmy.drugdealing.utility.Settings;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,11 +42,11 @@ public class DrugDealing extends JavaPlugin
     private final int spigotResourceId = 82163;
     private final String spigotResourceUrl = "https://www.spigotmc.org/resources/drugdealing.82163/";
     public File dataFolder = null;
-    public Messages messages = null;
+    public Language language = null;
     public Drugs drugs = null;
     public PlantsRegister plantsRegister = null;
     public NpcRegister npcRegister = null;
-    public Configs configs = null;
+    public Settings settings = null;
     public List<UUID> toRemoveNPCs = new ArrayList<>();
     public String version = getDescription().getVersion();
 
@@ -65,10 +65,10 @@ public class DrugDealing extends JavaPlugin
         setInstance(this);
 
         dataFolder = getDataFolder();
-        messages = new Messages();
+        language = new Language(this);
         drugs = new Drugs();
         plantsRegister = new PlantsRegister();
-        configs = new Configs();
+        settings = new Settings(this);
         npcRegister = new NpcRegister();
 
         Objects.requireNonNull(getCommand("drugdealing")).setExecutor(new Help());

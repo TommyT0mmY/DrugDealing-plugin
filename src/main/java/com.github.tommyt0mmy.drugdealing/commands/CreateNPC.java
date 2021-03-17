@@ -27,7 +27,7 @@ public class CreateNPC implements CommandExecutor
     {
         if (!(sender instanceof Player))
         { //if the sender isn't a player
-            sender.sendMessage(plugin.messages.getChatMessage("only_players_command")); //sending player error message
+            sender.sendMessage(plugin.language.getChatMessage("only_players_command")); //sending player error message
             return true;
         }
         Player p = (Player) sender;
@@ -36,7 +36,7 @@ public class CreateNPC implements CommandExecutor
 
         if (args.length < 2)
         {
-            p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage)); //sending player usage message
+            p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage)); //sending player usage message
             return true;
         }
 
@@ -46,7 +46,7 @@ public class CreateNPC implements CommandExecutor
 
         if (args[1].length() > 12)
         { //do not remove
-            p.sendMessage(plugin.messages.formattedChatMessage("name_too_long")); //sending player error message
+            p.sendMessage(plugin.language.formattedChatMessage("name_too_long")); //sending player error message
             return true;
         }
 
@@ -54,16 +54,16 @@ public class CreateNPC implements CommandExecutor
         {
             case "producer":
                 role = CriminalRole.PRODUCER;
-                p.sendMessage(plugin.messages.formattedChatMessage("spawned_producer"));
+                p.sendMessage(plugin.language.formattedChatMessage("spawned_producer"));
                 name = ("§a" + args[1]).trim();
                 break;
             case "dealer":
                 role = CriminalRole.DEALER;
-                p.sendMessage(plugin.messages.formattedChatMessage("spawned_dealer"));
+                p.sendMessage(plugin.language.formattedChatMessage("spawned_dealer"));
                 name = ("§6" + args[1]).trim();
                 break;
             default:
-                p.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage)); //sending player usage message
+                p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage)); //sending player usage message
                 return true;
         }
 
@@ -95,7 +95,7 @@ public class CreateNPC implements CommandExecutor
 
     private void IllegalNotAcceptedDrugTypeMessage(Player receiver, String usage, String label)
     { // long message repeated two times
-        receiver.sendMessage(plugin.messages.formattedText(ChatColor.RED, usage)); //sending player usage message
+        receiver.sendMessage(plugin.language.formattedText(ChatColor.RED, usage)); //sending player usage message
         receiver.sendMessage("§cAccepted drug types: WEED_PLANT, WEED_PRODUCT, COKE_PLANT and COKE_PRODUCT");
         receiver.sendMessage("§c" + String.format("Command example: /%s Dealer Bob WEED_PRODUCT", label));
     }

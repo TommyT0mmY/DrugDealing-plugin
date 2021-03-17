@@ -35,14 +35,14 @@ public class NpcInteractions implements Listener
                     case DEALER:
                         if (!p.hasPermission(Permissions.getPermission("remove_dealer")))
                         {
-                            p.sendMessage(plugin.messages.formattedChatMessage("remove_dealer_invalid_permission"));
+                            p.sendMessage(plugin.language.formattedChatMessage("remove_dealer_invalid_permission"));
                             plugin.toRemoveNPCs.remove(p.getUniqueId());
                             return;
                         }
                     case PRODUCER:
                         if (!p.hasPermission(Permissions.getPermission("remove_producer")))
                         {
-                            p.sendMessage(plugin.messages.formattedChatMessage("remove_producer_invalid_permission"));
+                            p.sendMessage(plugin.language.formattedChatMessage("remove_producer_invalid_permission"));
                             plugin.toRemoveNPCs.remove(p.getUniqueId());
                             return;
                         }
@@ -52,7 +52,7 @@ public class NpcInteractions implements Listener
                 npc.destroy();
 
                 plugin.toRemoveNPCs.remove(p.getUniqueId());
-                p.sendMessage(plugin.messages.formattedChatMessage("removenpc_success"));
+                p.sendMessage(plugin.language.formattedChatMessage("removenpc_success"));
                 return;
             }
 
@@ -67,24 +67,24 @@ public class NpcInteractions implements Listener
                 case DEALER:
                     if (!p.hasPermission("use_dealer"))
                     {
-                        p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+                        p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
                     }
 
                     if (drugType == null)
                     { //if it isn't a drug item
-                        p.sendMessage(DealerFormattedMessage(plugin.messages.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
+                        p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
                         return;
                     }
                     //checks if the player clicked with a plant, plants cannot be sold
                     if (drugType.isPlant())
                     {
-                        p.sendMessage(DealerFormattedMessage(plugin.messages.getChatMessage("cannot_sell_plants"), npcName, null, null, null));
+                        p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("cannot_sell_plants"), npcName, null, null, null));
 
                         //if sold item is accepted
                     } else if (drugType.isAcceptedByDealer())
                     {
                         //Getting product price
-                        FileConfiguration configs = plugin.configs.getConfigs();
+                        FileConfiguration configs = plugin.settings.getFileConfiguration();
                         double price = 0;
                         switch (drugType)
                         {
@@ -106,39 +106,39 @@ public class NpcInteractions implements Listener
 
                         if (amount == 1)
                         {
-                            p.sendMessage(DealerFormattedMessage(plugin.messages.getChatMessage("dealer_bought_item"), npcName, 1, drugType.getPrettyName(), price));
+                            p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_bought_item"), npcName, 1, drugType.getPrettyName(), price));
                         } else
                         {
-                            p.sendMessage(DealerFormattedMessage(plugin.messages.getChatMessage("dealer_bought_item_plural"), npcName, amount, drugType.getPrettyName(), price));
+                            p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_bought_item_plural"), npcName, amount, drugType.getPrettyName(), price));
                         }
                         //every other case
                     } else
                     {
-                        p.sendMessage(DealerFormattedMessage(plugin.messages.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
+                        p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
                     }
 
                     break;
                 case PRODUCER:
                     if (!p.hasPermission("use_producer"))
                     {
-                        p.sendMessage(plugin.messages.formattedChatMessage("invalid_permission"));
+                        p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
                     }
 
                     if (drugType == null)
                     { //if it isn't a drug item
-                        p.sendMessage(ProducerFormattedMessage(plugin.messages.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
+                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
                         return;
                     }
 
                     //producers only accept plants
                     if (!drugType.isPlant())
                     {
-                        p.sendMessage(ProducerFormattedMessage(plugin.messages.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
+                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
                         return;
                     }
 
                     //Getting product price
-                    FileConfiguration configs = plugin.configs.getConfigs();
+                    FileConfiguration configs = plugin.settings.getFileConfiguration();
                     ItemStack result = null;
                     String plant_name = null;
                     String drug_name = null;
@@ -170,7 +170,7 @@ public class NpcInteractions implements Listener
                     double balance = DrugDealing.economy.getBalance(p);
                     if (balance < cost)
                     {
-                        p.sendMessage(ProducerFormattedMessage(plugin.messages.getChatMessage("producer_invalid_balance"), npcName, cost, null, null, null));
+                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_invalid_balance"), npcName, cost, null, null, null));
                         return;
                     }
 
@@ -183,10 +183,10 @@ public class NpcInteractions implements Listener
                     //Sending success message
                     if (amount == 1)
                     {
-                        p.sendMessage(ProducerFormattedMessage(plugin.messages.getChatMessage("producer_converted_drug"), npcName, cost, amount, drug_name, plant_name));
+                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_converted_drug"), npcName, cost, amount, drug_name, plant_name));
                     } else
                     {
-                        p.sendMessage(ProducerFormattedMessage(plugin.messages.getChatMessage("producer_converted_drug_plural"), npcName, cost, amount, drug_name, plant_name));
+                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_converted_drug_plural"), npcName, cost, amount, drug_name, plant_name));
                     }
 
                     break;
@@ -202,10 +202,10 @@ public class NpcInteractions implements Listener
             switch (role)
             {
                 case DEALER:
-                    receiver.sendMessage(DealerFormattedMessage(plugin.messages.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, drugType.getPrettyName(), null));
+                    receiver.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, drugType.getPrettyName(), null));
                     return false;
                 case PRODUCER:
-                    receiver.sendMessage(ProducerFormattedMessage(plugin.messages.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, null, drugType.getPrettyName(), null));
+                    receiver.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, null, drugType.getPrettyName(), null));
                     return false;
             }
             return false;
