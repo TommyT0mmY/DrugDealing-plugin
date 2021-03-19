@@ -50,7 +50,7 @@ public class RemoveNPC implements CommandExecutor
                         }
                         cancel();
                     }
-                }.runTaskTimer(plugin, 60 * 20, 1);
+                }.runTaskLater(plugin, 60 * 20);
 
             } else
             {
