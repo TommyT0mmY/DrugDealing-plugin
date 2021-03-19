@@ -1,6 +1,7 @@
-package com.github.tommyt0mmy.drugdealing.utility;
+package com.github.tommyt0mmy.drugdealing.configuration;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
+import com.github.tommyt0mmy.drugdealing.configuration.Configurable;
 import org.bukkit.ChatColor;
 
 public class Language extends Configurable

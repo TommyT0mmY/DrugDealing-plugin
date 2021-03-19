@@ -1,4 +1,4 @@
-package com.github.tommyt0mmy.drugdealing.utility;
+package com.github.tommyt0mmy.drugdealing.configuration;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
 import org.bukkit.configuration.file.FileConfiguration;
