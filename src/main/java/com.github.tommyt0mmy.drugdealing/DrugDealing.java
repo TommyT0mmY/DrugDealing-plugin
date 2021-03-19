@@ -71,6 +71,30 @@ public class DrugDealing extends JavaPlugin
         settings = new Settings(this);
         npcRegister = new NpcRegister();
 
+        new PlantsUpdater().runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
+
+        loadCommands();
+        loadEvents();
+        runUpdateChecker();
+
+        //Economy system check
+        if (!setupEconomy())
+        {
+            console.severe("Invalid economy system, disabling plugin!");
+            getServer().getPluginManager().disablePlugin(this);
+        } else
+        {
+            console.info("Loaded successfully");
+        }
+    }
+
+    public void onDisable()
+    {
+        console.info("Unloading plugin...");
+    }
+
+    private void loadCommands()
+    {
         Objects.requireNonNull(getCommand("drugdealing")).setExecutor(new Help());
         Objects.requireNonNull(getCommand("drugdealing")).setTabCompleter(new HelpTabCompleter());
         Objects.requireNonNull(getCommand("getplant")).setExecutor(new GetPlant());
@@ -80,16 +104,20 @@ public class DrugDealing extends JavaPlugin
         Objects.requireNonNull(getCommand("setnpc")).setExecutor(new CreateNPC());
         Objects.requireNonNull(getCommand("setnpc")).setTabCompleter(new CreateNPCTabCompleter());
         Objects.requireNonNull(getCommand("removenpc")).setExecutor(new RemoveNPC());
+    }
 
+    private void loadEvents()
+    {
         getServer().getPluginManager().registerEvents(new PlantedDrug(), this);
         getServer().getPluginManager().registerEvents(new RemoveUprootedPlants(), this);
         getServer().getPluginManager().registerEvents(new PreventSaplingGrowth(), this);
         getServer().getPluginManager().registerEvents(new NpcInteractions(), this);
         getServer().getPluginManager().registerEvents(new ConsumedDrug(), this);
         getServer().getPluginManager().registerEvents(new onPlayerJoin(), this);
+    }
 
-        new PlantsUpdater().runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
-
+    private void runUpdateChecker()
+    {
         //Checking for updates on dedicated thread
         Runnable updateCheckerRunnable = () ->
         {
@@ -115,35 +143,19 @@ public class DrugDealing extends JavaPlugin
         Thread updateCheckerThread = new Thread(updateCheckerRunnable);
         updateCheckerThread.setName("DrugDealing Update Checker");
         updateCheckerThread.start();
-
-        //Economy system check
-        if (!setupEconomy())
-        {
-            console.severe("Invalid economy system, disabling plugin!");
-            getServer().getPluginManager().disablePlugin(this);
-        } else
-        {
-            console.info("Loaded successfully");
-        }
-    }
-
-    public void onDisable()
-    {
-        console.info("Unloading plugin...");
     }
 
     private boolean setupEconomy()
-    { //Vault
+    {   //Vault
         if (getServer().getPluginManager().getPlugin("Vault") == null)
-        {
             return false;
-        }
+
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null)
-        {
             return false;
-        }
+
         economy = rsp.getProvider();
+
         return economy != null;
     }
 
