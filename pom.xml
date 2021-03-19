@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.tommyt0mmy</groupId>
     <artifactId>DrugDealing</artifactId>
-        <version>1.0</version>
+        <version>1.1-Indev</version>
 
     <licenses>
         <license>
@@ -59,6 +59,11 @@
             <version>2.0.25-SNAPSHOT</version>
             <type>jar</type>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.34.0</version>
         </dependency>
     </dependencies>
 
