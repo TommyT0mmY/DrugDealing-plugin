@@ -226,14 +226,14 @@ public class NpcInteractions implements Listener
         message = String.format("§6[%s] ", dealerName) + message;
 
         //adding keywords
-        message = message.replaceAll("<AMOUNT>", amount + "");
-        message = message.replaceAll("<DRUG-NAME>", drugName + "§6");
+        message = message.replace("<AMOUNT>", amount + "");
+        message = message.replace("<DRUG-NAME>", drugName + "§6");
         if (price == 1)
         {
-            message = message.replaceAll("<PRICE>", price + " " + DrugDealing.economy.currencyNameSingular());
+            message = message.replace("<PRICE>", price + " " + DrugDealing.economy.currencyNameSingular());
         } else
         {
-            message = message.replaceAll("<PRICE>", price + " " + DrugDealing.economy.currencyNamePlural());
+            message = message.replace("<PRICE>", price + " " + DrugDealing.economy.currencyNamePlural());
         }
 
         return message;
@@ -246,22 +246,22 @@ public class NpcInteractions implements Listener
         //optional parameters
         amount = (amount != null ? amount : 0);
         price = (price != null ? price : 0.0);
-        drugName = (drugName != null ? drugName : "").replaceAll("§6", "§a");
-        plantName = (plantName != null ? plantName : "").replaceAll("§6", "§a");
+        drugName = (drugName != null ? drugName : "").replace("§6", "§a");
+        plantName = (plantName != null ? plantName : "").replace("§6", "§a");
 
         //adding color & prefix
         message = String.format("§a[%s] ", producerName) + message;
 
         //adding keywords
-        message = message.replaceAll("<AMOUNT>", amount + "");
-        message = message.replaceAll("<DRUG-NAME>", drugName + "§a");
-        message = message.replaceAll("<PLANT-NAME>", plantName + "§a");
+        message = message.replace("<AMOUNT>", amount + "");
+        message = message.replace("<DRUG-NAME>", drugName + "§a");
+        message = message.replace("<PLANT-NAME>", plantName + "§a");
         if (price == 1)
         {
-            message = message.replaceAll("<PRICE>", price + " " + DrugDealing.economy.currencyNameSingular());
+            message = message.replace("<PRICE>", price + " " + DrugDealing.economy.currencyNameSingular());
         } else
         {
-            message = message.replaceAll("<PRICE>", price + " " + DrugDealing.economy.currencyNamePlural());
+            message = message.replace("<PRICE>", price + " " + DrugDealing.economy.currencyNamePlural());
         }
 
         return message;

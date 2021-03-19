@@ -59,9 +59,9 @@ public class Help implements CommandExecutor
         String pageIdentity = (pageTitle + pageNumber).toLowerCase();
 
         //Aliases support
-        pageIdentity = pageIdentity.replaceAll("setcriminal", "setnpc");
-        pageIdentity = pageIdentity.replaceAll("drugdealing", "dd");
-        pageIdentity = pageIdentity.replaceAll("removecriminal", "removenpc");
+        pageIdentity = pageIdentity.replace("setcriminal", "setnpc");
+        pageIdentity = pageIdentity.replace("drugdealing", "dd");
+        pageIdentity = pageIdentity.replace("removecriminal", "removenpc");
 
 		/* Pages
 

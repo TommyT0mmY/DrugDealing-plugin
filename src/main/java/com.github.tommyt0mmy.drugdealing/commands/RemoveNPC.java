@@ -16,7 +16,7 @@ public class RemoveNPC implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        String usage = plugin.getCommand("removenpc").getUsage().replaceAll("<command>", label); //usage message
+        String usage = plugin.getCommand("removenpc").getUsage().replace("<command>", label); //usage message
         Player p;
 
         if (!(sender instanceof Player))
@@ -46,7 +46,7 @@ public class RemoveNPC implements CommandExecutor
                         if (plugin.toRemoveNPCs.contains(p.getUniqueId()))
                         {
                             plugin.toRemoveNPCs.remove(p.getUniqueId());
-                            p.sendMessage(plugin.language.formattedChatMessage("removenpc_time_is_up").replaceAll("<COMMAND>", label));
+                            p.sendMessage(plugin.language.formattedChatMessage("removenpc_time_is_up").replace("<COMMAND>", label));
                         }
                         cancel();
                     }

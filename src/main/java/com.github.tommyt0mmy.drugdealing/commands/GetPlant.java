@@ -24,7 +24,7 @@ public class GetPlant implements CommandExecutor
             return true;
         }
         Player p = (Player) sender;
-        String usage = plugin.getCommand("getplant").getUsage().replaceAll("<command>", label);
+        String usage = plugin.getCommand("getplant").getUsage().replace("<command>", label);
 
         if (!p.hasPermission(Permissions.getPermission("getplant_weed")) || !p.hasPermission(Permissions.getPermission("getplant_coke")))
         {

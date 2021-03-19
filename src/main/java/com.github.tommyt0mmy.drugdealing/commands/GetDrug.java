@@ -24,7 +24,7 @@ public class GetDrug implements CommandExecutor
             return true;
         }
         Player p = (Player) sender;
-        String usage = plugin.getCommand("getdrug").getUsage().replaceAll("<command>", label);
+        String usage = plugin.getCommand("getdrug").getUsage().replace("<command>", label);
 
         if (!p.hasPermission(Permissions.getPermission("getdrug_weed")) || !p.hasPermission(Permissions.getPermission("getdrug_coke")))
         {

@@ -34,7 +34,7 @@ public class CreateNPC implements CommandExecutor
         }
         Player p = (Player) sender;
         Location loc = p.getLocation();
-        String usage = plugin.getCommand("setnpc").getUsage().replaceAll("<command>", label); //usage message
+        String usage = plugin.getCommand("setnpc").getUsage().replace("<command>", label); //usage message
 
         if (args.length < 2)
         {
