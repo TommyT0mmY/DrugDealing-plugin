@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 public class UpdateChecker
 {
@@ -14,6 +15,8 @@ public class UpdateChecker
     private final String current_version = plugin.getDescription().getVersion();
     private String spigot_url = "https://api.spigotmc.org/legacy/update.php?resource=%d";
     private boolean needs_update = false;
+    private boolean network_error = false;
+    private boolean invalid_resource_error = false;
     private String latest_version = "";
 
     public UpdateChecker()
@@ -32,8 +35,18 @@ public class UpdateChecker
             con.setRequestMethod("GET");
 
             //checking
-            if (con.getResponseCode() != 200)
+            try
+            {
+                if (con.getResponseCode() != 200)
+                {
+                    network_error = true;
+                    return;
+                }
+            } catch (UnknownHostException UHException)
+            {
+                network_error = true;
                 return;
+            }
 
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -44,7 +57,10 @@ public class UpdateChecker
             }
 
             if (content.toString().equals("Invalid resource"))
+            {
+                invalid_resource_error = true;
                 return;
+            }
 
             latest_version = content.toString();
 
@@ -58,6 +74,13 @@ public class UpdateChecker
     {
         return needs_update;
     }
+
+    public boolean networkError()
+    {
+        return network_error;
+    }
+
+    public boolean invalidResourceError() { return invalid_resource_error; }
 
     public String getCurrent_version()
     {

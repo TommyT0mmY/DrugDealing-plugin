@@ -90,15 +90,33 @@ public class DrugDealing extends JavaPlugin
 
         new PlantsUpdater().runTaskTimer(this, 0, 10 * 20/*10 seconds*/);
 
-        //checking for updates
-        UpdateChecker updateChecker = new UpdateChecker();
-        if (updateChecker.needsUpdate())
+        //Checking for updates on dedicated thread
+        Runnable updateCheckerRunnable = () ->
         {
-            console.info("An update for DrugDealing is available at:");
-            console.info(spigotResourceUrl);
-            console.info(String.format("Installed version: %s Lastest version: %s", updateChecker.getCurrent_version(), updateChecker.getLatest_version()));
-        }
+            //checking for updates
+            UpdateChecker updateChecker = new UpdateChecker();
+            if (updateChecker.networkError())
+            {
+                console.warning("Couldn't connect properly to api.spigotmc.org");
+            } else if (updateChecker.invalidResourceError())
+            {
+                console.severe("Invalid Resource error!");
+                console.severe("Please, if this error keeps occurring, open an issue here: https://github.com/TommyT0mmY/DrugDealing-plugin/issues");
+            } else if (updateChecker.needsUpdate())
+            {
+                console.info("An update for DrugDealing is available at:");
+                console.info(spigotResourceUrl);
+                console.info(String.format("Installed version: %s Latest version: %s", updateChecker.getCurrent_version(), updateChecker.getLatest_version()));
+            } else
+            {
+                console.info("Up to date");
+            }
+        };
+        Thread updateCheckerThread = new Thread(updateCheckerRunnable);
+        updateCheckerThread.setName("DrugDealing Update Checker");
+        updateCheckerThread.start();
 
+        //Economy system check
         if (!setupEconomy())
         {
             console.severe("Invalid economy system, disabling plugin!");
