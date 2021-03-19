@@ -67,7 +67,6 @@ public class NpcRegister
     {
         loadConfigs();
         String name = npc.getName();
-        //Location loc = npc.getStoredLocation();
         int ID = npc.getId();
         int npcCount = registerConfig.getInt("npcNumber");
         npcCount++;
