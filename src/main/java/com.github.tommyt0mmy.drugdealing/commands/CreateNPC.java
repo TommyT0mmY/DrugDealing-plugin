@@ -7,7 +7,6 @@ import com.github.tommyt0mmy.drugdealing.utility.CriminalRole;
 import com.github.tommyt0mmy.drugdealing.utility.DrugType;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.trait.trait.Spawned;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -90,15 +89,17 @@ public class CreateNPC implements CommandExecutor
 
         //spawning
         NPC spawnedNpc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
-        spawnedNpc.spawn(loc);
 
         //setting custom skin
         spawnedNpc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, ChatColor.stripColor(name));
         spawnedNpc.data().setPersistent(NPC.PLAYER_SKIN_USE_LATEST, false);
         Entity npcEntity = spawnedNpc.getEntity();
-        if (npcEntity instanceof SkinnableEntity) {
+        if (npcEntity instanceof SkinnableEntity)
+        {
             ((SkinnableEntity) npcEntity).getSkinTracker().notifySkinChange(spawnedNpc.data().get(NPC.PLAYER_SKIN_USE_LATEST));
         }
+
+        spawnedNpc.spawn(loc);
 
         plugin.npcRegister.saveNpc(spawnedNpc, role, notAcceptedDrugTypes);
 
