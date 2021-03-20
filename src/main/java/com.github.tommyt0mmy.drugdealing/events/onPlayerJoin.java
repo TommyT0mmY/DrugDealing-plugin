@@ -23,7 +23,7 @@ public class onPlayerJoin implements Listener
             {
                 p.sendMessage("§aAn update for §6DrugDealing§a is available at");
                 p.sendMessage("§6" + plugin.getSpigotResourceUrl());
-                p.sendMessage(String.format("§aInstalled version: §e%s§a Lastest version: §e%s§r", updateChecker.getCurrent_version(), updateChecker.getLatest_version()));
+                p.sendMessage(String.format("§aInstalled version: §e%s§a Latest version: §e%s§r", updateChecker.getCurrent_version(), updateChecker.getLatest_version()));
             }
         }
     }
