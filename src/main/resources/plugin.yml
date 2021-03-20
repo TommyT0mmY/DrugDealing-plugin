@@ -8,7 +8,7 @@ author: Tommy_T0mmY
 prefix: DrugDealing
 main: com.github.tommyt0mmy.drugdealing.DrugDealing
 depend: [Vault, Citizens]
-api-version: 1.13
+api-version: 1.14
 commands:
   drugdealing:
     usage: /<command> <page> [page number]
