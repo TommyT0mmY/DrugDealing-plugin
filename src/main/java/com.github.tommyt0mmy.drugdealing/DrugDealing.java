@@ -5,6 +5,11 @@ import com.github.tommyt0mmy.drugdealing.commands.GetDrug;
 import com.github.tommyt0mmy.drugdealing.commands.GetPlant;
 import com.github.tommyt0mmy.drugdealing.commands.Help;
 import com.github.tommyt0mmy.drugdealing.commands.RemoveNPC;
+import com.github.tommyt0mmy.drugdealing.configuration.Language;
+import com.github.tommyt0mmy.drugdealing.configuration.Settings;
+import com.github.tommyt0mmy.drugdealing.database.DrugDealingDatabase;
+import com.github.tommyt0mmy.drugdealing.database.DrugDealingMySQLDatabase;
+import com.github.tommyt0mmy.drugdealing.database.DrugDealingSQLiteDatabase;
 import com.github.tommyt0mmy.drugdealing.events.ConsumedDrug;
 import com.github.tommyt0mmy.drugdealing.events.NpcInteractions;
 import com.github.tommyt0mmy.drugdealing.events.PlantedDrug;
@@ -19,13 +24,13 @@ import com.github.tommyt0mmy.drugdealing.tabcompleters.CreateNPCTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.HelpTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getDrugTabCompleter;
 import com.github.tommyt0mmy.drugdealing.tabcompleters.getPlantTabCompleter;
-import com.github.tommyt0mmy.drugdealing.configuration.Language;
-import com.github.tommyt0mmy.drugdealing.configuration.Settings;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,6 +41,7 @@ public class DrugDealing extends JavaPlugin
 {
 
     public static Economy economy = null;
+    public static DrugDealingDatabase database;
     private static DrugDealing instance;
     public final Logger console = getLogger();
     @SuppressWarnings("FieldCanBeLocal")
@@ -62,6 +68,8 @@ public class DrugDealing extends JavaPlugin
 
     public void onEnable()
     {
+        boolean successful_load = true;
+
         setInstance(this);
 
         dataFolder = getDataFolder();
@@ -77,15 +85,47 @@ public class DrugDealing extends JavaPlugin
         loadEvents();
         runUpdateChecker();
 
+        //loading database
+        try
+        {
+            boolean useSQLite = settings.getFileConfiguration().getBoolean("database.use-sqlite");
+            if (useSQLite) //SQLite
+            {
+                File databasefile = new File(dataFolder.getAbsolutePath() + File.separator + "database.db");
+                if (!databasefile.exists())
+                    //noinspection ResultOfMethodCallIgnored
+                    databasefile.createNewFile();
+                database = new DrugDealingSQLiteDatabase(databasefile.getAbsolutePath());
+            } else //MySQL
+            {
+                String hostname = settings.getFileConfiguration().getString("database.mysql.hostname");
+                String port = settings.getFileConfiguration().getString("database.mysql.port");
+                String username = settings.getFileConfiguration().getString("database.mysql.username");
+                String password = settings.getFileConfiguration().getString("database.mysql.password");
+                String url = settings.getFileConfiguration().getString("database.mysql.database");
+                database = new DrugDealingMySQLDatabase(username, password, hostname, port, url);
+            }
+
+            database.createPlantsTable();
+
+        } catch (SQLException | IOException e)
+        {
+            e.printStackTrace();
+            console.severe("Unable to connect to database! disabling plugin!");
+            successful_load = false;
+            getServer().getPluginManager().disablePlugin(this);
+        }
+
         //Economy system check
         if (!setupEconomy())
         {
             console.severe("Invalid economy system, disabling plugin!");
+            successful_load = false;
             getServer().getPluginManager().disablePlugin(this);
-        } else
-        {
-            console.info("Loaded successfully");
         }
+
+        if (successful_load)
+            console.info("Loaded successfully");
     }
 
     public void onDisable()
