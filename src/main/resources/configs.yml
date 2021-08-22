@@ -8,3 +8,13 @@ cokeDrugSellingPrice: 225 #Price per item of refined coke
 weedDrugSellingPrice: 115 #Price per item of refined weed
 cokeProductionPrice: 200 #Price per conversion from coke plant to refined coke
 weedProductionPrice: 100 #Price per conversion from weed plant to refined weed
+
+#Database configuration
+database:
+  use-sqlite: true #true: SQLite false: MySQL
+  mysql: #Only for MySQL
+    hostname: ''
+    port: ''
+    username: ''
+    password: ''
+    database: ''
