@@ -1,6 +1,7 @@
 package com.github.tommyt0mmy.drugdealing.events;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
+import com.github.tommyt0mmy.drugdealing.utility.DrugType;
 import com.github.tommyt0mmy.drugdealing.utility.Permissions;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ConsumedDrug implements Listener
@@ -37,11 +39,14 @@ public class ConsumedDrug implements Listener
         }
 
         ItemStack itemInHand = p.getInventory().getItemInMainHand();
-        boolean isPlayerShifting = p.isSneaking();
 
-        if (plugin.drugs.isCokeDrugItemStack(itemInHand) && isPlayerShifting)
+        Optional<DrugType> drugTypeOptional = plugin.drugs.getDrugType(itemInHand);
+        if (!drugTypeOptional.isPresent())
+            return;
+
+        if (p.hasPermission(Permissions.getPermission("consume_coke")))
         {
-            if (p.hasPermission(Permissions.getPermission("consume_coke")))
+            if (drugTypeOptional.get() == DrugType.COKE_PRODUCT && p.isSneaking())
             {
                 if (timeout.get(playerUUID))
                     return;
@@ -61,10 +66,10 @@ public class ConsumedDrug implements Listener
                     }
                 }.runTaskTimer(plugin, 40, 1);
 
-            } else
-            {
-                p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
             }
+        } else
+        {
+            p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
         }
     }
 }

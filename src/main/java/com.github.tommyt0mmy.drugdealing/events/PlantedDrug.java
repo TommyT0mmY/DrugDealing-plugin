@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 public class PlantedDrug implements Listener
 {
 
-    private final DrugDealing plugin = DrugDealing.getInstance();
+    private final DrugDealing instance = DrugDealing.getInstance();
 
     @EventHandler
     public void onPlantedDrug(BlockPlaceEvent e)
@@ -23,53 +23,53 @@ public class PlantedDrug implements Listener
 
             Block placed = (Block) e.getBlock();
 
-            e.setCancelled(true);
+            e.setCancelled(true); //TODO THIS CAUSES TOO THE WORLDGUARD BUG MAYBE
 
             ItemStack placedIS = p.getInventory().getItemInMainHand();
 
             //Coke placed
-
-            if (plugin.drugs.isCokePlantItemStack(placedIS))
+            //TODO FIX REDUNDANCY
+            if (instance.drugs.isCokePlantItemStack(placedIS))
             {
                 //permissions check
                 if (!(p.hasPermission(Permissions.getPermission("plant_coke")) || p.hasPermission(Permissions.getPermission("plant_weed"))))
                 {
                     e.setCancelled(true);
-                    p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
+                    p.sendMessage(instance.language.formattedChatMessage("invalid_permission"));
                     return;
                 }
 
-                if (plugin.drugs.isPlantedOnFarmland(placed))
+                if (instance.drugs.isPlantedOnFarmland(placed))
                 {
-                    p.sendMessage(plugin.language.formattedChatMessage("planted_coke"));
-                    plugin.plantsRegister.addPlant(placed, "coke");
+                    p.sendMessage(instance.language.formattedChatMessage("planted_coke"));
+                    instance.plantsRegister.addPlant(placed, "coke");
                 } else
                 {
-                    p.sendMessage(plugin.language.formattedChatMessage("invalid_surface"));
+                    p.sendMessage(instance.language.formattedChatMessage("invalid_surface"));
                     return;
                 }
             }
 
             //Weed planted
 
-            if (plugin.drugs.isWeedPlantItemStack(placedIS))
+            if (instance.drugs.isWeedPlantItemStack(placedIS))
             {
-                if (plugin.drugs.isPlantedOnFarmland(placed))
+                if (instance.drugs.isPlantedOnFarmland(placed))
                 {
-                    p.sendMessage(plugin.language.formattedChatMessage("planted_weed"));
-                    plugin.plantsRegister.addPlant(placed, "weed");
+                    p.sendMessage(instance.language.formattedChatMessage("planted_weed"));
+                    instance.plantsRegister.addPlant(placed, "weed");
                 } else
                 {
-                    p.sendMessage(plugin.language.formattedChatMessage("invalid_surface"));
+                    p.sendMessage(instance.language.formattedChatMessage("invalid_surface"));
                     return;
                 }
             }
 
-            e.setCancelled(false);
+            e.setCancelled(false); //TODO MAYBE THIS IS THE CAUSE OF THE WORLDGUARD BUG
         } catch (Exception exception)
         {
             e.setCancelled(true);
-            p.sendMessage(plugin.language.formattedChatMessage("unexpected_error"));
+            p.sendMessage(instance.language.formattedChatMessage("unexpected_error"));
             exception.printStackTrace();
             return;
         }

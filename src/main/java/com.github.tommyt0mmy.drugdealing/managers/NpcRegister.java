@@ -10,31 +10,34 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class NpcRegister
 {
 
-    private final DrugDealing plugin = DrugDealing.getInstance();
+    private final DrugDealing instance = DrugDealing.getInstance();
 
+    //TODO STOP USING THIS VARIABLE
     private File registerConfigFile;
+    //TODO STOP USING THIS VARIABLE
     private YamlConfiguration registerConfig;
 
     public NpcRegister()
-    {
-        loadRegister();
-    }
+    {}
 
+    @Deprecated
     private void loadRegister()
     { //loading npcs.yml
-        registerConfigFile = new File(plugin.dataFolder, "npcs.yml");
+        registerConfigFile = new File(instance.dataFolder, "npcs.yml");
         if (!registerConfigFile.exists())
         {
             registerConfigFile.getParentFile().mkdirs();
-            plugin.saveResource("npcs.yml", false);
-            plugin.console.info("Created file npcs.yml");
+            instance.saveResource("npcs.yml", false);
+            instance.console.info("Created file npcs.yml");
         }
 
         registerConfig = new YamlConfiguration();
@@ -43,27 +46,30 @@ public class NpcRegister
             registerConfig.load(registerConfigFile);
         } catch (Exception e)
         {
-            plugin.console.severe("Couldn't load npcs.yml file properly!");
+            instance.console.severe("Couldn't load npcs.yml file properly!");
         }
     }
 
+    @Deprecated
     private void loadConfigs()
     {
         try
         {
             registerConfig.load(registerConfigFile);
-        } catch (Exception exception) {plugin.console.severe("Couldn't load npcs.yml file properly!");}
+        } catch (Exception exception) {instance.console.severe("Couldn't load npcs.yml file properly!");}
     }
 
+    @Deprecated
     private void saveConfigs()
     {
         try
         {
             registerConfig.save(registerConfigFile);
-        } catch (Exception e) {plugin.console.severe("Couldn't save to file npcs.yml");}
+        } catch (Exception e) {instance.console.severe("Couldn't save to file npcs.yml");}
     }
 
-    public void saveNpc(NPC npc, CriminalRole role, List<DrugType> notAcceptedDrugs)
+    @Deprecated
+    public void saveNpcOld(NPC npc, CriminalRole role, List<DrugType> notAcceptedDrugs)
     {
         loadConfigs();
         String name = npc.getName();
@@ -89,13 +95,29 @@ public class NpcRegister
         saveConfigs();
     }
 
+    public void saveNpc(NPC npc, CriminalRole role, DrugType[] accepts)
+    {
+        try
+        {
+            DrugDealing.database.saveNpc(npc.getUniqueId(), role, npc.getName(), accepts);
+        } catch (SQLException e)
+        {
+            instance.console.severe("Couldn't save npc information to database");
+            e.printStackTrace();
+        }
+    }
+
     //if the NPC isn't registered returns null
+
+    @Deprecated
     private ConfigurationSection getNpcCS(NPC npc)
     {
         return getNpcCS(npc.getId());
     }
 
     //if the NPC isn't registered returns null
+
+    @Deprecated
     private ConfigurationSection getNpcCS(int ID)
     {
         List<ConfigurationSection> ConfSections = getConfigurationSections();
@@ -110,11 +132,26 @@ public class NpcRegister
     }
 
     //checks if the clicked NPC is a NPC handled by this plugin
-    public boolean isCriminalNpc(NPC npc)
+
+    @Deprecated
+    public boolean isCriminalNpcOld(NPC npc)
     {
         return getNpcCS(npc) != null;
     }
 
+    public boolean isCriminalNpc(NPC npc)
+    {
+        try
+        {
+            return DrugDealing.database.findNpc(npc.getUniqueId());
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Deprecated
     private List<ConfigurationSection> getConfigurationSections()
     {
         List<ConfigurationSection> CSlist = new ArrayList<>();
@@ -129,7 +166,8 @@ public class NpcRegister
         return CSlist;
     }
 
-    public CriminalRole getRole(NPC npc)
+    @Deprecated
+    public CriminalRole getRoleOld(NPC npc)
     {
         ConfigurationSection cs = getNpcCS(npc);
         if (cs != null)
@@ -146,7 +184,22 @@ public class NpcRegister
         return null;
     }
 
-    public boolean acceptsDrugType(NPC npc, DrugType drugType)
+    public Optional<CriminalRole> getCriminalRole(NPC npc)
+    {
+        try
+        {
+            CriminalRole criminalRole = DrugDealing.database.getNpcRole(npc.getUniqueId());
+            return Optional.of(criminalRole);
+        } catch (SQLException e)
+        {
+            instance.console.severe("Couldn't get NPC role");
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    @Deprecated
+    public boolean acceptsDrugTypeOld(NPC npc, DrugType drugType)
     {
         ConfigurationSection cs = getNpcCS(npc);
         if (cs != null)
@@ -156,13 +209,38 @@ public class NpcRegister
         return false;
     }
 
-    public void removeNpc(NPC npc)
+    public boolean acceptsDrugType(NPC npc, DrugType drugType)
+    {
+        try
+        {
+            return DrugDealing.database.getNpcAccepted(npc.getUniqueId()).contains(drugType);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Deprecated
+    public void removeNpcOld(NPC npc)
     {
         loadConfigs();
         ConfigurationSection npcCS = getNpcCS(npc);
         String sectionName = npcCS.getName();
         registerConfig.set(sectionName, null);
         saveConfigs();
+    }
+
+    public void removeNpc(NPC npc)
+    {
+        try
+        {
+            DrugDealing.database.removeNpc(npc.getUniqueId());
+        } catch (SQLException e)
+        {
+            instance.console.severe("Couldn't remove NPC from database");
+            e.printStackTrace();
+        }
     }
 
 }

@@ -3,27 +3,29 @@
 package com.github.tommyt0mmy.drugdealing;
 
 import com.github.tommyt0mmy.drugdealing.utility.DrugType;
+import com.github.tommyt0mmy.drugdealing.utility.Helper;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class Drugs
 {
+    private ItemStack cokePlant;
+    private ItemStack weedPlant;
+    private ItemStack cokeDrug;
+    private ItemStack weedDrug;
 
-    private ItemStack coke_plant;
-    private ItemStack weed_plant;
-    private ItemStack coke_drug;
-    private ItemStack weed_drug;
-
-    private DrugDealing mainClass = DrugDealing.getInstance();
+    private DrugDealing instance = DrugDealing.getInstance();
 
     public Drugs()
     {
@@ -32,65 +34,95 @@ public class Drugs
 
     private void initItemStacks()
     {
-
+        //TODO USE ENUMS
         //coke plant ItemStack
 
-        coke_plant = new ItemStack(Material.POPPY);
-        ItemMeta cokePlantMeta = coke_plant.getItemMeta();
-        List<String> cokePlantLore = new ArrayList<>();
-        cokePlantLore.add(mainClass.language.getKeyword("coke_plant_name"));
-        cokePlantMeta.setLore(cokePlantLore);
-        cokePlantMeta.setDisplayName(mainClass.language.getKeyword("coke_plant_name"));
-        coke_plant.setItemMeta(cokePlantMeta);
+        cokePlant = new ItemStack(Material.POPPY);
+        ItemMeta cokePlantMeta = cokePlant.getItemMeta();
+        assert cokePlantMeta != null;
+        cokePlantMeta.setDisplayName(instance.language.getKeyword("coke_plant_name"));
+        NamespacedKey key = new NamespacedKey(instance, "id");
+        cokePlantMeta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) DrugType.COKE_PLANT.getId());
+        cokePlant.setItemMeta(cokePlantMeta);
 
         //weed plant ItemStack
 
-        weed_plant = new ItemStack(Material.JUNGLE_SAPLING);
-        ItemMeta weedPlantMeta = weed_plant.getItemMeta();
-        List<String> weedPlantLore = new ArrayList<>();
-        weedPlantLore.add(mainClass.language.getKeyword("weed_plant_name"));
-        weedPlantMeta.setLore(weedPlantLore);
-        weedPlantMeta.setDisplayName(mainClass.language.getKeyword("weed_plant_name"));
-        weed_plant.setItemMeta(weedPlantMeta);
+        weedPlant = new ItemStack(Material.JUNGLE_SAPLING);
+        ItemMeta weedPlantMeta = weedPlant.getItemMeta();
+        assert weedPlantMeta != null;
+        weedPlantMeta.setDisplayName(instance.language.getKeyword("weed_plant_name"));
+        key = new NamespacedKey(instance, "id");
+        weedPlantMeta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) DrugType.WEED_PLANT.getId());
+        weedPlant.setItemMeta(weedPlantMeta);
 
         //coke drug ItemStack
 
-        coke_drug = new ItemStack(Material.SUGAR);
-        ItemMeta cokeDrugItemMeta = coke_drug.getItemMeta();
-        List<String> cokeDrugLore = new ArrayList<>();
-        cokeDrugLore.add(mainClass.language.getKeyword("coke_drug_name"));
-        cokeDrugItemMeta.setLore(cokeDrugLore);
-        cokeDrugItemMeta.setDisplayName(mainClass.language.getKeyword("coke_drug_name"));
-        coke_drug.setItemMeta(cokeDrugItemMeta);
+        cokeDrug = new ItemStack(Material.SUGAR);
+        ItemMeta cokeDrugItemMeta = cokeDrug.getItemMeta();
+        assert cokeDrugItemMeta != null;
+        cokeDrugItemMeta.setDisplayName(instance.language.getKeyword("coke_drug_name"));
+        key = new NamespacedKey(instance, "id");
+        cokeDrugItemMeta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) DrugType.COKE_PRODUCT.getId());
+        cokeDrug.setItemMeta(cokeDrugItemMeta);
 
         //weed drug ItemStack
 
-        weed_drug = new ItemStack(Material.CACTUS_GREEN);
-        ItemMeta weedDrugItemMeta = coke_drug.getItemMeta();
-        List<String> weedDrugLore = new ArrayList<>();
-        weedDrugLore.add(mainClass.language.getKeyword("weed_drug_name"));
-        weedDrugItemMeta.setLore(weedDrugLore);
-        weedDrugItemMeta.setDisplayName(mainClass.language.getKeyword("weed_drug_name"));
-        weed_drug.setItemMeta(weedDrugItemMeta);
+        weedDrug = new ItemStack(Material.GREEN_DYE);
+        ItemMeta weedDrugItemMeta = cokeDrug.getItemMeta();
+        assert weedDrugItemMeta != null;
+        weedDrugItemMeta.setDisplayName(instance.language.getKeyword("weed_drug_name"));
+        key = new NamespacedKey(instance, "id");
+        weedDrugItemMeta.getPersistentDataContainer().set(key, PersistentDataType.BYTE, (byte) DrugType.WEED_PRODUCT.getId());
+        weedDrug.setItemMeta(weedDrugItemMeta);
     }
 
+    //TODO STOP USING THESE METHODS
+    @Deprecated
     public ItemStack getCokePlantItemStack()
-    { //returns a coke itemstack
-        return coke_plant;
+    {
+        return cokePlant;
     }
 
+    @Deprecated
     public ItemStack getWeedPlantItemStack()
-    { //returns a weed itemstack
-        return weed_plant;
+    {
+        return weedPlant;
     }
 
-    public ItemStack getCokeDrugItemStack() { return coke_drug; }
+    @Deprecated
+    public ItemStack getCokeDrugItemStack()
+    {
+        return cokeDrug;
+    }
 
-    public ItemStack getWeedDrugItemStack() { return weed_drug; }
+    @Deprecated
+    public ItemStack getWeedDrugItemStack()
+    {
+        return weedDrug;
+    }
 
+    public ItemStack getItemStack(DrugType drugType)
+    {
+        switch (drugType)
+        {
+            case WEED_PLANT:
+                return weedPlant;
+            case COKE_PLANT:
+                return cokePlant;
+            case WEED_PRODUCT:
+                return weedDrug;
+            case COKE_PRODUCT:
+                return cokeDrug;
+        }
+        return null;
+    }
+
+
+    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
+    @Deprecated
     public boolean isCokePlantItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a coke plant item
-        String coke_plant_name = mainClass.language.getKeyword("coke_plant_name");
+        String coke_plant_name = instance.language.getKeyword("coke_plant_name");
         if (toCheckIS.getType().equals(Material.POPPY))
         { //checking type
             if (toCheckIS.hasItemMeta())
@@ -106,9 +138,11 @@ public class Drugs
         return false;
     }
 
+    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
+    @Deprecated
     public boolean isWeedPlantItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a weed plant item
-        String weed_plant_name = mainClass.language.getKeyword("weed_plant_name");
+        String weed_plant_name = instance.language.getKeyword("weed_plant_name");
         if (toCheckIS.getType().equals(Material.JUNGLE_SAPLING))
         {
             if (toCheckIS.hasItemMeta())
@@ -124,9 +158,11 @@ public class Drugs
         return false;
     }
 
+    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
+    @Deprecated
     public boolean isCokeDrugItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a coke item
-        String coke_drug_name = mainClass.language.getKeyword("coke_drug_name");
+        String coke_drug_name = instance.language.getKeyword("coke_drug_name");
         if (toCheckIS.getType().equals(Material.SUGAR))
         { //checking type
             if (toCheckIS.hasItemMeta())
@@ -142,10 +178,12 @@ public class Drugs
         return false;
     }
 
+    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
+    @Deprecated
     public boolean isWeedDrugItemStack(ItemStack toCheckIS)
     { //given an ItemStack returns true if it's a weed item
-        String weed_drug_name = mainClass.language.getKeyword("weed_drug_name");
-        if (toCheckIS.getType().equals(Material.CACTUS_GREEN))
+        String weed_drug_name = instance.language.getKeyword("weed_drug_name");
+        if (toCheckIS.getType().equals(Material.GREEN_DYE))
         {
             if (toCheckIS.hasItemMeta())
             { //checking name & lore
@@ -160,81 +198,78 @@ public class Drugs
         return false;
     }
 
-    //if the given ItemStack isn't a drug type return null
-    public DrugType getDrugType(ItemStack toCheckIS)
+    public Optional<DrugType> getDrugType(@NotNull ItemStack itemStack)
     {
-        if (isCokePlantItemStack(toCheckIS)) { return DrugType.COKE_PLANT; }
-        if (isWeedPlantItemStack(toCheckIS)) { return DrugType.WEED_PLANT; }
-        if (isCokeDrugItemStack(toCheckIS)) { return DrugType.COKE_PRODUCT; }
-        if (isWeedDrugItemStack(toCheckIS)) { return DrugType.WEED_PRODUCT; }
+        ItemMeta itemStackMeta = itemStack.getItemMeta();
+        if (itemStackMeta == null)
+            return Optional.empty();
+        NamespacedKey key = new NamespacedKey(instance, "id");
+        Byte id = itemStackMeta.getPersistentDataContainer().get(key, PersistentDataType.BYTE);
+        if (id == null)
+            return Optional.empty();
 
-        return null;
+        return Optional.of(Helper.getDrugType(id));
     }
 
     public boolean isPlantedOnFarmland(Block plant)
     { //checks if the plant is planted on farmland
-        Block belowBlock = plant.getLocation().subtract(0, 1, 0).getBlock();
+        Block belowBlock = plant.getRelative(0, -1, 0);
         return belowBlock.getType().equals(Material.FARMLAND);
     }
 
     public void destroyPlant(Block plant, boolean dropItems)
     { //similar to org.bukkit.block.Block.breakNaturally() but with some changes
         Location plantLocation = plant.getLocation();
-        if (mainClass.plantsRegister.isDrugPlant(plantLocation))
+        if (instance.plantsRegister.isDrugPlant(plantLocation))
         { //if the plant is registered in plants.yml
 
             plant.setType(Material.AIR); //removing the plant's block
             plantLocation.getWorld().playSound(plantLocation, Sound.BLOCK_LAVA_POP, 5, 5); //sound feedback
-            ConfigurationSection plantCS = mainClass.plantsRegister.getPlant(plantLocation); //the plant's section in plants.yml
+            ConfigurationSection plantCS = instance.plantsRegister.getPlant(plantLocation); //the plant's section in plants.yml
 
             //Plant drops
             if (dropItems)
             {
-                if (mainClass.plantsRegister.getType(plantLocation).equals("coke"))
+                //TODO FIX REDUNDANCY
+                if (instance.plantsRegister.getType(plantLocation).equals("coke"))
                 {
-                    plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokePlantItemStack()); //first drop
+                    plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.COKE_PLANT)); //first drop
                     if (plantCS.getBoolean("grown"))
                     { //If the plant is grown a second drop will appear
-                        plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getCokePlantItemStack());
+                        plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.COKE_PLANT));
                     }
 
-                } else if (mainClass.plantsRegister.getType(plantLocation).equals("weed"))
+                } else if (instance.plantsRegister.getType(plantLocation).equals("weed"))
                 {
-                    plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedPlantItemStack()); //first drop
+                    plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.WEED_PLANT)); //first drop
                     if (plantCS.getBoolean("grown"))
                     { //If the plant is grown a second drop will appear
-                        plant.getWorld().dropItemNaturally(plantLocation, mainClass.drugs.getWeedPlantItemStack());
+                        plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.WEED_PLANT));
                     }
                 }
             }
-            mainClass.plantsRegister.removePlant(plantLocation);
+            instance.plantsRegister.removePlant(plantLocation);
         }
     }
 
     public void growPlant(Location loc)
     { //given a location of a plant it makes the plant grow to it's final stage, ready to be harvested
-        String plantType = mainClass.plantsRegister.getType(loc);
+        String plantType = instance.plantsRegister.getType(loc);
         Block plantBlock = loc.getBlock();
-        ConfigurationSection plant = mainClass.plantsRegister.getPlant(loc);
+        ConfigurationSection plant = instance.plantsRegister.getPlant(loc);
         if (plant.getBoolean("grown"))
         {
             return;
         }
 
         Block top = loc.add(0, 1, 0).getBlock();
-        if (plantType.equals("weed"))
+        if (plantType.equals("weed")) //TODO FIX REDUNDANCY
         {
-            //TOP DATA: 10
-            //BOTTOM DATA: 3
-
             setFlower(plantBlock, Material.LARGE_FERN, Bisected.Half.BOTTOM);
             setFlower(top, Material.LARGE_FERN, Bisected.Half.TOP);
 
         } else if (plantType.equals("coke"))
         {
-            //TOP DATA: 10
-            //BOTTOM DATA: 4
-
             setFlower(plantBlock, Material.ROSE_BUSH, Bisected.Half.BOTTOM);
             setFlower(top, Material.ROSE_BUSH, Bisected.Half.TOP);
         }
@@ -243,9 +278,9 @@ public class Drugs
 
     private void setFlower(Block block, Material type, Bisected.Half half)
     {
-        block.setType(type, false);
+        block.setType(type, false); //applyPhysics set to false
         Bisected data = (Bisected) block.getBlockData();
         data.setHalf(half);
-        block.setBlockData(data); // Again, may need to pass "false"
+        block.setBlockData(data);
     }
 }

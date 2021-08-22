@@ -9,36 +9,37 @@ import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.npc.skin.SkinnableEntity;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateNPC implements CommandExecutor
 {
-    private final DrugDealing plugin = DrugDealing.getInstance();
+    private final DrugDealing instance = DrugDealing.getInstance();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args)
     {
         if (!(sender instanceof Player))
-        { //if the sender isn't a player
-            sender.sendMessage(plugin.language.getChatMessage("only_players_command")); //sending player error message
+        {
+            sender.sendMessage(instance.language.getChatMessage("only_players_command")); //sending player error message
             return true;
         }
+
         Player p = (Player) sender;
-        Location loc = p.getLocation();
-        String usage = plugin.getCommand("setnpc").getUsage().replace("<command>", label); //usage message
+
+        String usage = instance.getCommand("setnpc").getUsage().replace("<command>", label); //usage message
 
         if (args.length < 2)
         {
-            p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage)); //sending player usage message
+            p.sendMessage(instance.language.formattedText(ChatColor.RED, usage)); //sending player usage message
             return true;
         }
 
@@ -48,7 +49,7 @@ public class CreateNPC implements CommandExecutor
 
         if (args[1].length() > 12)
         { //do not remove
-            p.sendMessage(plugin.language.formattedChatMessage("name_too_long")); //sending player error message
+            p.sendMessage(instance.language.formattedChatMessage("name_too_long")); //sending player error message
             return true;
         }
 
@@ -56,16 +57,16 @@ public class CreateNPC implements CommandExecutor
         {
             case "producer":
                 role = CriminalRole.PRODUCER;
-                p.sendMessage(plugin.language.formattedChatMessage("spawned_producer"));
+                p.sendMessage(instance.language.formattedChatMessage("spawned_producer"));
                 name = ("§a" + args[1]).trim();
                 break;
             case "dealer":
                 role = CriminalRole.DEALER;
-                p.sendMessage(plugin.language.formattedChatMessage("spawned_dealer"));
+                p.sendMessage(instance.language.formattedChatMessage("spawned_dealer"));
                 name = ("§6" + args[1]).trim();
                 break;
             default:
-                p.sendMessage(plugin.language.formattedText(ChatColor.RED, usage)); //sending player usage message
+                p.sendMessage(instance.language.formattedText(ChatColor.RED, usage)); //sending player usage message
                 return true;
         }
 
@@ -99,16 +100,16 @@ public class CreateNPC implements CommandExecutor
             ((SkinnableEntity) npcEntity).getSkinTracker().notifySkinChange(spawnedNpc.data().get(NPC.PLAYER_SKIN_USE_LATEST));
         }
 
-        spawnedNpc.spawn(loc);
+        spawnedNpc.spawn(p.getLocation());
 
-        plugin.npcRegister.saveNpc(spawnedNpc, role, notAcceptedDrugTypes);
+        instance.npcRegister.saveNpcOld(spawnedNpc, role, notAcceptedDrugTypes);
 
         return true;
     }
 
     private void IllegalNotAcceptedDrugTypeMessage(Player receiver, String usage, String label)
     { // long message repeated two times
-        receiver.sendMessage(plugin.language.formattedText(ChatColor.RED, usage)); //sending player usage message
+        receiver.sendMessage(instance.language.formattedText(ChatColor.RED, usage)); //sending player usage message
         receiver.sendMessage("§cAccepted drug types: WEED_PLANT, WEED_PRODUCT, COKE_PLANT and COKE_PRODUCT");
         receiver.sendMessage("§c" + String.format("Command example: /%s Dealer Bob WEED_PRODUCT", label));
     }

@@ -20,7 +20,7 @@ public class PlantsUpdater extends BukkitRunnable
         List<ConfigurationSection> plantsCS = plugin.plantsRegister.getPlants();
         for (ConfigurationSection currentPlant : plantsCS)
         {
-            Location currLoc = plugin.plantsRegister.getPlantLocation(currentPlant);
+            Location currLoc = plugin.plantsRegister.getPlantLocationOld(currentPlant);
             //playing particle
             currLoc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, currLoc.getBlockX() + 0.5, currLoc.getBlockY(), currLoc.getBlockZ() + 0.5, 2, 0.3, 0.3, 0.3);
             //check if still planted on farmland
