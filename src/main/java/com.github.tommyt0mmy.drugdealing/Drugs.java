@@ -10,7 +10,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Bisected;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -217,63 +216,59 @@ public class Drugs
         return belowBlock.getType().equals(Material.FARMLAND);
     }
 
+    //similar to org.bukkit.block.Block.breakNaturally()
     public void destroyPlant(Block plant, boolean dropItems)
-    { //similar to org.bukkit.block.Block.breakNaturally() but with some changes
+    {
         Location plantLocation = plant.getLocation();
-        if (instance.plantsRegister.isDrugPlant(plantLocation))
-        { //if the plant is registered in plants.yml
 
-            plant.setType(Material.AIR); //removing the plant's block
-            plantLocation.getWorld().playSound(plantLocation, Sound.BLOCK_LAVA_POP, 5, 5); //sound feedback
-            ConfigurationSection plantCS = instance.plantsRegister.getPlant(plantLocation); //the plant's section in plants.yml
+        //if the plant isn't registered
+        if (!instance.plantsRegister.isDrugPlant(plantLocation))
+            return;
 
-            //Plant drops
-            if (dropItems)
-            {
-                //TODO FIX REDUNDANCY
-                if (instance.plantsRegister.getType(plantLocation).equals("coke"))
-                {
-                    plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.COKE_PLANT)); //first drop
-                    if (plantCS.getBoolean("grown"))
-                    { //If the plant is grown a second drop will appear
-                        plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.COKE_PLANT));
-                    }
+        DrugType plantType = instance.plantsRegister.getDrugType(plantLocation);
 
-                } else if (instance.plantsRegister.getType(plantLocation).equals("weed"))
-                {
-                    plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.WEED_PLANT)); //first drop
-                    if (plantCS.getBoolean("grown"))
-                    { //If the plant is grown a second drop will appear
-                        plant.getWorld().dropItemNaturally(plantLocation, instance.drugs.getItemStack(DrugType.WEED_PLANT));
-                    }
-                }
-            }
-            instance.plantsRegister.removePlant(plantLocation);
+        plant.setType(Material.AIR); //removing the plant's block
+        plantLocation.getWorld().playSound(plantLocation, Sound.BLOCK_LAVA_POP, 5, 5); //sound feedback
+
+        //Plant drops
+        if (dropItems)
+        {
+            //if the plant is fully grown there will be two drops, otherwise only one
+            int amount = (instance.plantsRegister.isPhysicallyGrown(plantLocation)) ? 2 : 1;
+
+            ItemStack droppedItemStack = this.getItemStack(plantType);
+            droppedItemStack.setAmount(amount);
+
+            plant.getWorld().dropItemNaturally(plantLocation, droppedItemStack);
         }
+
+        instance.plantsRegister.removePlant(plantLocation);
     }
 
     public void growPlant(Location loc)
     { //given a location of a plant it makes the plant grow to it's final stage, ready to be harvested
-        String plantType = instance.plantsRegister.getType(loc);
+        DrugType plantType = instance.plantsRegister.getDrugType(loc);
         Block plantBlock = loc.getBlock();
-        ConfigurationSection plant = instance.plantsRegister.getPlant(loc);
-        if (plant.getBoolean("grown"))
+
+        //if the plant is already grown
+        if (instance.plantsRegister.isPhysicallyGrown(loc))
         {
             return;
         }
 
         Block top = loc.add(0, 1, 0).getBlock();
-        if (plantType.equals("weed")) //TODO FIX REDUNDANCY
+        if (plantType.equals(DrugType.WEED_PLANT))
         {
             setFlower(plantBlock, Material.LARGE_FERN, Bisected.Half.BOTTOM);
             setFlower(top, Material.LARGE_FERN, Bisected.Half.TOP);
 
-        } else if (plantType.equals("coke"))
+        } else if (plantType.equals(DrugType.COKE_PLANT))
         {
             setFlower(plantBlock, Material.ROSE_BUSH, Bisected.Half.BOTTOM);
             setFlower(top, Material.ROSE_BUSH, Bisected.Half.TOP);
         }
-        plant.set("grown", true);
+
+        instance.plantsRegister.setPhysicallyGrown(loc, true);
     }
 
     private void setFlower(Block block, Material type, Bisected.Half half)
