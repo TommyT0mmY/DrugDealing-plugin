@@ -4,22 +4,28 @@ import com.github.tommyt0mmy.drugdealing.DrugDealing;
 
 public enum DrugType
 {
-    WEED_PLANT(0,false, true, DrugDealing.getInstance().language.getKeyword("weed_plant_name")),
-    COKE_PLANT(1,false, true, DrugDealing.getInstance().language.getKeyword("coke_plant_name")),
-    WEED_PRODUCT(2,true, false, DrugDealing.getInstance().language.getKeyword("weed_drug_name")),
-    COKE_PRODUCT(3,true, false, DrugDealing.getInstance().language.getKeyword("coke_drug_name"));
+    WEED_PLANT(0, false, true, "weed_plant_name", null, "weedProductionPrice", DrugType.WEED_PRODUCT),
+    COKE_PLANT(1, false, true, "coke_plant_name", null, "cokeProductionPrice", DrugType.COKE_PRODUCT),
+    WEED_PRODUCT(2, true, false, "weed_drug_name", "weedDrugSellingPrice", null, DrugType.WEED_PLANT),
+    COKE_PRODUCT(3, true, false, "coke_drug_name", "cokeDrugSellingPrice", null, DrugType.COKE_PLANT);
 
     private final int id;
     private final boolean isAcceptedByDealer;
     private final boolean isPlant;
-    private final String prettyName;
+    private final String keywordPrettyName;
+    private final String keywordSellingPrice;
+    private final String keywordProductionPrice;
+    private final DrugType opposite;
 
-    DrugType(final int id, final boolean isAcceptedByDealer, final boolean isPlant, final String prettyName)
+    DrugType(final int id, final boolean isAcceptedByDealer, final boolean isPlant, final String keywordPrettyName, final String keywordSellingPrice, final String keywordProductionPrice, final DrugType opposite)
     {
         this.id = id;
         this.isAcceptedByDealer = isAcceptedByDealer;
         this.isPlant = isPlant;
-        this.prettyName = prettyName;
+        this.keywordPrettyName = keywordPrettyName;
+        this.keywordSellingPrice = keywordSellingPrice;
+        this.keywordProductionPrice = keywordProductionPrice;
+        this.opposite = opposite;
     }
 
     public int getId() { return id; }
@@ -28,5 +34,20 @@ public enum DrugType
 
     public boolean isPlant() { return isPlant; }
 
-    public String getPrettyName() { return prettyName; }
+    public String getPrettyName() { return DrugDealing.getInstance().language.getKeyword(keywordPrettyName); }
+
+    public String getKeywordSellingPrice()
+    {
+        return keywordSellingPrice;
+    }
+
+    public String getKeywordProductionPrice()
+    {
+        return keywordProductionPrice;
+    }
+
+    public DrugType getOpposite()
+    {
+        return opposite;
+    }
 }
