@@ -36,10 +36,11 @@ public class PlantsUpdater extends BukkitRunnable
         }
     }
 
+    @Deprecated //check from database instead
     public boolean hasToGrow(Location loc)
     {
         int currentTime = (int) (System.currentTimeMillis() / 1000L);
-        int plantsGrowthTime = plugin.plantsRegister.getGrowthTime(loc);
+        int plantsGrowthTime = plugin.plantsRegister.getGrowthTimeOld(loc);
         return plantsGrowthTime - currentTime <= 0;
     }
 }

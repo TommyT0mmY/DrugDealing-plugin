@@ -55,6 +55,7 @@ public abstract class DrugDealingDatabase
                         "id integer not null auto_increment," +
                         "type_id tinyint not null," +
                         "growthtime integer not null," +
+                        "physically_grown boolean not null," +
                         "x integer not null," +
                         "y integer not null," +
                         "z integer not null," +
@@ -160,14 +161,17 @@ public abstract class DrugDealingDatabase
 
     public void savePlant(@NotNull DrugType drugType, int growthTime, @NotNull Location location) throws SQLException
     {
-        PreparedStatement pstmt = connection.prepareStatement("insert into dd_plant_data values(null, ?, ?, ?, ?, ?, unhex(replace(?, '-','')));");
+        PreparedStatement pstmt = connection.prepareStatement("insert into dd_plant_data values(null, ?, ?, ?, ?, ?, ?, ?");
 
-        pstmt.setByte(1, (byte) drugType.getId());
-        pstmt.setInt(2, growthTime);
-        pstmt.setInt(3, location.getBlockX());
-        pstmt.setInt(4, location.getBlockY());
-        pstmt.setInt(5, location.getBlockZ());
-        pstmt.setObject(6, Objects.requireNonNull(location.getWorld()).getUID(), Types.BINARY);
+        UUID worldUuid = Objects.requireNonNull(location.getWorld()).getUID();
+
+        pstmt.setByte(1, (byte) drugType.getId());      //type_id
+        pstmt.setInt(2, growthTime);                    //growth_time
+        pstmt.setBoolean(3, false);                   //physically_grown
+        pstmt.setInt(4, location.getBlockX());          //x
+        pstmt.setInt(5, location.getBlockY());          //y
+        pstmt.setInt(6, location.getBlockZ());          //z
+        pstmt.setObject(7, Helper.UuidToByte16(worldUuid), Types.BINARY);
 
         pstmt.executeUpdate();
         pstmt.close();
@@ -252,6 +256,32 @@ public abstract class DrugDealingDatabase
         return rs.getInt(1);
     }
 
+    public boolean getPhysicallyGrown(int id) throws SQLException
+    {
+        PreparedStatement pstmt = connection.prepareStatement("select physically_grown from dd_plant_data where id = ?");
+        pstmt.setInt(1, id);
+        ResultSet rs = pstmt.executeQuery();
+
+        boolean pysicallyGrown = rs.getBoolean(1);
+
+        rs.close();
+        pstmt.close();
+
+        return pysicallyGrown;
+    }
+
+    public void setPhysicallyGrown(int id, boolean physicallyGrown) throws SQLException
+    {
+        PreparedStatement pstmt = connection.prepareStatement("update dd_plant_data set physically_grown = ? where id = ?");
+
+        pstmt.setBoolean(1, physicallyGrown);
+        pstmt.setInt(2, id);
+
+        pstmt.executeUpdate();
+
+        pstmt.close();
+    }
+
     public Location getPlantLocation(int id) throws SQLException
     {
         PreparedStatement pstmt = connection.prepareStatement("select x, y, z, world_uuid from dd_plant_data where id = ?;");
@@ -259,11 +289,11 @@ public abstract class DrugDealingDatabase
         ResultSet rs = pstmt.executeQuery();
 
         int x = rs.getInt("x"), y = rs.getInt("y"), z = rs.getInt("z");
-        UUID worldUUID = UUID.nameUUIDFromBytes(rs.getBytes("world_uuid"));
+        UUID worldUuid = UUID.nameUUIDFromBytes(rs.getBytes("world_uuid"));
 
         rs.close();
         pstmt.close();
 
-        return new Location(Bukkit.getWorld(worldUUID), x, y, z);
+        return new Location(Bukkit.getWorld(worldUuid), x, y, z);
     }
 }
