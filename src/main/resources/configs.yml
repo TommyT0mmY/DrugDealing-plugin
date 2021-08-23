@@ -1,6 +1,6 @@
-#Minimum time for a plant to grow in seconds (20 seconds imprecision)
+#Minimum time for a plant to grow in seconds (20 seconds precision)
 growthTimeMin: 25
-#maximum time for a plant to grow in seconds (20 seconds imprecision)
+#maximum time for a plant to grow in seconds (20 seconds precision)
 growthTimeMax: 300
 #   PRICES  #
 # IT'S HIGHLY SUGGESTED TO CHANGE THOSE PRICES TO MATCH THE SERVER'S ECONOMY
