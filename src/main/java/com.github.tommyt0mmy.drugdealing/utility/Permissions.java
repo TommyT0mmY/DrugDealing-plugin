@@ -3,6 +3,8 @@ package com.github.tommyt0mmy.drugdealing.utility;
 import java.util.HashMap;
 import java.util.Map;
 
+//todo make this an enum
+
 public class Permissions
 {
     @SuppressWarnings("serial")
