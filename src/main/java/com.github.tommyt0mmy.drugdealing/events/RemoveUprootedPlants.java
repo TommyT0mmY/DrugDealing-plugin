@@ -48,7 +48,7 @@ public class RemoveUprootedPlants implements Listener
             { //if the broken block isn't the soil of the plant
                 if (plugin.plantsRegister.isDrugPlant(belowBlock.getLocation()))
                 { //if the broken block isn't the second part of a grown plant
-                    if (plugin.plantsRegister.isGrown(belowBlock))
+                    if (plugin.plantsRegister.isGrown(belowBlock.getLocation()))
                     {
                         removeProcedure(belowBlock, false, dropItems);
                     }
@@ -85,7 +85,7 @@ public class RemoveUprootedPlants implements Listener
         }
 
         //checking plant
-        if (plugin.plantsRegister.isDrugPlant(plantBaseLocation))
+        if (plugin.plantsRegister.isDrugPlantOld(plantBaseLocation))
         {
             plugin.drugs.destroyPlant(plantBase, dropItems); //removing the plant
             return true;
