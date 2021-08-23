@@ -1,12 +1,21 @@
 package com.github.tommyt0mmy.drugdealing;
 
-import com.github.tommyt0mmy.drugdealing.commands.*;
+import com.github.tommyt0mmy.drugdealing.commands.CreateNPC;
+import com.github.tommyt0mmy.drugdealing.commands.GetDrug;
+import com.github.tommyt0mmy.drugdealing.commands.GetPlant;
+import com.github.tommyt0mmy.drugdealing.commands.Help;
+import com.github.tommyt0mmy.drugdealing.commands.RemoveNPC;
 import com.github.tommyt0mmy.drugdealing.configuration.Language;
 import com.github.tommyt0mmy.drugdealing.configuration.Settings;
 import com.github.tommyt0mmy.drugdealing.database.DrugDealingDatabase;
 import com.github.tommyt0mmy.drugdealing.database.DrugDealingMySQLDatabase;
 import com.github.tommyt0mmy.drugdealing.database.DrugDealingSQLiteDatabase;
-import com.github.tommyt0mmy.drugdealing.events.*;
+import com.github.tommyt0mmy.drugdealing.events.ConsumedDrug;
+import com.github.tommyt0mmy.drugdealing.events.NpcInteractions;
+import com.github.tommyt0mmy.drugdealing.events.PlantedDrug;
+import com.github.tommyt0mmy.drugdealing.events.PreventSaplingGrowth;
+import com.github.tommyt0mmy.drugdealing.events.RemoveUprootedPlants;
+import com.github.tommyt0mmy.drugdealing.events.onPlayerJoin;
 import com.github.tommyt0mmy.drugdealing.managers.NpcRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsRegister;
 import com.github.tommyt0mmy.drugdealing.managers.PlantsUpdater;
