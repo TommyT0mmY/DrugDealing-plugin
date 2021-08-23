@@ -7,7 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
@@ -175,6 +181,27 @@ public abstract class DrugDealingDatabase
 
         pstmt.executeUpdate();
         pstmt.close();
+    }
+
+    public boolean findPlant(@NotNull Location loc) throws SQLException
+    {
+        PreparedStatement pstmt = connection.prepareStatement("select exists(select * from dd_plant_data dpd where x = ? and y = ? and z = ? and world_uuid = ?)");
+
+        UUID worldUuid = Objects.requireNonNull(loc.getWorld()).getUID();
+
+        pstmt.setInt(1, loc.getBlockX());
+        pstmt.setInt(2, loc.getBlockY());
+        pstmt.setInt(3, loc.getBlockZ());
+        pstmt.setObject(4, Helper.UuidToByte16(worldUuid), Types.BINARY);
+
+        ResultSet rs = pstmt.executeQuery();
+
+        boolean foundPlant = rs.getBoolean(1);
+
+        rs.close();
+        pstmt.close();
+
+        return foundPlant;
     }
 
     public int getPlantId(Location location) throws SQLException
