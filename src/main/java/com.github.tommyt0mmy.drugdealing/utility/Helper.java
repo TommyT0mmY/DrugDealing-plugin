@@ -40,4 +40,8 @@ public class Helper
         return drugTypes[id];
     }
 
+    public static int getCurrentTimeSeconds()
+    {
+        return (int) (System.currentTimeMillis() / 1000L);
+    }
 }
