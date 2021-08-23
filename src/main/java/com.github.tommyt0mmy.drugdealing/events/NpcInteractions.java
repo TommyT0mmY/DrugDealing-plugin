@@ -55,7 +55,7 @@ public class NpcInteractions implements Listener
 
     private void removeNpc(Player p, CriminalRole role, NPC npc)
     {
-        switch (role) //TODO REDUNDANCY
+        switch (role) //todo redundancy
         {
             case DEALER:
                 if (!p.hasPermission(Permissions.getPermission("remove_dealer")))
