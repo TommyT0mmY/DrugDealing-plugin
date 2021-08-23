@@ -16,209 +16,196 @@ import java.util.Optional;
 
 public class NpcInteractions implements Listener
 {
-    private final DrugDealing plugin = DrugDealing.getInstance();
+    private final DrugDealing instance = DrugDealing.getInstance();
 
     @EventHandler
     public void onRightClick(NPCRightClickEvent e)
     {
         NPC npc = e.getNPC();
         Player p = e.getClicker();
-        CriminalRole role = plugin.npcRegister.getRoleOld(npc);
+        Optional<CriminalRole> role = instance.npcRegister.getCriminalRole(npc);
 
-        if (plugin.npcRegister.isCriminalNpc(npc))
-        { //checks if the clicked NPC is a NPC handled by this plugin
-
-            //REMOVING NPC AFTER /removenpc COMMAND
-            if (plugin.toRemoveNPCs.contains(p.getUniqueId()))
-            {
-
-                switch (role)
-                {
-                    case DEALER:
-                        if (!p.hasPermission(Permissions.getPermission("remove_dealer")))
-                        {
-                            p.sendMessage(plugin.language.formattedChatMessage("remove_dealer_invalid_permission"));
-                            plugin.toRemoveNPCs.remove(p.getUniqueId());
-                            return;
-                        }
-                    case PRODUCER:
-                        if (!p.hasPermission(Permissions.getPermission("remove_producer")))
-                        {
-                            p.sendMessage(plugin.language.formattedChatMessage("remove_producer_invalid_permission"));
-                            plugin.toRemoveNPCs.remove(p.getUniqueId());
-                            return;
-                        }
-                }
-
-                plugin.npcRegister.removeNpcOld(npc);
-                npc.destroy();
-
-                plugin.toRemoveNPCs.remove(p.getUniqueId());
-                p.sendMessage(plugin.language.formattedChatMessage("removenpc_success"));
-                return;
-            }
-
-            ItemStack itemInHand = p.getInventory().getItemInMainHand();
-            int amount = itemInHand.getAmount();
-            String npcName = npc.getName();
-            Optional<DrugType> optionalDrugType = plugin.drugs.getDrugType(itemInHand);
-            DrugType drugType;
-
-            //Criminal NPC functionality
-            switch (role)
-            {
-                case DEALER:
-                    if (!p.hasPermission("use_dealer"))
-                    {
-                        p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
-                    }
-
-                    if (!optionalDrugType.isPresent())
-                    { //if it isn't a drug item
-                        p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
-                        return;
-                    }
-
-                    drugType = optionalDrugType.get();
-
-                    //checks if the player clicked with a plant, plants cannot be sold
-                    if (drugType.isPlant())
-                    {
-                        p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("cannot_sell_plants"), npcName, null, null, null));
-
-                        //if sold item is accepted
-                    } else if (drugType.isAcceptedByDealer())
-                    {
-                        //Getting product price
-                        FileConfiguration configs = plugin.settings.getFileConfiguration();
-                        double price = 0;
-
-
-                        switch (drugType) //TODO FIX REDUNDANCY
-                        {
-                            case COKE_PRODUCT:
-                                if (isNotAccepted(npc, drugType, p))
-                                    return;
-                                price = configs.getDouble("cokeDrugSellingPrice") * amount;
-                                break;
-                            case WEED_PRODUCT:
-                                if (isNotAccepted(npc, drugType, p))
-                                    return;
-                                price = configs.getDouble("weedDrugSellingPrice") * amount;
-                                break;
-                        }
-
-
-                        //Removing item in hand
-                        p.getInventory().getItemInMainHand().setAmount(0);
-                        //Adding money to player's balance
-                        DrugDealing.economy.depositPlayer(p, price);
-
-                        if (amount == 1)
-                        {
-                            p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_bought_item"), npcName, 1, drugType.getPrettyName(), price));
-                        } else
-                        {
-                            p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_bought_item_plural"), npcName, amount, drugType.getPrettyName(), price));
-                        }
-                        //every other case
-                    } else
-                    {
-                        p.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("dealer_wrong_item"), npcName, null, null, null));
-                    }
-
-                    break;
-
-                case PRODUCER:
-                    if (!p.hasPermission("use_producer"))
-                    {
-                        p.sendMessage(plugin.language.formattedChatMessage("invalid_permission"));
-                    }
-
-                    if (!optionalDrugType.isPresent())
-                    { //if it isn't a drug item
-                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
-                        return;
-                    }
-
-                    drugType = optionalDrugType.get();
-
-                    //producers only accept plants
-                    if (!drugType.isPlant())
-                    {
-                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_wrong_item"), npcName, null, null, null, null));
-                        return;
-                    }
-
-                    //Getting product price
-                    FileConfiguration configs = plugin.settings.getFileConfiguration();
-                    ItemStack result = null;
-                    String plant_name = null;
-                    String drug_name = null;
-                    double cost = 0;
-
-                    switch (drugType) //TODO FIX REDUNDANCY
-                    {
-                        case COKE_PLANT:
-                            if (isNotAccepted(npc, drugType, p))
-                                return;
-                            cost = configs.getDouble("cokeProductionPrice") * amount;
-                            result = plugin.drugs.getItemStack(DrugType.COKE_PRODUCT);
-                            result.setAmount(amount);
-                            plant_name = DrugType.COKE_PLANT.getPrettyName();
-                            drug_name = DrugType.COKE_PRODUCT.getPrettyName();
-                            break;
-                        case WEED_PLANT:
-                            if (isNotAccepted(npc, drugType, p))
-                                return;
-                            cost = configs.getDouble("weedProductionPrice") * amount;
-                            result = plugin.drugs.getItemStack(DrugType.WEED_PRODUCT);
-                            result.setAmount(amount);
-                            plant_name = DrugType.WEED_PLANT.getPrettyName();
-                            drug_name = DrugType.WEED_PRODUCT.getPrettyName();
-                            break;
-                    }
-
-                    //Checking player's balance
-                    double balance = DrugDealing.economy.getBalance(p);
-                    if (balance < cost)
-                    {
-                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_invalid_balance"), npcName, cost, null, null, null));
-                        return;
-                    }
-
-                    //Removing money
-                    DrugDealing.economy.withdrawPlayer(p, cost);
-
-                    //Changing plant to final product
-                    p.getInventory().setItemInMainHand(result);
-
-                    //Sending success message
-                    if (amount == 1)
-                    {
-                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_converted_drug"), npcName, cost, amount, drug_name, plant_name));
-                    } else
-                    {
-                        p.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("producer_converted_drug_plural"), npcName, cost, amount, drug_name, plant_name));
-                    }
-
-                    break;
-            }
+        if (!role.isPresent() || instance.npcRegister.isCriminalNpc(npc)) //checks if the clicked NPC is a NPC handled by this plugin
+        {
+            return;
         }
+
+        //removing NPC if /removenpc command is executed
+        if (instance.toRemoveNPCs.contains(p.getUniqueId()))
+        {
+            removeNpc(p, role.get(), npc);
+        }
+
+        //Getting the item held by the player and checking if it's a plugin's item
+        ItemStack itemInHand = p.getInventory().getItemInMainHand();
+
+        //Criminal NPC functionality
+        switch (role.get())
+        {
+            case DEALER:
+                dealerInteraction(p, npc, itemInHand);
+
+                break;
+            case PRODUCER:
+                producerInteraction(p, npc, itemInHand);
+
+                break;
+        }
+    }
+
+    private void removeNpc(Player p, CriminalRole role, NPC npc)
+    {
+        switch (role) //TODO REDUNDANCY
+        {
+            case DEALER:
+                if (!p.hasPermission(Permissions.getPermission("remove_dealer")))
+                {
+                    p.sendMessage(instance.language.formattedChatMessage("remove_dealer_invalid_permission"));
+                    instance.toRemoveNPCs.remove(p.getUniqueId());
+                    return;
+                }
+            case PRODUCER:
+                if (!p.hasPermission(Permissions.getPermission("remove_producer")))
+                {
+                    p.sendMessage(instance.language.formattedChatMessage("remove_producer_invalid_permission"));
+                    instance.toRemoveNPCs.remove(p.getUniqueId());
+                    return;
+                }
+        }
+
+        instance.npcRegister.removeNpc(npc);
+        npc.destroy();
+
+        instance.toRemoveNPCs.remove(p.getUniqueId());
+        p.sendMessage(instance.language.formattedChatMessage("removenpc_success"));
+    }
+
+    private void dealerInteraction(Player p, NPC npc, ItemStack itemInHand)
+    {
+        if (!p.hasPermission("use_dealer"))
+        {
+            p.sendMessage(instance.language.formattedChatMessage("invalid_permission"));
+        }
+
+        Optional<DrugType> optionalDrugType = instance.drugs.getDrugType(itemInHand);
+
+        if (!optionalDrugType.isPresent()) //if the item held by the player isn't a drug
+        {
+            p.sendMessage(DealerFormattedMessage(instance.language.getChatMessage("dealer_wrong_item"), npc.getName(), null, null, null));
+            return;
+        }
+
+        DrugType drugType = optionalDrugType.get();
+
+        if (drugType.isPlant()) //checks if the player clicked with a plant, plants cannot be sold to dealers
+        {
+            p.sendMessage(DealerFormattedMessage(instance.language.getChatMessage("cannot_sell_plants"), npc.getName(), null, null, null));
+
+        } else if (drugType.isAcceptedByDealer()) //more checks to find out if the item is being accepted
+        {
+            //Getting product price
+            FileConfiguration configs = instance.settings.getFileConfiguration();
+
+            if (isNotAccepted(npc, drugType, p))
+                return;
+
+            int amount = itemInHand.getAmount();
+            double price = configs.getDouble(drugType.getKeywordSellingPrice()) * amount;
+
+            //Removing item in hand
+            p.getInventory().getItemInMainHand().setAmount(0);
+            //Adding money to player's balance
+            DrugDealing.economy.depositPlayer(p, price);
+
+            if (amount == 1)
+            {
+                p.sendMessage(DealerFormattedMessage(instance.language.getChatMessage("dealer_bought_item"), npc.getName(), 1, drugType.getPrettyName(), price));
+            } else
+            {
+                p.sendMessage(DealerFormattedMessage(instance.language.getChatMessage("dealer_bought_item_plural"), npc.getName(), amount, drugType.getPrettyName(), price));
+            }
+            //every other case
+        } else
+        {
+            p.sendMessage(DealerFormattedMessage(instance.language.getChatMessage("dealer_wrong_item"), npc.getName(), null, null, null));
+        }
+    }
+
+    private void producerInteraction(Player p, NPC npc, ItemStack itemInHand)
+    {
+        if (!p.hasPermission("use_producer"))
+        {
+            p.sendMessage(instance.language.formattedChatMessage("invalid_permission"));
+        }
+
+        Optional<DrugType> optionalDrugType = instance.drugs.getDrugType(itemInHand);
+
+        if (!optionalDrugType.isPresent()) //if the item held by the player isn't a drug
+        {
+            p.sendMessage(ProducerFormattedMessage(instance.language.getChatMessage("producer_wrong_item"), npc.getName(), null, null, null, null));
+            return;
+        }
+
+        DrugType drugType = optionalDrugType.get();
+
+        //producers only accept plants
+        if (!drugType.isPlant())
+        {
+            p.sendMessage(ProducerFormattedMessage(instance.language.getChatMessage("producer_wrong_item"), npc.getName(), null, null, null, null));
+            return;
+        }
+
+        //Getting product price
+        FileConfiguration configs = instance.settings.getFileConfiguration();
+
+        if (isNotAccepted(npc, drugType, p))
+            return;
+
+        int amount = itemInHand.getAmount();
+
+        //Checking player's balance
+        double cost = configs.getDouble(drugType.getKeywordProductionPrice()) * amount;
+
+        double balance = DrugDealing.economy.getBalance(p);
+        if (balance < cost)
+        {
+            p.sendMessage(ProducerFormattedMessage(instance.language.getChatMessage("producer_invalid_balance"), npc.getName(), cost, null, null, null));
+            return;
+        }
+
+        //Removing money
+        DrugDealing.economy.withdrawPlayer(p, cost);
+
+        //Changing plant to final product
+        ItemStack producedDrug = instance.drugs.getItemStack(drugType.getOpposite());
+        producedDrug.setAmount(amount);
+
+        p.getInventory().setItemInMainHand(producedDrug);
+
+        //Sending success message
+        String plantName = drugType.getPrettyName();
+        String productName = drugType.getOpposite().getPrettyName();
+        String messageKeyword = (amount == 1) ? "producer_converted_drug" : "producer_converted_drug_plural";
+
+        p.sendMessage(ProducerFormattedMessage(instance.language.getChatMessage(messageKeyword), npc.getName(), cost, amount, productName, plantName));
     }
 
     private boolean isNotAccepted(NPC npc, DrugType drugType, Player receiver)
     {
-        CriminalRole role = plugin.npcRegister.getRoleOld(npc);
-        if (plugin.npcRegister.acceptsDrugTypeOld(npc, drugType))
+        Optional<CriminalRole> roleOptional = instance.npcRegister.getCriminalRole(npc);
+
+        if (!roleOptional.isPresent())
+            return false;
+
+        if (instance.npcRegister.acceptsDrugType(npc, drugType))
         {
-            switch (role)
+            switch (roleOptional.get())
             {
                 case DEALER:
-                    receiver.sendMessage(DealerFormattedMessage(plugin.language.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, drugType.getPrettyName(), null));
+                    receiver.sendMessage(DealerFormattedMessage(instance.language.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, drugType.getPrettyName(), null));
                     return true;
                 case PRODUCER:
-                    receiver.sendMessage(ProducerFormattedMessage(plugin.language.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, null, drugType.getPrettyName(), null));
+                    receiver.sendMessage(ProducerFormattedMessage(instance.language.getChatMessage("npc_drug_not_accepted"), npc.getName(), null, null, drugType.getPrettyName(), null));
                     return true;
             }
             return true;
