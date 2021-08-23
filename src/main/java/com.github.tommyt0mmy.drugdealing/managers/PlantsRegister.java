@@ -4,6 +4,7 @@ package com.github.tommyt0mmy.drugdealing.managers;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
 import com.github.tommyt0mmy.drugdealing.utility.DrugType;
+import com.github.tommyt0mmy.drugdealing.utility.Helper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -21,27 +22,27 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-//TODO STOP USING OLD SYSTEM AND IMPLEMENT DATABASE
-
 public class PlantsRegister
 {
-    private final DrugDealing plugin = DrugDealing.getInstance();
-    private File registerConfigFile;
-    private FileConfiguration registerConfig;
+    private final DrugDealing instance = DrugDealing.getInstance();
+    private Random randomGenerator;
+    private File registerConfigFile; //todo remove variable
+    private FileConfiguration registerConfig; //todo remove variable
 
     public PlantsRegister()
     {
-        loadRegister();
+        randomGenerator = new Random();
     }
 
+    @Deprecated
     private void loadRegister()
     { //loading plants.yml
-        registerConfigFile = new File(plugin.dataFolder, "plants.yml");
+        registerConfigFile = new File(instance.dataFolder, "plants.yml");
         if (!registerConfigFile.exists())
         {
             registerConfigFile.getParentFile().mkdirs();
-            plugin.saveResource("plants.yml", false);
-            plugin.console.info("Created file plants.yml");
+            instance.saveResource("plants.yml", false);
+            instance.console.info("Created file plants.yml");
         }
 
         registerConfig = new YamlConfiguration();
@@ -50,24 +51,22 @@ public class PlantsRegister
             registerConfig.load(registerConfigFile);
         } catch (Exception e)
         {
-            plugin.console.severe("Couldn't load plants.yml file properly!");
+            instance.console.severe("Couldn't load plants.yml file properly!");
         }
     }
 
     private int randomGrowthTime()
     {
-        int currentTime = (int) (System.currentTimeMillis() / 1000L);
-        int minTime = plugin.settings.getFileConfiguration().getInt("growthTimeMin");
-        int maxTime = plugin.settings.getFileConfiguration().getInt("growthTimeMax");
-        Random randomGenerator = new Random();
+        int minTime = instance.settings.getFileConfiguration().getInt("growthTimeMin");
+        int maxTime = instance.settings.getFileConfiguration().getInt("growthTimeMax");
         int randomTime = randomGenerator.nextInt(maxTime) + minTime;
-        return currentTime + randomTime;
+        return Helper.getCurrentTimeSeconds() + randomTime;
     }
 
     @Deprecated
-    public void addPlant(Block plant, String type)
+    public void addPlantOld(Block plant, String type)
     {
-        addPlantToDatabase(plant.getLocation(), DrugType.valueOf(type.toUpperCase() + "_PLANT"));
+        addPlant(plant.getLocation(), DrugType.valueOf(type.toUpperCase() + "_PLANT"));
         Location loc = plant.getLocation();
         String plantName = "plants.plant" + registerConfig.getInt("plantsNumber");
         int newPlantsNumber = registerConfig.getInt("plantsNumber") + 1;
@@ -84,23 +83,23 @@ public class PlantsRegister
         try
         {
             registerConfig.save(registerConfigFile);
-        } catch (IOException e) {plugin.console.severe("Couldn't save plants.yml file properly!");}
+        } catch (IOException e) {instance.console.severe("Couldn't save plants.yml file properly!");}
     }
 
-    public void addPlantToDatabase(Location location, DrugType plantType)
+    public void addPlant(Location location, DrugType plantType)
     {
         try
         {
             DrugDealing.database.savePlant(plantType, randomGrowthTime(), location);
         } catch (SQLException e)
         {
-            plugin.console.severe("Couldn't store plant data to database");
+            instance.console.severe("Couldn't store plant data to database");
             e.printStackTrace();
         }
     }
 
     @Deprecated
-    public void removePlant(Location loc)
+    public void removePlantOld(Location loc)
     {
         String plantName = getPlantPath(loc);
         if (!plantName.equals(""))
@@ -111,11 +110,11 @@ public class PlantsRegister
             try
             {
                 registerConfig.save(registerConfigFile);
-            } catch (IOException e) {plugin.console.severe("Couldn't save plants.yml file properly!");}
+            } catch (IOException e) {instance.console.severe("Couldn't save plants.yml file properly!");}
         }
     }
 
-    public void removePlantFromDatabase(Location location)
+    public void removePlant(Location location)
     {
         try
         {
@@ -123,13 +122,13 @@ public class PlantsRegister
             DrugDealing.database.removePlant(plantId);
         } catch (SQLException e)
         {
-            plugin.console.severe("Couldn't remove plant data from database");
+            instance.console.severe("Couldn't remove plant data from database");
             e.printStackTrace();
         }
     }
 
     @Deprecated
-    public String getType(Location loc)
+    public String getTypeOld(Location loc)
     {
         String type = "";
         String plantPath = getPlantPath(loc);
@@ -140,7 +139,7 @@ public class PlantsRegister
         return type;
     }
 
-    public DrugType getPlantTypeFromDatabase(@NotNull Location location)
+    public DrugType getDrugType(@NotNull Location location)
     {
         try
         {
@@ -148,15 +147,14 @@ public class PlantsRegister
             return DrugDealing.database.getPlantType(plantId);
         } catch (SQLException e)
         {
-            plugin.console.severe("Couldn't get plant type from database");
+            instance.console.severe("Couldn't get plant type from database");
             e.printStackTrace();
             return null;
         }
     }
 
-
     @Deprecated
-    public int getGrowthTime(Location loc)
+    public int getGrowthTimeOld(Location loc)
     {
         int growthTime;
         String plantPath = getPlantPath(loc);
@@ -164,7 +162,7 @@ public class PlantsRegister
         return growthTime;
     }
 
-    public int getGrowthTimeFromDatabase(@NotNull Location location)
+    public int getGrowthTime(@NotNull Location location)
     {
         try
         {
@@ -172,18 +170,18 @@ public class PlantsRegister
             return DrugDealing.database.getGrowthtime(plantId);
         } catch (SQLException e)
         {
-            plugin.console.severe("Couldn't get plant growth time from database");
+            instance.console.severe("Couldn't get plant growth time from database");
             e.printStackTrace();
             return 0;
         }
     }
 
     @Deprecated
-    public boolean isGrown(Block plantBlock)
+    public boolean isGrownOld(Block plantBlock)
     {
         boolean grown = false;
         Location loc = plantBlock.getLocation();
-        if (isDrugPlant(loc))
+        if (isDrugPlantOld(loc))
         { //if the given block represents a plant base
             ConfigurationSection plantCS = getPlant(getPlantPath(loc));
             grown = plantCS.getBoolean("grown");
@@ -191,21 +189,53 @@ public class PlantsRegister
         return grown;
     }
 
-    public boolean newIsGrown(@NotNull Location plantLocation)
+    public boolean isTimeGrown(@NotNull Location loc)
     {
-        //TODO
+        int growthTime = getGrowthTime(loc);
+        int currentTime = Helper.getCurrentTimeSeconds();
+
+        return growthTime - currentTime <= 0;
+    }
+
+    public boolean isPhysicallyGrown(@NotNull Location loc)
+    {
+        try
+        {
+            return DrugDealing.database.getPhysicallyGrown(getPlantId(loc));
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
         return false;
     }
 
+    public void setPhysicallyGrown(@NotNull Location loc, boolean physicallyGrown)
+    {
+        try
+        {
+            DrugDealing.database.setPhysicallyGrown(getPlantId(loc), physicallyGrown);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     @Deprecated
-    public boolean isDrugPlant(Location loc)
+    public boolean isDrugPlantOld(Location loc)
     {
         return !getPlantPath(loc).equals("");
     }
 
-    public boolean newIsPlant()
+    public boolean isDrugPlant(Location loc)
     {
-        //TODO
+        try
+        {
+            return DrugDealing.database.findPlant(loc);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -232,7 +262,6 @@ public class PlantsRegister
         }
         return "";
     }
-
 
     @Deprecated
     public ConfigurationSection getPlant(String plantName)
@@ -279,7 +308,7 @@ public class PlantsRegister
             return DrugDealing.database.getPlantLocation(plantId);
         } catch (SQLException e)
         {
-            plugin.console.severe("Couldn't get plant location from database");
+            instance.console.severe("Couldn't get plant location from database");
             e.printStackTrace();
         }
         return null;
@@ -292,7 +321,7 @@ public class PlantsRegister
             return DrugDealing.database.getPlantId(location);
         } catch (SQLException e)
         {
-            plugin.console.severe("Couldn't get plant id from database");
+            instance.console.severe("Couldn't get plant id from database");
             e.printStackTrace();
             return 0;
         }
