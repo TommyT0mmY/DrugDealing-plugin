@@ -8,15 +8,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class RemoveNPC implements CommandExecutor
 {
     private final DrugDealing plugin = DrugDealing.getInstance();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args)
     {
-        String usage = plugin.getCommand("removenpc").getUsage().replace("<command>", label); //usage message
+        String usage = Objects.requireNonNull(plugin.getCommand("removenpc")).getUsage().replace("<command>", label); //usage message
         Player p;
 
         if (!(sender instanceof Player))

@@ -22,6 +22,7 @@ public class RemoveUprootedPlants implements Listener
     {
         if (event.getAction() == Action.PHYSICAL)
         {
+            //todo fix may produce npe
             Block plantBase = event.getClickedBlock().getLocation().add(0, 1, 0).getBlock();
             removeProcedure(plantBase, true, true);
         }
@@ -48,7 +49,7 @@ public class RemoveUprootedPlants implements Listener
             { //if the broken block isn't the soil of the plant
                 if (plugin.plantsRegister.isDrugPlant(belowBlock.getLocation()))
                 { //if the broken block isn't the second part of a grown plant
-                    if (plugin.plantsRegister.isGrown(belowBlock.getLocation()))
+                    if (plugin.plantsRegister.isTimeGrown(belowBlock.getLocation()))
                     {
                         removeProcedure(belowBlock, false, dropItems);
                     }

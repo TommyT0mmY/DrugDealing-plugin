@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CreateNPC implements CommandExecutor
 {
@@ -35,7 +36,7 @@ public class CreateNPC implements CommandExecutor
 
         Player p = (Player) sender;
 
-        String usage = instance.getCommand("setnpc").getUsage().replace("<command>", label); //usage message
+        String usage = Objects.requireNonNull(instance.getCommand("setnpc")).getUsage().replace("<command>", label); //usage message
 
         if (args.length < 2)
         {
@@ -102,7 +103,7 @@ public class CreateNPC implements CommandExecutor
 
         spawnedNpc.spawn(p.getLocation());
 
-        instance.npcRegister.saveNpcOld(spawnedNpc, role, notAcceptedDrugTypes);
+        instance.npcRegister.saveNpc(spawnedNpc, role, notAcceptedDrugTypes.toArray(new DrugType[0]));
 
         return true;
     }

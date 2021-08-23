@@ -19,9 +19,10 @@ public class PreventSaplingGrowth implements Listener
         if (plugin.plantsRegister.isDrugPlant(loc))
         {
             e.setCancelled(true);
-            if (e.isFromBonemeal())
+
+            Player p = e.getPlayer();
+            if (e.isFromBonemeal() && p != null)
             {
-                Player p = e.getPlayer();
                 p.sendMessage(plugin.language.formattedChatMessage("cannot_grow_weed"));
             }
         }
