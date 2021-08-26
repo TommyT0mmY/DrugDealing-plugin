@@ -91,11 +91,11 @@ public class DrugDealing extends JavaPlugin
             boolean useSQLite = settings.getFileConfiguration().getBoolean("database.use-sqlite");
             if (useSQLite) //SQLite
             {
-                File databasefile = new File(dataFolder.getAbsolutePath() + File.separator + "database.db");
-                if (!databasefile.exists())
+                File databaseFile = new File(dataFolder.getAbsolutePath() + File.separator + "database.db");
+                if (!databaseFile.exists())
                     //noinspection ResultOfMethodCallIgnored
-                    databasefile.createNewFile();
-                database = new DrugDealingSQLiteDatabase(databasefile.getAbsolutePath());
+                    databaseFile.createNewFile();
+                database = new DrugDealingSQLiteDatabase(databaseFile.getAbsolutePath());
             } else //MySQL
             {
                 String hostname = settings.getFileConfiguration().getString("database.mysql.hostname");
@@ -132,13 +132,7 @@ public class DrugDealing extends JavaPlugin
     public void onDisable()
     {
         console.info("Closing database connection...");
-        try
-        {
-            database.closeConnection();
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        database.closeDatabase();
     }
 
     private void loadCommands()

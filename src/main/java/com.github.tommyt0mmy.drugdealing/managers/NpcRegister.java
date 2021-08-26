@@ -1,5 +1,3 @@
-//Handles the npcs.yml file
-
 package com.github.tommyt0mmy.drugdealing.managers;
 
 import com.github.tommyt0mmy.drugdealing.DrugDealing;
