@@ -25,16 +25,13 @@ public class NpcInteractions implements Listener
         Player p = e.getClicker();
         Optional<CriminalRole> role = instance.npcRegister.getCriminalRole(npc);
 
-        if (!role.isPresent() || instance.npcRegister.isCriminalNpc(npc)) //checks if the clicked NPC is a NPC handled by this plugin
-        {
+        //checks if the clicked NPC is a NPC handled by this plugin
+        if (!role.isPresent() || !instance.npcRegister.isCriminalNpc(npc))
             return;
-        }
 
         //removing NPC if /removenpc command is executed
         if (instance.toRemoveNPCs.contains(p.getUniqueId()))
-        {
             removeNpc(p, role.get(), npc);
-        }
 
         //Getting the item held by the player and checking if it's a plugin's item
         ItemStack itemInHand = p.getInventory().getItemInMainHand();
@@ -82,7 +79,7 @@ public class NpcInteractions implements Listener
 
     private void dealerInteraction(Player p, NPC npc, ItemStack itemInHand)
     {
-        if (!p.hasPermission("use_dealer"))
+        if (!p.hasPermission(Permissions.getPermission("use_dealer")))
         {
             p.sendMessage(instance.language.formattedChatMessage("invalid_permission"));
         }
@@ -133,7 +130,7 @@ public class NpcInteractions implements Listener
 
     private void producerInteraction(Player p, NPC npc, ItemStack itemInHand)
     {
-        if (!p.hasPermission("use_producer"))
+        if (!p.hasPermission(Permissions.getPermission("use_producer")))
         {
             p.sendMessage(instance.language.formattedChatMessage("invalid_permission"));
         }
