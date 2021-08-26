@@ -1,6 +1,3 @@
-#  Copyright (c) 2020 Tommaso Goni  #
-# DO NOT MODIFY THIS FILE #
-
 name: DrugDealing
 version: ${version}
 description: A roleplay plugin that allows players to plant drugs and sell them.
