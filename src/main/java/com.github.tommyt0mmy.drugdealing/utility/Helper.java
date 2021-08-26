@@ -35,6 +35,15 @@ public class Helper
         return byteBuffer.array();
     }
 
+    public static UUID byte16ToUuid(byte[] byte16)
+    {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(byte16);
+        long high = byteBuffer.getLong();
+        long low = byteBuffer.getLong();
+
+        return new UUID(high, low);
+    }
+
     public static DrugType getDrugType(int id)
     {
         return drugTypes[id];
