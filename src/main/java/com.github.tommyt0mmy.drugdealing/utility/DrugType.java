@@ -4,10 +4,10 @@ import com.github.tommyt0mmy.drugdealing.DrugDealing;
 
 public enum DrugType
 {
-    WEED_PLANT(0, false, true, "weed_plant_name", null, "weedProductionPrice", DrugType.WEED_PRODUCT),
-    COKE_PLANT(1, false, true, "coke_plant_name", null, "cokeProductionPrice", DrugType.COKE_PRODUCT),
-    WEED_PRODUCT(2, true, false, "weed_drug_name", "weedDrugSellingPrice", null, DrugType.WEED_PLANT),
-    COKE_PRODUCT(3, true, false, "coke_drug_name", "cokeDrugSellingPrice", null, DrugType.COKE_PLANT);
+    WEED_PLANT(0, false, true, "weed_plant_name", null, "weedProductionPrice", "WEED_PRODUCT"),
+    COKE_PLANT(1, false, true, "coke_plant_name", null, "cokeProductionPrice", "COKE_PRODUCT"),
+    WEED_PRODUCT(2, true, false, "weed_drug_name", "weedDrugSellingPrice", null, "WEED_PLANT"),
+    COKE_PRODUCT(3, true, false, "coke_drug_name", "cokeDrugSellingPrice", null, "COKE_PLANT");
 
     private final int id;
     private final boolean isAcceptedByDealer;
@@ -15,9 +15,9 @@ public enum DrugType
     private final String keywordPrettyName;
     private final String keywordSellingPrice;
     private final String keywordProductionPrice;
-    private final DrugType opposite;
+    private final String opposite;
 
-    DrugType(final int id, final boolean isAcceptedByDealer, final boolean isPlant, final String keywordPrettyName, final String keywordSellingPrice, final String keywordProductionPrice, final DrugType opposite)
+    DrugType(final int id, final boolean isAcceptedByDealer, final boolean isPlant, final String keywordPrettyName, final String keywordSellingPrice, final String keywordProductionPrice, final String opposite)
     {
         this.id = id;
         this.isAcceptedByDealer = isAcceptedByDealer;
@@ -48,6 +48,6 @@ public enum DrugType
 
     public DrugType getOpposite()
     {
-        return opposite;
+        return DrugType.valueOf(opposite);
     }
 }
