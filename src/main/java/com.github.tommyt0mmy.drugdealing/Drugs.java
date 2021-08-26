@@ -75,31 +75,6 @@ public class Drugs
         weedDrug.setItemMeta(weedDrugItemMeta);
     }
 
-    //TODO STOP USING THESE METHODS
-    @Deprecated
-    public ItemStack getCokePlantItemStack()
-    {
-        return cokePlant;
-    }
-
-    @Deprecated
-    public ItemStack getWeedPlantItemStack()
-    {
-        return weedPlant;
-    }
-
-    @Deprecated
-    public ItemStack getCokeDrugItemStack()
-    {
-        return cokeDrug;
-    }
-
-    @Deprecated
-    public ItemStack getWeedDrugItemStack()
-    {
-        return weedDrug;
-    }
-
     public ItemStack getItemStack(DrugType drugType)
     {
         switch (drugType)
@@ -114,87 +89,6 @@ public class Drugs
                 return cokeDrug;
         }
         return null;
-    }
-
-
-    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
-    @Deprecated
-    public boolean isCokePlantItemStack(ItemStack toCheckIS)
-    { //given an ItemStack returns true if it's a coke plant item
-        String coke_plant_name = instance.language.getKeyword("coke_plant_name");
-        if (toCheckIS.getType().equals(Material.POPPY))
-        { //checking type
-            if (toCheckIS.hasItemMeta())
-            { //checking name & lore
-                ItemMeta toCheckMeta = toCheckIS.getItemMeta();
-                if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
-                {
-                    return toCheckMeta.getLore().get(0).equals(coke_plant_name) && toCheckMeta.getDisplayName().equals(coke_plant_name);
-                }
-            }
-        }
-
-        return false;
-    }
-
-    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
-    @Deprecated
-    public boolean isWeedPlantItemStack(ItemStack toCheckIS)
-    { //given an ItemStack returns true if it's a weed plant item
-        String weed_plant_name = instance.language.getKeyword("weed_plant_name");
-        if (toCheckIS.getType().equals(Material.JUNGLE_SAPLING))
-        {
-            if (toCheckIS.hasItemMeta())
-            { //checking name & lore
-                ItemMeta toCheckMeta = toCheckIS.getItemMeta();
-                if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
-                {
-                    return toCheckMeta.getLore().get(0).equals(weed_plant_name) && toCheckMeta.getDisplayName().equals(weed_plant_name);
-                }
-            }
-        }
-
-        return false;
-    }
-
-    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
-    @Deprecated
-    public boolean isCokeDrugItemStack(ItemStack toCheckIS)
-    { //given an ItemStack returns true if it's a coke item
-        String coke_drug_name = instance.language.getKeyword("coke_drug_name");
-        if (toCheckIS.getType().equals(Material.SUGAR))
-        { //checking type
-            if (toCheckIS.hasItemMeta())
-            { //checking name & lore
-                ItemMeta toCheckMeta = toCheckIS.getItemMeta();
-                if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
-                {
-                    return toCheckMeta.getLore().get(0).equals(coke_drug_name) && toCheckMeta.getDisplayName().equals(coke_drug_name);
-                }
-            }
-        }
-
-        return false;
-    }
-
-    //TODO START USING PERSISTENT DATA CONTAINERS INSTEAD
-    @Deprecated
-    public boolean isWeedDrugItemStack(ItemStack toCheckIS)
-    { //given an ItemStack returns true if it's a weed item
-        String weed_drug_name = instance.language.getKeyword("weed_drug_name");
-        if (toCheckIS.getType().equals(Material.GREEN_DYE))
-        {
-            if (toCheckIS.hasItemMeta())
-            { //checking name & lore
-                ItemMeta toCheckMeta = toCheckIS.getItemMeta();
-                if (toCheckMeta.hasDisplayName() && toCheckMeta.hasLore())
-                {
-                    return toCheckMeta.getLore().get(0).equals(weed_drug_name) && toCheckMeta.getDisplayName().equals(weed_drug_name);
-                }
-            }
-        }
-
-        return false;
     }
 
     public Optional<DrugType> getDrugType(@NotNull ItemStack itemStack)
@@ -245,18 +139,16 @@ public class Drugs
         instance.plantsRegister.removePlant(plantLocation);
     }
 
-    public void growPlant(Location loc)
+    public void growPlant(Location loc, int plantId)
     { //given a location of a plant it makes the plant grow to it's final stage, ready to be harvested
         DrugType plantType = instance.plantsRegister.getDrugType(loc);
         Block plantBlock = loc.getBlock();
 
         //if the plant is already grown
         if (instance.plantsRegister.isPhysicallyGrown(loc))
-        {
             return;
-        }
 
-        Block top = loc.add(0, 1, 0).getBlock();
+        Block top = loc.clone().add(0, 1, 0).getBlock();
         if (plantType.equals(DrugType.WEED_PLANT))
         {
             setFlower(plantBlock, Material.LARGE_FERN, Bisected.Half.BOTTOM);
@@ -268,7 +160,7 @@ public class Drugs
             setFlower(top, Material.ROSE_BUSH, Bisected.Half.TOP);
         }
 
-        instance.plantsRegister.setPhysicallyGrown(loc, true);
+        instance.plantsRegister.setPhysicallyGrown(plantId, true);
     }
 
     private void setFlower(Block block, Material type, Bisected.Half half)

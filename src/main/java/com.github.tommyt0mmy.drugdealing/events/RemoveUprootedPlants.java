@@ -68,9 +68,8 @@ public class RemoveUprootedPlants implements Listener
         }
     }
 
-    @SuppressWarnings("deprecation")
     private boolean removeProcedure(Block plantBase, boolean checkFarmland, boolean dropItems)
-    { //returns true if plantBase is the base of a drug plant and gets removed successfukky
+    { //returns true if plantBase is the base of a drug plant and gets removed successfully
         //getting farm land block and plant base location
         Location plantBaseLocation = plantBase.getLocation(); //getting the plantBase location
         Block farmland = plantBaseLocation.subtract(0, 1, 0).getBlock();
@@ -86,7 +85,7 @@ public class RemoveUprootedPlants implements Listener
         }
 
         //checking plant
-        if (plugin.plantsRegister.isDrugPlantOld(plantBaseLocation))
+        if (plugin.plantsRegister.isDrugPlant(plantBaseLocation))
         {
             plugin.drugs.destroyPlant(plantBase, dropItems); //removing the plant
             return true;
